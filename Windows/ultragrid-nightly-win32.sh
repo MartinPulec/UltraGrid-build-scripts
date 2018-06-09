@@ -2,10 +2,10 @@
 set -e
 set -x
 
-exec > c:/ultragrid-build.log 2>&1
+exec > ~/ultragrid-build.log 2>&1
 
-export USERNAME=host
-export HOME=/home/host
+export USERNAME=toor
+export HOME=/home/toor
 
 . ~/paths.sh
 
@@ -19,8 +19,8 @@ export CUDA_PATH=$CUDA_DIRECTORY
 export MSVC_PATH=/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ 11.0/
 export MSVC12_PATH=/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ 12.0/
 
-export LIBRARY_PATH=$LIBRARY_PATH:~/gpujpeg/Release/
-export CPATH=$CPATH:~/gpujpeg/
+#export LIBRARY_PATH=$LIBRARY_PATH:~/gpujpeg/Release/
+#export CPATH=$CPATH:~/gpujpeg/
 export PATH=$PATH:$MSVC_PATH/Common7/IDE/:$MSVC_PATH/VC/bin/
 export LIBRARY_PATH=$LIBRARY_PATH:$CUDA_PATH/lib/Win32/
 
@@ -46,19 +46,8 @@ do
         rm -rf $BUILD_DIR
         git clone -b $BRANCH ${GIT[$BRANCH]} $BUILD_DIR
         cd $BUILD_DIR
-        cp -r ~/gpujpeg/Release/ gpujpeg
-        cp -r ~/SpoutSDK .
-	if [ -f build_aja_lib_win32.sh ]; then
-		AJA=yes
-		enable_aja=--enable-aja
-		mkdir bin
-		./autogen.sh # we need config.h now
-		./build_aja_lib_win32.sh
-	else
-		AJA=no
-		enable_aja=
-	fi
-        ./autogen.sh --enable-gpl --disable-dvs --with-live555=/usr/local --enable-spout $enable_aja
+        #cp -r ~/gpujpeg/Release/ gpujpeg
+        ./autogen.sh --enable-gpl --disable-dvs --with-live555=/usr/local
         # --disable-jpeg --disable-cuda-dxt --disable-jpeg-to-dxt
         make -j 20 
 
@@ -75,15 +64,12 @@ do
 
         cp "$MSVC_PATH/VC/redist/x86/Microsoft.VC110.CRT/"* bin
         cp "$MSVC12_PATH/VC/redist/x86/Microsoft.VC120.CRT/"* bin
-        cp "$CUDA_PATH/bin/cudart32_80.dll" bin
+        cp "$CUDA_PATH/bin/cudart32_92.dll" bin
 
         cp ~/pdcurses/pdcurses.dll bin
         #cp ~/VideoMasterHD/Binaries/Vista32/*dll bin
         #cp /mingw/i686-w64-mingw32/lib/libgcc_s_dw2-1.dll bin
-        cp ~/gpujpeg/Release/gpujpeg.dll bin
-	cp /usr/local/bin/spout_sender.dll bin # TODO: remove
-	cp /usr/local/bin/spout_wrapper.dll bin
-	cp /usr/local/bin/Spout.dll bin
+        cp /usr/local/bin/gpujpeg.dll bin
 
         mv bin $DIR_NAME
 

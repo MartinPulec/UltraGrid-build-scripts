@@ -2,10 +2,10 @@
 set -e
 set -x
 
-exec > c:/ultragrid-build64.log 2>&1
+exec > ultragrid-build64.log 2>&1
 
-export USERNAME=host
-export HOME=/home/host
+export USERNAME=toor
+export HOME=/home/$USERNAME
 
 . ~/paths.sh
 
@@ -17,7 +17,6 @@ export HOME=/home/host
 
 #export CUDA_PATH=$CUDA_DIRECTORY
 #export MSVC_PATH=/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ 11.0/
-#export MSVC11_PATH=/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ 11.0/
 
 #export LIBRARY_PATH=$LIBRARY_PATH:~/gpujpeg/Release/
 #export CPATH=$CPATH:~/gpujpeg/
@@ -46,24 +45,15 @@ do
         rm -rf $BUILD_DIR
         git clone -b $BRANCH ${GIT[$BRANCH]} $BUILD_DIR
         cd $BUILD_DIR
-	mkdir bin
         #cp -r ~/gpujpeg/Release/ gpujpeg
         #cp -r ~/SpoutSDK .
-	if [ -f build_aja_lib_win64.sh ]; then
-		AJA=yes
-		enable_aja=--enable-aja
-		./autogen.sh # we need config.h now
-		./build_aja_lib_win64.sh
-		cp /usr/local/bin/aja.dll bin
-	else
-		AJA=no
-		enable_aja=
-	fi
-	cp ~/SpoutSDK src/
-	./build_spout.sh
+        ./autogen.sh # we need config.h for aja build script
+        ./build_aja_lib_win64.sh
+	cp -r ~/SpoutSDK src/
+	./build_spout64.sh
 
-        ./autogen.sh --enable-spout  --enable-gpl $enable_aja
-	# --disable-dvs --with-live555=/usr/local
+        ./autogen.sh --enable-spout  --enable-gpl --enable-aja --with-live555=/usr/local --enable-rtsp-server
+	# --disable-dvs
         # --disable-jpeg --disable-cuda-dxt --disable-jpeg-to-dxt
         make -j 6
 
@@ -74,16 +64,17 @@ do
         cp ../ffmpeg-latest-win64-shared/bin/*dll bin
 
 
-        #cp "$MSVC12_PATH/VC/redist/x86/Microsoft.VC120.CRT/"* bin # pro AJA
-        cp "$MSVC_PATH/VC/redist/x64/Microsoft.VC110.CRT/"* bin
+        cp "$MSVC11_PATH/VC/redist/x64/Microsoft.VC110.CRT/"* bin
+        cp "$MSVC12_PATH/VC/redist/x86/Microsoft.VC120.CRT/"* bin # pro AJA
 
         #cp ~/pdcurses/pdcurses.dll bin
         ##cp ~/VideoMasterHD/Binaries/Vista32/*dll bin
-        cp ~/gpujpeg/x64/Release/gpujpeg.dll bin
+        cp /usr/local/bin/gpujpeg.dll bin
         #cp ~/gpujpeg/x64/Release/cudart64_*.dll bin
-        cp "$CUDA_DIRECTORY/bin/cudart64_91.dll" bin
+        cp "$CUDA_PATH/bin/cudart64_92.dll" bin
 	cp /usr/local/bin/spout_wrapper.dll bin
 	cp ~/SpoutSDK/VS2012/Binaries/x64/Spout.dll bin
+        cp /usr/local/bin/aja.dll bin
 
         mv bin $DIR_NAME
 

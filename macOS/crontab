@@ -1,0 +1,2 @@
+00 7 * * * /Users/toor/ultragrid-nightly-mac.sh
+30 7 * * * /Users/toor/ultragrid-nightly-mac-1.4.sh

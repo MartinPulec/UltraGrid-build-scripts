@@ -64,8 +64,8 @@ do
         cp ../ffmpeg-latest-win64-shared/bin/*dll bin
 
 
-        cp "$MSVC11_PATH/VC/redist/x64/Microsoft.VC110.CRT/"* bin
-        cp "$MSVC12_PATH/VC/redist/x86/Microsoft.VC120.CRT/"* bin # pro AJA
+        #cp "$MSVC11_PATH/VC/redist/x64/Microsoft.VC110.CRT/"* bin
+        #cp "$MSVC12_PATH/VC/redist/x86/Microsoft.VC120.CRT/"* bin # pro AJA
 
         #cp ~/pdcurses/pdcurses.dll bin
         ##cp ~/VideoMasterHD/Binaries/Vista32/*dll bin

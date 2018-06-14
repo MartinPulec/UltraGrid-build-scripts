@@ -51,7 +51,7 @@ do
         cp ../ffmpeg-latest-win32-shared/bin/*dll bin
 
 
-        cp "$MSVC_PATH/VC/redist/x86/Microsoft.VC110.CRT/"* bin
+        #cp "$MSVC_PATH/VC/redist/x86/Microsoft.VC110.CRT/"* bin
         cp "$CUDA_PATH/bin/cudart32_92.dll" bin
 
         cp ~/pdcurses/pdcurses.dll bin

@@ -47,7 +47,7 @@ do
         git clone -b $BRANCH ${GIT[$BRANCH]} $BUILD_DIR
         cd $BUILD_DIR
         #cp -r ~/gpujpeg/Release/ gpujpeg
-        ./autogen.sh --enable-gpl --disable-dvs --with-live555=/usr/local
+        ./autogen.sh --enable-gpl --disable-dvs --with-live555=/usr/local --enable-spout
         # --disable-jpeg --disable-cuda-dxt --disable-jpeg-to-dxt
         make -j 20 
 
@@ -70,6 +70,8 @@ do
         #cp ~/VideoMasterHD/Binaries/Vista32/*dll bin
         #cp /mingw/i686-w64-mingw32/lib/libgcc_s_dw2-1.dll bin
         cp /usr/local/bin/gpujpeg.dll bin
+        cp /usr/local/bin/spout_wrapper.dll bin
+        cp ~/SpoutSDK/VS2012/Binaries/Win32/Spout.dll bin
 
         mv bin $DIR_NAME
 

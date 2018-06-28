@@ -57,7 +57,7 @@ do
         # --disable-jpeg --disable-cuda-dxt --disable-jpeg-to-dxt
         make -j 6
 
-        for n in glew32.dll libstdc++-6.dll libportaudio-2.dll libfreeglut.dll SDL.dll libwinpthread-1.dll libgcc_s_seh-1.dll; do
+        for n in glew32.dll libstdc++-6.dll libportaudio-2.dll libfreeglut.dll SDL.dll libwinpthread-1.dll libgcc_s_seh-1.dll libeay32.dll; do
         [ ! -e /mingw64/bin/$n ] || cp /mingw64/bin/$n bin
         done
 

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 set -x
 
@@ -23,43 +23,72 @@ export HOME=/home/$USERNAME
 #export PATH=$PATH:$MSVC_PATH/Common7/IDE/:$MSVC_PATH/VC/bin/
 #export LIBRARY_PATH=$LIBRARY_PATH:$CUDA_PATH/lib/Win32/
 
-declare -A GIT
+# key is BUILD
+declare -A BRANCHES
+BRANCHES["devel"]=devel
+BRANCHES["devel-nonfree"]=devel
+BRANCHES["master"]=master
 
+# key is BUILD
+declare -A CONF_FLAGS
+CONF_FLAGS["devel"]=""
+CONF_FLAGS["devel-nonfree"]="--enable-nonfree-build --enable-aja"
+CONF_FLAGS["master"]=""
+
+# key is BUILD
+declare -A IS_FREE
+IS_FREE["devel"]=yes
+IS_FREE["devel-nonfree"]=no
+IS_FREE["master"]=yes
+
+# key is BRANCH
+declare -A GIT
 GIT["master"]="https://github.com/CESNET/UltraGrid.git"
 GIT["devel"]="https://github.com/MartinPulec/UltraGrid.git"
 
-for BRANCH in devel
+
+for BUILD in devel devel-nonfree master
 do
+        BRANCH=${BRANCHES[$BUILD]}
         BUILD_DIR=ultragrid-nightly-$BRANCH
         if [ $BRANCH = master ]; then
                 DIR_NAME=UltraGrid64
                 ZIP_NAME=UltraGrid-nightly-win64.zip
         else
-                DIR_NAME=UltraGrid-${BRANCH}64
-                ZIP_NAME=UltraGrid-nightly-win64-$BRANCH.zip
+                DIR_NAME=UltraGrid-${BUILD}64
+                ZIP_NAME=UltraGrid-nightly-win64-$BUILD.zip
         fi
 
-        echo Building branch $BRANCH...
-                   
+        echo Building $BUILD...
+
         cd ~
         rm -rf $BUILD_DIR
         git clone -b $BRANCH ${GIT[$BRANCH]} $BUILD_DIR
         cd $BUILD_DIR
         #cp -r ~/gpujpeg/Release/ gpujpeg
         #cp -r ~/SpoutSDK .
-        ./autogen.sh # we need config.h for aja build script
-        ./build_aja_lib_win64.sh
-	cp -r ~/SpoutSDK src/
-	./build_spout64.sh
+        if [ ${IS_FREE[$BUILD]} = no ]; then
+                ./autogen.sh # we need config.h for aja build script
+                ./build_aja_lib_win64.sh
+        fi
+        cp -r ~/SpoutSDK src/
+        ./build_spout64.sh
 
-        ./autogen.sh --enable-spout  --enable-gpl --enable-aja --with-live555=/usr/local --enable-rtsp-server
-	# --disable-dvs
+        read -a FLAGS <<< ${CONF_FLAGS[$BUILD]}
+        ./autogen.sh --enable-spout "${FLAGS[@]}" --with-live555=/usr/local --enable-rtsp-server
+        # --disable-dvs
         # --disable-jpeg --disable-cuda-dxt --disable-jpeg-to-dxt
         make -j 6
 
         for n in glew32.dll libstdc++-6.dll libportaudio-2.dll libfreeglut.dll SDL2.dll libwinpthread-1.dll libgcc_s_seh-1.dll libeay32.dll; do
         [ ! -e /mingw64/bin/$n ] || cp /mingw64/bin/$n bin
         done
+
+        # TODO: remove when SDL2 reaches master
+        if test ! -f src/video_display/sdl2.cpp; then
+                rm bin/SDL2.dll
+                cp /mingw64/bin/SDL.dll bin
+        fi
 
         cp ../ffmpeg-latest-win64-shared/bin/*dll bin
 
@@ -72,9 +101,14 @@ do
         cp /usr/local/bin/gpujpeg.dll bin
         #cp ~/gpujpeg/x64/Release/cudart64_*.dll bin
         cp "$CUDA_PATH/bin/cudart64_92.dll" bin
-	cp /usr/local/bin/spout_wrapper.dll bin
-	cp ~/SpoutSDK/VS2012/Binaries/x64/Spout.dll bin
-        cp /usr/local/bin/aja.dll bin
+        cp /usr/local/bin/spout_wrapper.dll bin
+        cp ~/SpoutSDK/VS2012/Binaries/x64/Spout.dll bin
+        if [ ${IS_FREE[$BUILD]} = yes ]; then
+                cp COPYRIGHT.GPL-2 bin/COPYRIGHT
+        else
+                cp /usr/local/bin/aja.dll bin
+                cp COPYRIGHT.nonfree bin/COPYRIGHT
+        fi
 
         mv bin $DIR_NAME
 
@@ -84,18 +118,18 @@ do
 curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json # --insecure
 LEN=`jq "length" assets.json`
 for n in `seq 0 $(($LEN-1))`; do
-	NAME=`jq '.['$n'].name' assets.json`
-	if [ $NAME = "\""$ZIP_NAME"\"" ]; then
-		ID=`jq '.['$n'].id' assets.json`
-	fi
+        NAME=`jq '.['$n'].name' assets.json`
+        if [ $NAME = "\""$ZIP_NAME"\"" ]; then
+                ID=`jq '.['$n'].id' assets.json`
+        fi
 done
 
 if [ -n "$ID" ]; then
-	curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID # --insecure
+        curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID # --insecure
 fi
 
 #LABEL="Windows%20build%20"$BRANCH
-LABEL="Windows%2064-bit%20build%20"$BRANCH"%20EXPERIMENTAL"
+LABEL="Windows%2064-bit%20build%20"$BUILD
 
 curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -H 'Content-Type: application/zip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZIP_NAME'&label='$LABEL -T $ZIP_NAME # --insecure
 

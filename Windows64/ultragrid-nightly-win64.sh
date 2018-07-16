@@ -103,11 +103,12 @@ do
         cp "$CUDA_PATH/bin/cudart64_92.dll" bin
         cp /usr/local/bin/spout_wrapper.dll bin
         cp ~/SpoutSDK/VS2012/Binaries/x64/Spout.dll bin
-        if [ ${IS_FREE[$BUILD]} = yes ]; then
-                cp COPYRIGHT.GPL-2 bin/COPYRIGHT
-        else
+        if [ ${IS_FREE[$BUILD]} = no ]; then
                 cp /usr/local/bin/aja.dll bin
-                cp COPYRIGHT.nonfree bin/COPYRIGHT
+        fi
+        # TODO: remove condition
+        if [ -f COPYRIGHT ]; then
+                cp COPYRIGHT bin/COPYRIGHT
         fi
 
         mv bin $DIR_NAME

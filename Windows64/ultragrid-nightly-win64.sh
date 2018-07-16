@@ -50,12 +50,12 @@ GIT["devel"]="https://github.com/MartinPulec/UltraGrid.git"
 for BUILD in devel devel-nonfree master
 do
         BRANCH=${BRANCHES[$BUILD]}
-        BUILD_DIR=ultragrid-nightly-$BRANCH
+        BUILD_DIR=ultragrid-nightly-$BUILD
         if [ $BRANCH = master ]; then
-                DIR_NAME=UltraGrid64
+                DIR_NAME=UltraGrid
                 ZIP_NAME=UltraGrid-nightly-win64.zip
         else
-                DIR_NAME=UltraGrid-${BUILD}64
+                DIR_NAME=UltraGrid-${BUILD}
                 ZIP_NAME=UltraGrid-nightly-win64-$BUILD.zip
         fi
 

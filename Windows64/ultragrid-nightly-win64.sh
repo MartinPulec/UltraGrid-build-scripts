@@ -26,20 +26,12 @@ export HOME=/home/$USERNAME
 # key is BUILD
 declare -A BRANCHES
 BRANCHES["devel"]=devel
-BRANCHES["devel-nonfree"]=devel
 BRANCHES["master"]=master
 
 # key is BUILD
 declare -A CONF_FLAGS
 CONF_FLAGS["devel"]=""
-CONF_FLAGS["devel-nonfree"]="--enable-nonfree-build --enable-aja"
 CONF_FLAGS["master"]=""
-
-# key is BUILD
-declare -A IS_FREE
-IS_FREE["devel"]=yes
-IS_FREE["devel-nonfree"]=no
-IS_FREE["master"]=yes
 
 # key is BRANCH
 declare -A GIT
@@ -47,7 +39,7 @@ GIT["master"]="https://github.com/CESNET/UltraGrid.git"
 GIT["devel"]="https://github.com/MartinPulec/UltraGrid.git"
 
 
-for BUILD in devel devel-nonfree master
+for BUILD in devel master
 do
         BRANCH=${BRANCHES[$BUILD]}
         BUILD_DIR=ultragrid-nightly-$BUILD
@@ -67,7 +59,7 @@ do
         cd $BUILD_DIR
         #cp -r ~/gpujpeg/Release/ gpujpeg
         #cp -r ~/SpoutSDK .
-        if [ ${IS_FREE[$BUILD]} = no ]; then
+        if [ $BRANCH = "devel" ]; then
                 ./autogen.sh # we need config.h for aja build script
                 ./build_aja_lib_win64.sh
         fi
@@ -75,7 +67,7 @@ do
         ./build_spout64.sh
 
         read -a FLAGS <<< ${CONF_FLAGS[$BUILD]}
-        ./autogen.sh --enable-spout "${FLAGS[@]}" --with-live555=/usr/local --enable-rtsp-server
+        ./autogen.sh --enable-aja --enable-spout "${FLAGS[@]}" --with-live555=/usr/local --enable-rtsp-server
         # --disable-dvs
         # --disable-jpeg --disable-cuda-dxt --disable-jpeg-to-dxt
         make -j 6
@@ -103,9 +95,7 @@ do
         cp "$CUDA_PATH/bin/cudart64_92.dll" bin
         cp /usr/local/bin/spout_wrapper.dll bin
         cp ~/SpoutSDK/VS2012/Binaries/x64/Spout.dll bin
-        if [ ${IS_FREE[$BUILD]} = no ]; then
-                cp /usr/local/bin/aja.dll bin
-        fi
+        cp /usr/local/bin/aja.dll bin
         # TODO: remove condition
         if [ -f COPYRIGHT ]; then
                 cp COPYRIGHT bin/COPYRIGHT

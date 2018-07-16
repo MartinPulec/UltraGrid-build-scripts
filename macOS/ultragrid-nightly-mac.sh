@@ -22,7 +22,7 @@ cd $BUILD_DIR/
 
 export PKG_CONFIG_PATH=/usr/local/share/ffmpeg/lib/pkgconfig-static:$PKG_CONFIG_PATH
 
-./autogen.sh --enable-gpl --enable-syphon --enable-rtsp-server --with-live555=/usr/local
+./autogen.sh --enable-syphon --enable-rtsp-server --with-live555=/usr/local
 ( while :; do echo /usr/local/cuda/lib; done ) | make osx-gui-dmg
 
 #scp -i /Users/toor/.ssh/id_rsa 'gui/UltraGrid GUI/UltraGrid.dmg' pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid/UltraGrid-nightly-OSX.dmg

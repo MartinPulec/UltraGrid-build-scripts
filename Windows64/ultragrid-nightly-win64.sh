@@ -39,7 +39,7 @@ GIT["master"]="https://github.com/CESNET/UltraGrid.git"
 GIT["devel"]="https://github.com/MartinPulec/UltraGrid.git"
 
 
-for BUILD in devel master
+for BUILD in master devel
 do
         BRANCH=${BRANCHES[$BUILD]}
         BUILD_DIR=ultragrid-nightly-$BUILD

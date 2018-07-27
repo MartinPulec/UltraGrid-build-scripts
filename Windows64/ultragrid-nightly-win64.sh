@@ -72,7 +72,7 @@ do
         # --disable-jpeg --disable-cuda-dxt --disable-jpeg-to-dxt
         make -j 6
 
-        for n in glew32.dll libstdc++-6.dll libfreeglut.dll SDL2.dll libwinpthread-1.dll libgcc_s_seh-1.dll libeay32.dll; do
+        for n in glew32.dll libstdc++-6.dll libportaudio-2.dll libfreeglut.dll SDL2.dll libwinpthread-1.dll libgcc_s_seh-1.dll libeay32.dll; do
         [ ! -e /mingw64/bin/$n ] || cp /mingw64/bin/$n bin
         done
 
@@ -88,7 +88,6 @@ do
         #cp "$MSVC11_PATH/VC/redist/x64/Microsoft.VC110.CRT/"* bin
         #cp "$MSVC12_PATH/VC/redist/x86/Microsoft.VC120.CRT/"* bin # pro AJA
 
-        cp /usr/local/bin/libportaudio-2.dll bin
         #cp ~/pdcurses/pdcurses.dll bin
         ##cp ~/VideoMasterHD/Binaries/Vista32/*dll bin
         cp /usr/local/bin/gpujpeg.dll bin

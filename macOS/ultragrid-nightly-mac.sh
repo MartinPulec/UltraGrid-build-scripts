@@ -22,7 +22,7 @@ cd $BUILD_DIR/
 
 export PKG_CONFIG_PATH=/usr/local/share/ffmpeg/lib/pkgconfig-static:$PKG_CONFIG_PATH
 
-./autogen.sh --enable-syphon --enable-rtsp-server --with-live555=/usr/local
+./autogen.sh --enable-syphon --enable-rtsp-server --with-live555=/usr/local --enable-qt
 ( while :; do echo /usr/local/cuda/lib; done ) | make osx-gui-dmg
 
 #scp -i /Users/toor/.ssh/id_rsa 'gui/UltraGrid GUI/UltraGrid.dmg' pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid/UltraGrid-nightly-OSX.dmg
@@ -39,7 +39,7 @@ if [ -n "$ID" ]; then
 	curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID
 fi
 
-curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=UltraGrid-nightly-macos.dmg&label=macOS%20build' -T 'gui/UltraGrid GUI/UltraGrid.dmg'
+curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=UltraGrid-nightly-macos.dmg&label=macOS%20build' -T 'gui/QT/Ultragrid.dmg'
 
 
 cd ..
@@ -60,7 +60,7 @@ export ARCH='-msse2'
 export PKG_CONFIG_PATH=/usr/local/share/ffmpeg-notoolbox/lib/pkgconfig-static:$PKG_CONFIG_PATH
 
 #./autogen.sh --enable-quicktime --disable-jpeg --disable-deltacast --disable-rtsp  --disable-cuda --enable-syphon --disable-aja
-./autogen.sh --enable-gpl --enable-syphon --enable-rtsp-server --with-live555=/usr/local
+./autogen.sh --enable-gpl --enable-syphon --enable-rtsp-server --with-live555=/usr/local --enable-qt
 ( while :; do echo /usr/local/cuda/lib; done ) | make osx-gui-dmg
 
 #scp -i /Users/toor/.ssh/id_rsa 'gui/UltraGrid GUI/UltraGrid.dmg' pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid/UltraGrid-nightly-OSX-32bit-w-QuickTime.dmg
@@ -78,7 +78,7 @@ if [ -n "$ID" ]; then
 	curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID
 fi
 
-curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=UltraGrid-nightly-macos-alt.dmg&label=alternative%20macOS%20build%20%28wo%20SSE4%20and%20videotoolbox%29' -T 'gui/UltraGrid GUI/UltraGrid.dmg'
+curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=UltraGrid-nightly-macos-alt.dmg&label=alternative%20macOS%20build%20%28wo%20SSE4%20and%20videotoolbox%29' -T 'gui/QT/UltraGrid.dmg'
 
 cd ..
 

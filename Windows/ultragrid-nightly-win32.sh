@@ -54,11 +54,7 @@ do
         for n in glew32.dll libgcc_s_dw2-1.dll libstdc++-6.dll libportaudio-2.dll libfreeglut.dll libwinpthread-1.dll libeay32.dll; do
         [ ! -e /mingw32/bin/$n ] || cp /mingw32/bin/$n bin
         done
-        if [ $BRANCH = master ]; then
-                cp /mingw32/bin/SDL.dll bin
-        else
-                cp /mingw32/bin/SDL2.dll bin
-        fi
+        cp /mingw32/bin/SDL2.dll bin
 
         #LIBAV_DIR=`ls -d ../libav-win32-*|tail -n 1`
         #cp $LIBAV_DIR/usr/bin/* bin

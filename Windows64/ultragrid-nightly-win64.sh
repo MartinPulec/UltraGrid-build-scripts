@@ -30,7 +30,7 @@ BRANCHES["master"]=master
 
 # key is BUILD
 declare -A CONF_FLAGS
-CONF_FLAGS["devel"]=""
+CONF_FLAGS["devel"]="--enable-qt"
 CONF_FLAGS["master"]=""
 
 # key is BRANCH
@@ -38,6 +38,7 @@ declare -A GIT
 GIT["master"]="https://github.com/CESNET/UltraGrid.git"
 GIT["devel"]="https://github.com/MartinPulec/UltraGrid.git"
 
+#TODO qt also for master (when ok)
 
 for BUILD in master devel
 do
@@ -72,38 +73,42 @@ do
         # --disable-jpeg --disable-cuda-dxt --disable-jpeg-to-dxt
         make -j 6
 
-        for n in glew32.dll libstdc++-6.dll libportaudio-2.dll libfreeglut.dll SDL2.dll libwinpthread-1.dll libgcc_s_seh-1.dll libeay32.dll; do
-        [ ! -e /mingw64/bin/$n ] || cp /mingw64/bin/$n bin
-        done
-
-        # TODO: remove when SDL2 reaches master
-        if test ! -f src/video_display/sdl2.cpp; then
-                rm bin/SDL2.dll
-                cp /mingw64/bin/SDL.dll bin
+        # TODO: remove condition when it reaches master
+        if [ $BRANCH = "devel" ]; then
+                cp gui/QT/debug/uv-qt.exe bin
         fi
 
-        cp ../ffmpeg-latest-win64-shared/bin/*dll bin
+        # TODO: remove condition when it reaches master
+        if test -f get_dll_depends.sh; then
+                for exe in bin/*exe; do
+                        for n in `./get_dll_depends.sh "$exe"`; do
+                                cp "$n" bin
+                        done
+                done
+        else
+                for n in glew32.dll libstdc++-6.dll libportaudio-2.dll libfreeglut.dll SDL2.dll libwinpthread-1.dll libgcc_s_seh-1.dll libeay32.dll; do
+                        [ ! -e /mingw64/bin/$n ] || cp /mingw64/bin/$n bin
+                done
 
+                cp ../ffmpeg-latest-win64-shared/bin/*dll bin
+                #cp "$MSVC11_PATH/VC/redist/x64/Microsoft.VC110.CRT/"* bin
+                #cp "$MSVC12_PATH/VC/redist/x86/Microsoft.VC120.CRT/"* bin # pro AJA
 
-        #cp "$MSVC11_PATH/VC/redist/x64/Microsoft.VC110.CRT/"* bin
-        #cp "$MSVC12_PATH/VC/redist/x86/Microsoft.VC120.CRT/"* bin # pro AJA
+                #cp ~/pdcurses/pdcurses.dll bin
+                ##cp ~/VideoMasterHD/Binaries/Vista32/*dll bin
+                cp /usr/local/bin/gpujpeg.dll bin
+                #cp ~/gpujpeg/x64/Release/cudart64_*.dll bin
+                cp /usr/local/bin/spout_wrapper.dll bin
+                cp ~/SpoutSDK/VS2012/Binaries/x64/Spout.dll bin
+                cp /usr/local/bin/aja.dll bin
+        fi
 
-        #cp ~/pdcurses/pdcurses.dll bin
-        ##cp ~/VideoMasterHD/Binaries/Vista32/*dll bin
-        cp /usr/local/bin/gpujpeg.dll bin
-        #cp ~/gpujpeg/x64/Release/cudart64_*.dll bin
         cp "$CUDA_PATH/bin/cudart64_92.dll" bin
-        cp /usr/local/bin/spout_wrapper.dll bin
-        cp ~/SpoutSDK/VS2012/Binaries/x64/Spout.dll bin
-        cp /usr/local/bin/aja.dll bin
-        # TODO: remove condition
-        if [ -f COPYRIGHT ]; then
-                cp COPYRIGHT bin/COPYRIGHT
-        fi
+        cp COPYRIGHT bin/COPYRIGHT
 
         mv bin $DIR_NAME
 
-        zip -r $ZIP_NAME $DIR_NAME
+        zip -9 -r $ZIP_NAME $DIR_NAME
         #scp -i c:/mingw32/msys~/.ssh/id_rsa $ZIP_NAME pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid
 
 curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json # --insecure

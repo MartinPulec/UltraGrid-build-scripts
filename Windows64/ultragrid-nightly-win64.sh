@@ -34,11 +34,13 @@ trap atexit EXIT
 # key is BUILD
 declare -A BRANCHES
 BRANCHES["devel"]=devel
+BRANCHES["devel-nogui"]=devel
 BRANCHES["master"]=master
 
 # key is BUILD
 declare -A CONF_FLAGS
 CONF_FLAGS["devel"]="--enable-qt"
+CONF_FLAGS["devel-nogui"]=""
 CONF_FLAGS["master"]=""
 
 # key is BRANCH
@@ -48,7 +50,7 @@ GIT["devel"]="https://github.com/MartinPulec/UltraGrid.git"
 
 #TODO qt also for master (when ok)
 
-for BUILD in master devel
+for BUILD in master devel devel-nogui
 do
         BRANCH=${BRANCHES[$BUILD]}
         BUILD_DIR=ultragrid-nightly-$BUILD
@@ -68,10 +70,10 @@ do
         cd $BUILD_DIR
         #cp -r ~/gpujpeg/Release/ gpujpeg
         #cp -r ~/SpoutSDK .
-        if [ $BRANCH = "devel" ]; then
-                ./autogen.sh # we need config.h for aja build script
-                ./build_aja_lib_win64.sh
-        fi
+
+        ./autogen.sh # we need config.h for aja build script
+        ./build_aja_lib_win64.sh
+
         cp -r ~/SpoutSDK src/
         ./build_spout64.sh
 
@@ -81,8 +83,7 @@ do
         # --disable-jpeg --disable-cuda-dxt --disable-jpeg-to-dxt
         make -j 6
 
-        # TODO: remove condition when it reaches master
-        if [ $BRANCH = "devel" ]; then
+        if [ -f gui/QT/debug/uv-qt.exe ]; then
                 cp gui/QT/debug/uv-qt.exe bin
         fi
 

@@ -3,6 +3,16 @@ set -e
 set -x
 
 cd /tmp
+
+# checkout current build script
+atexit() {
+        git clone root@w54-136.fi.muni.cz:ultragrid-build ultragrid-build-tmp
+        cp -r ultragrid-build-tmp/Linux/*sh /var/tmp
+        crontab ultragrid-build-tmp/Linux/crontab
+        rm -r ultragrid-build-tmp
+}
+trap atexit EXIT
+
 rm -rf ultragrid-nightly
 
 git clone https://github.com/CESNET/UltraGrid.git ultragrid-nightly

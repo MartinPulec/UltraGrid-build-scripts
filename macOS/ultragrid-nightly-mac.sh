@@ -14,6 +14,16 @@ export PKG_CONFIG_PATH=`[ -n "$PKG_CONFIG_PATH" ] && echo "$PKG_CONFIG_PATH:" ||
 export AJA_DIRECTORY=/Users/toor/ntv2sdkmac_13.0.0.79b79
 
 cd /tmp
+
+# checkout current build script
+atexit() {
+        git clone root@w54-136.fi.muni.cz:ultragrid-build ultragrid-build-tmp
+        cp -r ultragrid-build-tmp/macOS/*sh ~/
+        crontab ultragrid-build-tmp/macOS/crontab
+        rm -r ultragrid-build-tmp
+}
+trap atexit EXIT
+
 rm -rf $BUILD_DIR
 
 git clone -b master https://github.com/CESNET/UltraGrid.git $BUILD_DIR

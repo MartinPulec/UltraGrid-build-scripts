@@ -7,6 +7,14 @@ exec > ultragrid-build64.log 2>&1
 export USERNAME=toor
 export HOME=/home/$USERNAME
 
+# checkout current build script
+atexit() {
+        git clone root@w54-136.fi.muni.cz:ultragrid-build ultragrid-build-tmp
+        cp -r ultragrid-build-tmp/Windows64/* ~/
+        rm -r ultragrid-build-tmp
+}
+trap atexit EXIT
+
 . ~/paths.sh
 
 #export PATH=/usr/local/bin`[ -n "$PATH" ] && echo :$PATH`

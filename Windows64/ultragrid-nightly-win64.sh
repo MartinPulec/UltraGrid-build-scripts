@@ -33,28 +33,26 @@ trap atexit EXIT
 
 # key is BUILD
 declare -A BRANCHES
-BRANCHES["devel"]=devel
 BRANCHES["devel-nogui"]=devel
 BRANCHES["master"]=master
+BRANCHES["master-nogui"]=master
 
 # key is BUILD
 declare -A CONF_FLAGS
-CONF_FLAGS["devel"]="--enable-qt"
 CONF_FLAGS["devel-nogui"]=""
-CONF_FLAGS["master"]=""
+CONF_FLAGS["master"]="--enable-qt"
+CONF_FLAGS["master-nogui"]=""
 
 # key is BRANCH
 declare -A GIT
 GIT["master"]="https://github.com/CESNET/UltraGrid.git"
 GIT["devel"]="https://github.com/MartinPulec/UltraGrid.git"
 
-#TODO qt also for master (when ok)
-
-for BUILD in master devel devel-nogui
+for BUILD in master-nogui master devel-nogui
 do
         BRANCH=${BRANCHES[$BUILD]}
         BUILD_DIR=ultragrid-nightly-$BUILD
-        if [ $BRANCH = master ]; then
+        if [ $BUILD = master ]; then
                 DIR_NAME=UltraGrid
                 ZIP_NAME=UltraGrid-nightly-win64.zip
         else
@@ -87,31 +85,15 @@ do
                 cp gui/QT/debug/uv-qt.exe bin
         fi
 
-        # TODO: remove condition when it reaches master
-        if test -f get_dll_depends.sh; then
-                for exe in bin/*exe; do
-                        for n in `./get_dll_depends.sh "$exe"`; do
-                                cp "$n" bin
-                        done
+        # Add dependencies
+        for exe in bin/*exe; do
+                for n in `./get_dll_depends.sh "$exe"`; do
+                        cp "$n" bin
                 done
-        else
-                for n in glew32.dll libstdc++-6.dll libportaudio-2.dll libfreeglut.dll SDL2.dll libwinpthread-1.dll libgcc_s_seh-1.dll libeay32.dll; do
-                        [ ! -e /mingw64/bin/$n ] || cp /mingw64/bin/$n bin
-                done
+        done
 
-                cp ../ffmpeg-latest-win64-shared/bin/*dll bin
-                #cp "$MSVC11_PATH/VC/redist/x64/Microsoft.VC110.CRT/"* bin
-                #cp "$MSVC12_PATH/VC/redist/x86/Microsoft.VC120.CRT/"* bin # pro AJA
-
-                #cp ~/pdcurses/pdcurses.dll bin
-                ##cp ~/VideoMasterHD/Binaries/Vista32/*dll bin
-                cp /usr/local/bin/gpujpeg.dll bin
-                #cp ~/gpujpeg/x64/Release/cudart64_*.dll bin
-                cp /usr/local/bin/spout_wrapper.dll bin
-                cp ~/SpoutSDK/VS2012/Binaries/x64/Spout.dll bin
-                cp /usr/local/bin/aja.dll bin
-        fi
-
+        # CUDA needs to be added manually for some reason - not listed in objdump
+        # dependencies, maybe it is loaded dynamically?
         cp "$CUDA_PATH/bin/cudart64_92.dll" bin
         cp COPYRIGHT bin/COPYRIGHT
 

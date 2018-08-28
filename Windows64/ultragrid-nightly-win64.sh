@@ -92,9 +92,7 @@ do
                 done
         done
 
-        # CUDA needs to be added manually for some reason - not listed in objdump
-        # dependencies, maybe it is loaded dynamically?
-        cp "$CUDA_PATH/bin/cudart64_92.dll" bin
+        #cp "$CUDA_PATH/bin/cudart64_92.dll" bin
         for n in COPYRIGHT NEWS README REPORTING-BUGS; do
                 cp $n bin
         done

@@ -91,7 +91,12 @@ do
                         cp "$n" bin
                 done
         done
+        # https://doc.qt.io/qt-5/windows-deployment.html
+        if [ -f gui/QT/debug/uv-qt.exe ]; then
+                windeployqt bin/uv-qt.exe
+        fi
 
+        # TODO: check if cuda is really not needed
         #cp "$CUDA_PATH/bin/cudart64_92.dll" bin
         for n in COPYRIGHT NEWS README REPORTING-BUGS; do
                 cp $n bin

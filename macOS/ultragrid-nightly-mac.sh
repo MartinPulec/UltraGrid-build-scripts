@@ -2,6 +2,8 @@
 set -e
 set -x
 
+exec > ~/ultragrid-build.log 2>&1
+
 export CPATH=$CPATH:/opt/local/include:/usr/local/include:/usr/local/cuda/include
 export LIBRARY_PATH=/opt/local/lib:/usr/local/cuda/lib
 export DYLD_LIBRARY_PATH=/usr/local/cuda/lib

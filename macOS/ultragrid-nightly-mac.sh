@@ -36,7 +36,8 @@ cd $BUILD_DIR/
 export PKG_CONFIG_PATH=/usr/local/share/ffmpeg/lib/pkgconfig-static:$PKG_CONFIG_PATH
 
 ./autogen.sh --enable-syphon --enable-rtsp-server --with-live555=/usr/local --enable-qt
-( while :; do echo /usr/local/cuda/lib; done ) | make osx-gui-dmg
+export EXTRA_LIB_PATH=$DYLD_LIBRARY_PATH
+make osx-gui-dmg
 
 #scp -i /Users/toor/.ssh/id_rsa 'gui/UltraGrid GUI/UltraGrid.dmg' pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid/UltraGrid-nightly-OSX.dmg
 curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json

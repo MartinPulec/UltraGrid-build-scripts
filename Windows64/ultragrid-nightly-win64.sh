@@ -64,7 +64,7 @@ do
 
         cd ~
         rm -rf $BUILD_DIR
-        git clone -b $BRANCH ${GIT[$BRANCH]} $BUILD_DIR
+        git clone --config http.postBuffer=1048576000 -b $BRANCH ${GIT[$BRANCH]} $BUILD_DIR
         cd $BUILD_DIR
         #cp -r ~/gpujpeg/Release/ gpujpeg
         #cp -r ~/SpoutSDK .

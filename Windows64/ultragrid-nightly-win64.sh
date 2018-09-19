@@ -81,8 +81,8 @@ do
         # --disable-jpeg --disable-cuda-dxt --disable-jpeg-to-dxt
         make -j 6
 
-        if [ -f gui/QT/debug/uv-qt.exe ]; then
-                cp gui/QT/debug/uv-qt.exe bin
+        if [ -f gui/QT/release/uv-qt.exe ]; then
+                cp gui/QT/release/uv-qt.exe bin
         fi
 
         # Add dependencies
@@ -92,7 +92,7 @@ do
                 done
         done
         # https://doc.qt.io/qt-5/windows-deployment.html
-        if [ -f gui/QT/debug/uv-qt.exe ]; then
+        if [ -f bin/uv-qt.exe ]; then
                 windeployqt bin/uv-qt.exe
         fi
 

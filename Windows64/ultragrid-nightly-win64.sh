@@ -33,22 +33,20 @@ trap atexit EXIT
 
 # key is BUILD
 declare -A BRANCHES
-BRANCHES["devel-nogui"]=devel
+BRANCHES["devel"]=devel
 BRANCHES["master"]=master
-BRANCHES["master-nogui"]=master
 
 # key is BUILD
 declare -A CONF_FLAGS
-CONF_FLAGS["devel-nogui"]=""
+CONF_FLAGS["devel"]="--enable-qt"
 CONF_FLAGS["master"]="--enable-qt"
-CONF_FLAGS["master-nogui"]=""
 
 # key is BRANCH
 declare -A GIT
 GIT["master"]="https://github.com/CESNET/UltraGrid.git"
 GIT["devel"]="https://github.com/MartinPulec/UltraGrid.git"
 
-for BUILD in master-nogui master devel-nogui
+for BUILD in master devel
 do
         BRANCH=${BRANCHES[$BUILD]}
         BUILD_DIR=ultragrid-nightly-$BUILD

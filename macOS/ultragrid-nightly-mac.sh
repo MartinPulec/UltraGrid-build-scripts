@@ -17,6 +17,7 @@ export BUILD_DIR=ultragrid-nightly
 export BUILD_DIR_ALT=ultragrid-nightly-alternative
 export AJA_DIRECTORY=/Users/toor/ntv2sdkmac_13.0.0.79b79
 export EXTRA_LIB_PATH=$DYLD_LIBRARY_PATH # needed for make, see Makefile.in
+export LIBS='-lqtpcre2' # fix for QT
 
 cd /tmp
 

@@ -94,7 +94,7 @@ if [ -n "$ID" ]; then
 	curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID
 fi
 
-curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=UltraGrid-nightly-macos-alt.dmg&label=alternative%20macOS%20build%20%28wo%20SSE4%20and%20videotoolbox%29' -T 'UltraGrid.dmg'
+curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=UltraGrid-nightly-macos-alt.dmg&label=macOS%20build%20%28alternative%2C%20without%20SSE4%20and%20videotoolbox%29' -T 'UltraGrid.dmg'
 
 cd ..
 

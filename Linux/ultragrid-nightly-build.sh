@@ -30,9 +30,19 @@ do
 	for lib in `ldd $n | awk '{ print $3 }'`; do [ ! -f $lib ] || cp $lib $APPDIR/lib; done
 done
 
+# glibc libraries should not be bundled
+# Taken from https://gitlab.com/probono/platformissues
+for n in ld-linux.so.2 ld-linux-x86-64.so.2 libanl.so.1 libBrokenLocale.so.1 libcidn.so.1 libcrypt.so.1 libc.so.6 libdl.so.2 libm.so.6 libmvec.so.1 libnsl.so.1 libnss_compat.so.2 libnss_db.so.2 libnss_dns.so.2 libnss_files.so.2 libnss_hesiod.so.2 libnss_nisplus.so.2 libnss_nis.so.2 libpthread.so.0 libresolv.so.2 librt.so.1 libthread_db.so.1 libutil.so.1
+do
+        if [ -f $APPDIR/lib/$n ]; then
+                rm $APPDIR/lib/$n
+        fi
+done
+
 echo \#\!/bin/sh > $APPDIR/AppRun
-echo export LD_LIBRARY_PATH=\`dirname \$0\`/lib >> $APPDIR/AppRun
-echo \`dirname \$0\`/bin/uv \$@ >> $APPDIR/AppRun
+echo DIR=\`dirname \$0\` >> $APPDIR/AppRun
+echo export LD_LIBRARY_PATH=\$DIR/lib >> $APPDIR/AppRun
+echo \$DIR/bin/uv \$@ >> $APPDIR/AppRun
 echo exit \$\? >> $APPDIR/AppRun
 chmod 755 $APPDIR/AppRun
 
@@ -50,7 +60,7 @@ Terminal=false
 Categories=AudioVideo;Recorder;Network;VideoConference;
 EOF
 
-/usr/local/bin/appimagetool-x86_64.AppImage $APPDIR
+appimagetool-x86_64.AppImage $APPDIR
 
 curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json
 LEN=`jq "length" assets.json`

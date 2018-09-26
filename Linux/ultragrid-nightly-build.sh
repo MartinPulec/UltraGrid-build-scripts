@@ -29,9 +29,6 @@ for n in $APPDIR/bin/* $APPDIR/lib/ultragrid/*
 do
 	for lib in `ldd $n | awk '{ print $3 }'`; do [ ! -f $lib ] || cp $lib $APPDIR/lib; done
 done
-# remove GL libs - we must rely on host, it may be NVIDIA, mesa... etc.
-# TODO: what about the some with eg. libva and perhaps others?
-rm -f $APPDIR/lib/libGL.so* || true
 
 echo \#\!/bin/sh > $APPDIR/AppRun
 echo export LD_LIBRARY_PATH=\`dirname \$0\`/lib >> $APPDIR/AppRun

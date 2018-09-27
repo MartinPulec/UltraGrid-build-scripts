@@ -2,8 +2,12 @@
 set -e
 set -x
 
+export AJA_DIRECTORY=$HOME/ntv2sdk
+
 DIR=UltraGrid-AppImage
 APPDIR=UltraGrid.AppDir
+GLIBC_VERSION=`dpkg-query -s libc6:amd64 | grep Version:| awk '{ print $2 }' | sed 's/-.*$//'`
+#APPNAME=UltraGrid-nightly.glibc${GLIBC_VERSION}-x86_64.AppImage
 APPNAME=UltraGrid-x86_64.AppImage
 LABEL="AppImage%2064-bit"
 
@@ -60,7 +64,7 @@ Terminal=false
 Categories=AudioVideo;Recorder;Network;VideoConference;
 EOF
 
-appimagetool-x86_64.AppImage $APPDIR
+appimagetool-x86_64.AppImage $APPDIR $APPNAME
 
 curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json
 LEN=`jq "length" assets.json`

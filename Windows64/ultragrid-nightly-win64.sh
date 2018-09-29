@@ -46,7 +46,7 @@ declare -A GIT
 GIT["master"]="https://github.com/CESNET/UltraGrid.git"
 GIT["devel"]="https://github.com/MartinPulec/UltraGrid.git"
 
-for BUILD in master devel
+for BUILD in master
 do
         BRANCH=${BRANCHES[$BUILD]}
         BUILD_DIR=ultragrid-nightly-$BUILD
@@ -120,7 +120,7 @@ if [ -n "$ID" ]; then
 fi
 
 #LABEL="Windows%20build%20"$BRANCH
-LABEL="Windows%2064-bit%20build%20"$BUILD
+LABEL="Windows%20build"
 
 curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -H 'Content-Type: application/zip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZIP_NAME'&label='$LABEL -T $ZIP_NAME # --insecure
 

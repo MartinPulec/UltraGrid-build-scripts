@@ -1,24 +1,30 @@
 #!/bin/sh
-set -e
-set -x
+
+set -exu
 
 export AJA_DIRECTORY=$HOME/ntv2sdk
+export QT_SELECT=5
+QT_PATH=/usr/local/Qt-5.11.2
+export CPATH=$QT_PATH/include${CPATH:+":$CPATH"}
+export LIBRARY_PATH=$QT_PATH/lib${LIBRARY_PATH:+":$LIBRARY_PATH"}
+export PATH=$QT_PATH/bin:$PATH
+export PKG_CONFIG_PATH=$QT_PATH/lib/pkgconfig${PKG_CONFIG_PATH:+":$PKG_CONFIG_PATH"}
 
 DIR=UltraGrid-AppImage
 APPDIR=UltraGrid.AppDir
 GLIBC_VERSION=`dpkg-query -s libc6:amd64 | grep Version:| awk '{ print $2 }' | sed 's/-.*$//'`
-#APPNAME=UltraGrid-nightly.glibc${GLIBC_VERSION}-x86_64.AppImage
-APPNAME=UltraGrid-x86_64.AppImage
-LABEL="AppImage%2064-bit"
+APPNAME=UltraGrid-nightly.glibc${GLIBC_VERSION}-x86_64.AppImage
+LABEL="Linux%20build%20%28AppImage%2C%20glibc%20$GLIBC_VERSION%29"
 
 cd /tmp
 rm -rf $DIR
 
 git clone -b master https://github.com/CESNET/UltraGrid.git $DIR
+#git clone -b devel https://github.com/MartinPulec/UltraGrid.git $DIR
 
 cd $DIR/
 
-./autogen.sh --enable-plugins # --with-deltacast=/root/VideoMasterHD --with-sage=/root/sage-graphics-read-only/ --with-dvs=/root/sdk4.2.1.1 --enable-gpl
+./autogen.sh --enable-plugins --enable-qt --enable-static-qt # --with-deltacast=/root/VideoMasterHD --with-sage=/root/sage-graphics-read-only/ --with-dvs=/root/sdk4.2.1.1 --enable-gpl
 make
 
 mkdir $APPDIR
@@ -28,6 +34,8 @@ mv tmpinstall/usr/local/* $APPDIR
 
 #mv gui/QT/uv-qt $APPDIR/bin
 #cp -a /usr/local/lib/libgpujpeg.so* $APPDIR/lib
+
+#cp gui/QT/uv-qt $APPDIR/bin
 
 for n in $APPDIR/bin/* $APPDIR/lib/ultragrid/*
 do
@@ -43,31 +51,74 @@ do
         fi
 done
 
-echo \#\!/bin/sh > $APPDIR/AppRun
-echo DIR=\`dirname \$0\` >> $APPDIR/AppRun
-echo export LD_LIBRARY_PATH=\$DIR/lib >> $APPDIR/AppRun
-echo \$DIR/bin/uv \$@ >> $APPDIR/AppRun
-echo exit \$\? >> $APPDIR/AppRun
-chmod 755 $APPDIR/AppRun
+cat << 'EOF' >> $APPDIR/uv-wrapper.sh
+#!/bin/sh
 
-cp data/ultragrid.png $APPDIR/UltraGrid.png
-cat<<EOF > $APPDIR/UltraGrid.desktop
-[Desktop Entry]
-Version=1.0
-Name=UltraGrid
-GenericName=RTP Streamer
-Type=Application
-Exec=uv
-Icon=UltraGrid
-StartupNotify=true
-Terminal=false
-Categories=AudioVideo;Recorder;Network;VideoConference;
+set -u
+
+DIR=`dirname $0`
+export LD_LIBRARY_PATH=$DIR/lib${LD_LIBRARY_PATH:+":$LD_LIBRARY_PATH"}
+# there is an issue with running_from_path() which evaluates this executable
+# as being system-installed
+#export PATH=$DIR/bin:$PATH
+
+exec $DIR/bin/uv "$@"
 EOF
 
-appimagetool-x86_64.AppImage $APPDIR $APPNAME
+chmod 755 $APPDIR/uv-wrapper.sh
+
+cat << 'EOF' >> $APPDIR/AppRun
+#!/bin/sh
+
+set -u
+
+DIR=`dirname $0`
+export LD_LIBRARY_PATH=$DIR/lib${LD_LIBRARY_PATH:+":$LD_LIBRARY_PATH"}
+# there is an issue with running_from_path() which evaluates this executable
+# as being system-installed
+#export PATH=$DIR/bin:$PATH
+
+usage() {
+	echo "usage:"
+	echo "\tUltraGrid [--gui [args]]"
+	echo "\t\tinvokes GUI"
+	echo
+	echo "\tUltraGrid --tool <t> [args]"
+	echo "\t\ttool may be: "`ls $DIR/bin`
+	echo
+	echo "\tUltraGrid args"
+	echo "\t\tinvokes command-line UltraGrid"
+}
+
+if [ $# -eq 0 ]; then
+	usage
+	$DIR/bin/uv-qt --with-uv $DIR/uv-wrapper.sh
+elif [ x"$1" = x"--tool" ]; then
+	TOOL=$2
+	shift 2
+	$DIR/bin/$TOOL "$@"
+elif [ x"$1" = x"--gui" ]; then
+	shift
+	$DIR/bin/uv-qt --with-uv $DIR/uv-wrapper.sh "$@"
+elif [ x"$1" = x"-h" -o x"$1" = x"--help" ]; then
+	usage
+	exit 0
+else
+	$DIR/bin/uv "$@"
+fi
+
+exit $?
+EOF
+chmod 755 $APPDIR/AppRun
+
+cp data/ultragrid.png $APPDIR/ultragrid.png
+cp data/uv-qt.desktop $APPDIR/ultragrid.desktop
+
+appimagetool --comp gzip $APPDIR $APPNAME
 
 curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json
 LEN=`jq "length" assets.json`
+ID=
 for n in `seq 0 $(($LEN-1))`; do
 	NAME=`jq '.['$n'].name' assets.json`
 	if [ $NAME = \"$APPNAME\" ]; then

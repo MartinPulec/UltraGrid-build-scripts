@@ -17,7 +17,6 @@ export BUILD_DIR=ultragrid-nightly
 export BUILD_DIR_ALT=ultragrid-nightly-alternative
 export AJA_DIRECTORY=/Users/toor/ntv2sdkmac_13.0.0.79b79
 export EXTRA_LIB_PATH=$DYLD_LIBRARY_PATH # needed for make, see Makefile.in
-export LIBS='-lqtpcre2' # fix for QT
 
 cd /tmp
 
@@ -38,7 +37,7 @@ cd $BUILD_DIR/
 
 export PKG_CONFIG_PATH=/usr/local/share/ffmpeg/lib/pkgconfig-static:$PKG_CONFIG_PATH
 
-./autogen.sh --enable-syphon --enable-rtsp-server --with-live555=/usr/local --enable-qt
+./autogen.sh --enable-syphon --enable-rtsp-server --with-live555=/usr/local --enable-qt --enable-static-qt
 make osx-gui-dmg
 
 #scp -i /Users/toor/.ssh/id_rsa 'gui/UltraGrid GUI/UltraGrid.dmg' pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid/UltraGrid-nightly-OSX.dmg
@@ -76,7 +75,7 @@ export ARCH='-msse2'
 export PKG_CONFIG_PATH=/usr/local/share/ffmpeg-notoolbox/lib/pkgconfig-static:$PKG_CONFIG_PATH
 
 #./autogen.sh --enable-quicktime --disable-jpeg --disable-deltacast --disable-rtsp  --disable-cuda --enable-syphon --disable-aja
-./autogen.sh --enable-gpl --enable-syphon --enable-rtsp-server --with-live555=/usr/local --enable-qt
+./autogen.sh --enable-gpl --enable-syphon --enable-rtsp-server --with-live555=/usr/local --enable-qt --enable-static-qt
 make osx-gui-dmg
 
 #scp -i /Users/toor/.ssh/id_rsa 'gui/UltraGrid GUI/UltraGrid.dmg' pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid/UltraGrid-nightly-OSX-32bit-w-QuickTime.dmg

@@ -51,10 +51,10 @@ do
         BRANCH=${BRANCHES[$BUILD]}
         BUILD_DIR=ultragrid-nightly-$BUILD
         if [ $BUILD = master ]; then
-                DIR_NAME=UltraGrid
+                DIR_NAME=UltraGrid-nightly
                 ZIP_NAME=UltraGrid-nightly-win64.zip
         else
-                DIR_NAME=UltraGrid-${BUILD}
+                DIR_NAME=UltraGrid-nightly-${BUILD}
                 ZIP_NAME=UltraGrid-nightly-win64-$BUILD.zip
         fi
 

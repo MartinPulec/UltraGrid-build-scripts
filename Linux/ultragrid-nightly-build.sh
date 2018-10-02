@@ -7,7 +7,7 @@ export QT_SELECT=5
 QT_PATH=/usr/local/Qt-5.11.2
 export CPATH=$QT_PATH/include${CPATH:+":$CPATH"}
 export LIBRARY_PATH=$QT_PATH/lib${LIBRARY_PATH:+":$LIBRARY_PATH"}
-export PATH=$QT_PATH/bin:$PATH
+export PATH=$QT_PATH/bin:/usr/local/bin:$PATH
 export PKG_CONFIG_PATH=$QT_PATH/lib/pkgconfig${PKG_CONFIG_PATH:+":$PKG_CONFIG_PATH"}
 
 DIR=UltraGrid-AppImage

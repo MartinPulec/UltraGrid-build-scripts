@@ -5,8 +5,10 @@ set -exu
 export AJA_DIRECTORY=$HOME/ntv2sdk
 export QT_SELECT=5
 QT_PATH=/usr/local/Qt-5.10.1
-export CPATH=$QT_PATH/include${CPATH:+":$CPATH"}
-export LIBRARY_PATH=$QT_PATH/lib${LIBRARY_PATH:+":$LIBRARY_PATH"}
+export CPATH=$QT_PATH/include:/usr/local/include${CPATH:+":$CPATH"}
+export EXTRA_LIB_PATH=$QT_PATH/lib:/usr/local/cuda/lib64:/usr/local/lib
+export LIBRARY_PATH=$EXTRA_LIB_PATH${LIBRARY_PATH:+":$LIBRARY_PATH"}
+export LD_LIBRARY_PATH=$EXTRA_LIB_PATH${LD_LIBRARY_PATH:+":$LD_LIBRARY_PATH"}
 export PATH=$QT_PATH/bin:/usr/local/bin:$PATH
 export PKG_CONFIG_PATH=$QT_PATH/lib/pkgconfig:/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH:+":$PKG_CONFIG_PATH"}
 
@@ -24,7 +26,7 @@ git clone -b master https://github.com/CESNET/UltraGrid.git $DIR
 
 cd $DIR/
 
-./autogen.sh --disable-video-mixer --enable-plugins --enable-qt --enable-static-qt # --with-deltacast=/root/VideoMasterHD --with-sage=/root/sage-graphics-read-only/ --with-dvs=/root/sdk4.2.1.1 --enable-gpl
+./autogen.sh --disable-video-mixer --disable-lavc-hw-accel-vdpau --disable-lavc-hw-accel-vaapi --enable-plugins --enable-qt --enable-static-qt # --with-deltacast=/root/VideoMasterHD --with-sage=/root/sage-graphics-read-only/ --with-dvs=/root/sdk4.2.1.1 --enable-gpl
 make
 
 mkdir $APPDIR

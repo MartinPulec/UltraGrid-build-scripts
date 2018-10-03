@@ -4,11 +4,11 @@ set -exu
 
 export AJA_DIRECTORY=$HOME/ntv2sdk
 export QT_SELECT=5
-QT_PATH=/usr/local/Qt-5.11.2
+QT_PATH=/usr/local/Qt-5.10.1
 export CPATH=$QT_PATH/include${CPATH:+":$CPATH"}
 export LIBRARY_PATH=$QT_PATH/lib${LIBRARY_PATH:+":$LIBRARY_PATH"}
 export PATH=$QT_PATH/bin:/usr/local/bin:$PATH
-export PKG_CONFIG_PATH=$QT_PATH/lib/pkgconfig${PKG_CONFIG_PATH:+":$PKG_CONFIG_PATH"}
+export PKG_CONFIG_PATH=$QT_PATH/lib/pkgconfig:/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH:+":$PKG_CONFIG_PATH"}
 
 DIR=UltraGrid-AppImage
 APPDIR=UltraGrid.AppDir
@@ -24,7 +24,7 @@ git clone -b master https://github.com/CESNET/UltraGrid.git $DIR
 
 cd $DIR/
 
-./autogen.sh --enable-plugins --enable-qt --enable-static-qt # --with-deltacast=/root/VideoMasterHD --with-sage=/root/sage-graphics-read-only/ --with-dvs=/root/sdk4.2.1.1 --enable-gpl
+./autogen.sh --disable-video-mixer --enable-plugins --enable-qt --enable-static-qt # --with-deltacast=/root/VideoMasterHD --with-sage=/root/sage-graphics-read-only/ --with-dvs=/root/sdk4.2.1.1 --enable-gpl
 make
 
 mkdir $APPDIR
@@ -42,14 +42,21 @@ do
 	for lib in `ldd $n | awk '{ print $3 }'`; do [ ! -f $lib ] || cp $lib $APPDIR/lib; done
 done
 
+mkdir $APPDIR/lib/fonts
+cp -r /usr/share/fonts/dejavu/* $APPDIR/lib/fonts
+
+
 # glibc libraries should not be bundled
 # Taken from https://gitlab.com/probono/platformissues
-for n in ld-linux.so.2 ld-linux-x86-64.so.2 libanl.so.1 libBrokenLocale.so.1 libcidn.so.1 libcrypt.so.1 libc.so.6 libdl.so.2 libm.so.6 libmvec.so.1 libnss_compat.so.2 libnss_db.so.2 libnss_dns.so.2 libnss_files.so.2 libnss_hesiod.so.2 libnss_nisplus.so.2 libnss_nis.so.2 libpthread.so.0 libresolv.so.2 librt.so.1 libthread_db.so.1 libutil.so.1 # libnsl.so.1 - is not in Fedora 28 by default
+# libnsl.so.1 is not removed - is not in Fedora 28 by default
+for n in ld-linux.so.2 ld-linux-x86-64.so.2 libanl.so.1 libBrokenLocale.so.1 libcidn.so.1 libcrypt.so.1 libc.so.6 libdl.so.2 libm.so.6 libmvec.so.1 libnss_compat.so.2 libnss_db.so.2 libnss_dns.so.2 libnss_files.so.2 libnss_hesiod.so.2 libnss_nisplus.so.2 libnss_nis.so.2 libpthread.so.0 libresolv.so.2 librt.so.1 libthread_db.so.1 libutil.so.1
 do
         if [ -f $APPDIR/lib/$n ]; then
                 rm $APPDIR/lib/$n
         fi
 done
+
+( cd $APPDIR/lib; rm -f libdrm.so.2 libEGL.so.1 libGL.so.1 libstdc++.so.6 libX* libxcb* libxshm* )
 
 cat << 'EOF' >> $APPDIR/uv-wrapper.sh
 #!/bin/sh
@@ -77,17 +84,20 @@ export LD_LIBRARY_PATH=$DIR/lib${LD_LIBRARY_PATH:+":$LD_LIBRARY_PATH"}
 # there is an issue with running_from_path() which evaluates this executable
 # as being system-installed
 #export PATH=$DIR/bin:$PATH
+export QT_QPA_FONTDIR=$DIR/lib/fonts
 
 usage() {
-	echo "usage:"
-	echo "\tUltraGrid [--gui [args]]"
-	echo "\t\tinvokes GUI"
-	echo
-	echo "\tUltraGrid --tool <t> [args]"
-	echo "\t\ttool may be: "`ls $DIR/bin`
-	echo
-	echo "\tUltraGrid args"
-	echo "\t\tinvokes command-line UltraGrid"
+	printf "usage:\n"
+	printf "\tUltraGrid [--gui [args]]\n"
+	printf "\t\tinvokes GUI\n"
+	printf "\n"
+	printf "\tUltraGrid --tool <t> [args]\n"
+	printf "\t\tinvokes specified tool\n"
+	printf "\t\ttool may be: $(ls $DIR/bin | tr '\n' ' ')\n"
+	printf "\n"
+	printf "\tUltraGrid args\n"
+	printf "\t\tinvokes command-line UltraGrid\n"
+	printf "\n"
 }
 
 if [ $# -eq 0 ]; then

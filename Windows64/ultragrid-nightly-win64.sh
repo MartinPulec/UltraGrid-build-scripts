@@ -9,7 +9,7 @@ export HOME=/home/$USERNAME
 
 # checkout current build script
 atexit() {
-        git clone root@w54-136.fi.muni.cz:ultragrid-build ultragrid-build-tmp
+        git clone 'toor@[2001:718:801:311:5054:ff:fedc:5067]:ultragrid-build' ultragrid-build-tmp
         cp -r ultragrid-build-tmp/Windows64/* ~/
         rm -r ultragrid-build-tmp
 }

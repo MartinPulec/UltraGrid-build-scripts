@@ -22,7 +22,7 @@ cd /tmp
 
 # checkout current build script
 atexit() {
-        git clone root@w54-136.fi.muni.cz:ultragrid-build ultragrid-build-tmp
+        git clone 'toor@[2001:718:801:311:5054:ff:fedc:5067]:ultragrid-build' ultragrid-build-tmp
         cp -r ultragrid-build-tmp/macOS/*sh ~/
         crontab ultragrid-build-tmp/macOS/crontab
         rm -r ultragrid-build-tmp

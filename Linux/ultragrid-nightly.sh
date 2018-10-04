@@ -1,4 +1,7 @@
 #!/bin/sh
+
+exec > ~/ultragrid-nightly.log 2>&1
+
 set -e
 set -x
 

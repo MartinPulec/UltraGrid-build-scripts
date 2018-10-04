@@ -1,5 +1,7 @@
 #!/bin/sh
 
+exec > ~/ultragrid-nightly-build.log 2>&1
+
 set -exu
 
 export AJA_DIRECTORY=$HOME/ntv2sdk

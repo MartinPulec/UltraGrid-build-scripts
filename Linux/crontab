@@ -20,7 +20,7 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
-0 2 * * * /var/tmp/ultragrid-nightly.sh
-23 6 * * * /var/tmp/ultragrid-nightly-build.sh
-55 6 * * * /var/tmp/ultragrid-nightly-snapshot.sh
+0 2 * * * $HOME/ultragrid-nightly.sh
+23 6 * * * $HOME/ultragrid-nightly-build.sh
+55 6 * * * $HOME/ultragrid-nightly-snapshot.sh
 

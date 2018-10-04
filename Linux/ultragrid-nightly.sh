@@ -11,7 +11,7 @@ cd /tmp
 atexit() {
         TMPDIR=$(mktemp -d)
         git clone ~/ultragrid-build $TMPDIR
-        cp -r $TMPDIR/Linux/*sh /var/tmp
+        cp -r $TMPDIR/Linux/*sh $HOME
         crontab $TMPDIR/Linux/crontab
         rm -r $TMPDIR
 }

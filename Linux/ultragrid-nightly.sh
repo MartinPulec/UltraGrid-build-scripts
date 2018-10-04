@@ -9,10 +9,11 @@ cd /tmp
 
 # checkout current build script
 atexit() {
-        git clone ~/ultragrid-build ultragrid-build-tmp
-        cp -r ultragrid-build-tmp/Linux/*sh /var/tmp
-        crontab ultragrid-build-tmp/Linux/crontab
-        rm -r ultragrid-build-tmp
+        TMPDIR=$(mktemp -d)
+        git clone ~/ultragrid-build $TMPDIR
+        cp -r $TMPDIR/Linux/*sh /var/tmp
+        crontab $TMPDIR/Linux/crontab
+        rm -r $TMPDIR
 }
 trap atexit EXIT
 

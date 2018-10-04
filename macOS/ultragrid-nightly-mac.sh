@@ -22,10 +22,11 @@ cd /tmp
 
 # checkout current build script
 atexit() {
-        git clone 'toor@[2001:718:801:311:5054:ff:fedc:5067]:ultragrid-build' ultragrid-build-tmp
-        cp -r ultragrid-build-tmp/macOS/*sh ~/
-        crontab ultragrid-build-tmp/macOS/crontab
-        rm -r ultragrid-build-tmp
+        TMPDIR=$(mktemp -d)
+        git clone 'toor@[2001:718:801:311:5054:ff:fedc:5067]:ultragrid-build' $TMPDIR
+        cp -r $TMPDIR/macOS/*sh ~/
+        crontab $TMPDIR/macOS/crontab
+        rm -r $TMPDIR
 }
 trap atexit EXIT
 

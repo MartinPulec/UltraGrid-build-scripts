@@ -9,9 +9,10 @@ export HOME=/home/$USERNAME
 
 # checkout current build script
 atexit() {
-        git clone 'toor@[2001:718:801:311:5054:ff:fedc:5067]:ultragrid-build' ultragrid-build-tmp
+        TMPDIR=$(mktemp -d)
+        git clone 'toor@[2001:718:801:311:5054:ff:fedc:5067]:ultragrid-build' $TMPDIR
         cp -r ultragrid-build-tmp/Windows64/* ~/
-        rm -r ultragrid-build-tmp
+        rm -r $TMPDIR
 }
 trap atexit EXIT
 

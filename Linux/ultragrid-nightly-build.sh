@@ -14,6 +14,8 @@ export LD_LIBRARY_PATH=$EXTRA_LIB_PATH${LD_LIBRARY_PATH:+":$LD_LIBRARY_PATH"}
 export PATH=$QT_PATH/bin:/usr/local/bin:$PATH
 export PKG_CONFIG_PATH=$QT_PATH/lib/pkgconfig:/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH:+":$PKG_CONFIG_PATH"}
 
+. ~/nightly-paths.sh
+
 DIR=UltraGrid-AppImage
 APPDIR=UltraGrid.AppDir
 GLIBC_VERSION=`ldd --version | head -n 1 | sed 's/.*\ \([0-9][0-9]*\.[0-9][0-9]*\)$/\1/'`
@@ -28,7 +30,7 @@ git clone -b master https://github.com/CESNET/UltraGrid.git $DIR
 
 cd $DIR/
 
-./autogen.sh --disable-video-mixer --disable-lavc-hw-accel-vdpau --disable-lavc-hw-accel-vaapi --enable-plugins --enable-qt --enable-static-qt # --with-deltacast=/root/VideoMasterHD --with-sage=/root/sage-graphics-read-only/ --with-dvs=/root/sdk4.2.1.1 --enable-gpl
+./autogen.sh --disable-video-mixer --enable-plugins --enable-qt --enable-static-qt # --disable-lavc-hw-accel-vdpau --disable-lavc-hw-accel-vaapi --with-deltacast=/root/VideoMasterHD --with-sage=/root/sage-graphics-read-only/ --with-dvs=/root/sdk4.2.1.1 --enable-gpl
 make
 
 mkdir $APPDIR

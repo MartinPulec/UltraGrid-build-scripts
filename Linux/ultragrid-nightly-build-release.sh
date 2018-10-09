@@ -22,6 +22,7 @@ APPDIR=UltraGrid.AppDir
 GLIBC_VERSION=`ldd --version | head -n 1 | sed 's/.*\ \([0-9][0-9]*\.[0-9][0-9]*\)$/\1/'`
 APPNAME=UltraGrid-$RELEASE.glibc${GLIBC_VERSION}-x86_64.AppImage
 LABEL="Linux%20build%20%28AppImage%2C%20glibc%20$GLIBC_VERSION%29"
+OAUTH=$(cat $HOME/github-oauth-token)
 
 cd /tmp
 rm -rf $DIR
@@ -133,7 +134,7 @@ cp data/uv-qt.desktop $APPDIR/ultragrid.desktop
 
 appimagetool --comp gzip $APPDIR $APPNAME
 
-curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/$GITHUB_RELEASE_ID/assets > assets.json
+curl -H "Authorization: token $OAUTH" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/$GITHUB_RELEASE_ID/assets > assets.json
 LEN=`jq "length" assets.json`
 ID=
 for n in `seq 0 $(($LEN-1))`; do
@@ -144,10 +145,10 @@ for n in `seq 0 $(($LEN-1))`; do
 done
 
 if [ -n "$ID" ]; then
-	curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID
+	curl -H "Authorization: token $OAUTH" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID
 fi
 
-curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -H 'Content-Type: application/gzip' -X POST "https://uploads.github.com/repos/CESNET/UltraGrid/releases/$GITHUB_RELEASE_ID/assets?name=$APPNAME&label=$LABEL" -T $APPNAME
+curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST "https://uploads.github.com/repos/CESNET/UltraGrid/releases/$GITHUB_RELEASE_ID/assets?name=$APPNAME&label=$LABEL" -T $APPNAME
 
 cd ..
 rm -rf $DIR

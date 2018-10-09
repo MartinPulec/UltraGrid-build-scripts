@@ -5,6 +5,7 @@ exec > ~/ultragrid-build.log 2>&1
 set -e
 set -x
 
+OAUTH=$(cat $HOME/github-oauth-token)
 QT=/usr/local/Qt-5.10.1
 
 export CPATH=$CPATH${CPATH:+:}/opt/local/include:/usr/local/include:/usr/local/cuda/include:$QT/include
@@ -42,7 +43,7 @@ export PKG_CONFIG_PATH=/usr/local/share/ffmpeg/lib/pkgconfig-static:$PKG_CONFIG_
 make osx-gui-dmg
 
 #scp -i /Users/toor/.ssh/id_rsa 'gui/UltraGrid GUI/UltraGrid.dmg' pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid/UltraGrid-nightly-OSX.dmg
-curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json
+curl -H "Authorization: token $OAUTH" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json
 LEN=`jq "length" assets.json`
 for n in `seq 0 $(($LEN-1))`; do
 	NAME=`jq '.['$n'].name' assets.json`
@@ -52,10 +53,10 @@ for n in `seq 0 $(($LEN-1))`; do
 done
 
 if [ -n "$ID" ]; then
-	curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID
+	curl -H "Authorization: token $OAUTH" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID
 fi
 
-curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=UltraGrid-nightly-macos.dmg&label=macOS%20build' -T 'Ultragrid.dmg'
+curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=UltraGrid-nightly-macos.dmg&label=macOS%20build' -T 'Ultragrid.dmg'
 
 
 cd ..
@@ -81,7 +82,7 @@ make osx-gui-dmg
 
 #scp -i /Users/toor/.ssh/id_rsa 'gui/UltraGrid GUI/UltraGrid.dmg' pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid/UltraGrid-nightly-OSX-32bit-w-QuickTime.dmg
 
-curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json
+curl -H "Authorization: token $OAUTH" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json
 LEN=`jq "length" assets.json`
 for n in `seq 0 $(($LEN-1))`; do
 	NAME=`jq '.['$n'].name' assets.json`
@@ -91,10 +92,10 @@ for n in `seq 0 $(($LEN-1))`; do
 done
 
 if [ -n "$ID" ]; then
-	curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID
+	curl -H "Authorization: token $OAUTH" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID
 fi
 
-curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=UltraGrid-nightly-macos-alt.dmg&label=macOS%20build%20%28alternative%2C%20without%20SSE4%20and%20videotoolbox%29' -T 'UltraGrid.dmg'
+curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=UltraGrid-nightly-macos-alt.dmg&label=macOS%20build%20%28alternative%2C%20without%20SSE4%20and%20videotoolbox%29' -T 'UltraGrid.dmg'
 
 cd ..
 

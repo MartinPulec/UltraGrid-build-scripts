@@ -5,6 +5,8 @@ exec > ~/ultragrid-nightly.log 2>&1
 set -e
 set -x
 
+OAUTH=$(cat $HOME/github-oauth-token)
+
 cd /tmp
 
 # checkout current build script
@@ -32,7 +34,7 @@ cd ..
 rm -r ultragrid-nightly
 
 # when overriding a tag, GITHUB makes from pre-relase a draft again - we need to release it again
-curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X PATCH https://api.github.com/repos/CESNET/UltraGrid/releases/4347706 -T - <<'EOF'
+curl -H "Authorization: token $OAUTH" -X PATCH https://api.github.com/repos/CESNET/UltraGrid/releases/4347706 -T - <<'EOF'
 {
   "tag_name": "nightly",
   "target_commitish": "master",

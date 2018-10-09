@@ -30,6 +30,7 @@ BUILD_DIR="ultragrid-1.5"
 DIR_NAME="UltraGrid-1.5"
 GIT="https://github.com/CESNET/UltraGrid.git"
 GITHUB_RELEASE_ID=13297067
+OAUTH=$(cat $HOME/github-oauth-token)
 ZIP_NAME="UltraGrid-1.5-win64.zip"
 
 echo Building $BUILD...
@@ -78,7 +79,7 @@ mv bin $DIR_NAME
 
 zip -9 -r $ZIP_NAME $DIR_NAME
 
-curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/$GITHUB_RELEASE_ID/assets > assets.json # --insecure
+curl -H "Authorization: token $OAUTH" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/$GITHUB_RELEASE_ID/assets > assets.json # --insecure
 LEN=`jq "length" assets.json`
 for n in `seq 0 $(($LEN-1))`; do
         NAME=`jq '.['$n'].name' assets.json`
@@ -88,13 +89,13 @@ for n in `seq 0 $(($LEN-1))`; do
 done
 
 if [ -n "$ID" ]; then
-        curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID # --insecure
+        curl -H "Authorization: token $OAUTH" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID # --insecure
 fi
 
 #LABEL="Windows%20build%20"$BRANCH
 LABEL="Windows%20build"
 
-curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -H 'Content-Type: application/zip' -X POST "https://uploads.github.com/repos/CESNET/UltraGrid/releases/$GITHUB_RELEASE_ID/assets?name=$ZIP_NAME&label=$LABEL" -T $ZIP_NAME # --insecure
+curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/zip' -X POST "https://uploads.github.com/repos/CESNET/UltraGrid/releases/$GITHUB_RELEASE_ID/assets?name=$ZIP_NAME&label=$LABEL" -T $ZIP_NAME # --insecure
 
 done
 

@@ -32,6 +32,8 @@ trap atexit EXIT
 #export PATH=$PATH:$MSVC_PATH/Common7/IDE/:$MSVC_PATH/VC/bin/
 #export LIBRARY_PATH=$LIBRARY_PATH:$CUDA_PATH/lib/Win32/
 
+OAUTH=$(cat $HOME/github-oauth-token)
+
 # key is BUILD
 declare -A BRANCHES
 BRANCHES["devel"]=devel
@@ -107,7 +109,7 @@ do
         zip -9 -r $ZIP_NAME $DIR_NAME
         #scp -i c:/mingw32/msys~/.ssh/id_rsa $ZIP_NAME pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid
 
-curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json # --insecure
+curl -H "Authorization: token $OAUTH" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json # --insecure
 LEN=`jq "length" assets.json`
 for n in `seq 0 $(($LEN-1))`; do
         NAME=`jq '.['$n'].name' assets.json`
@@ -117,13 +119,13 @@ for n in `seq 0 $(($LEN-1))`; do
 done
 
 if [ -n "$ID" ]; then
-        curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID # --insecure
+        curl -H "Authorization: token $OAUTH" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID # --insecure
 fi
 
 #LABEL="Windows%20build%20"$BRANCH
 LABEL="Windows%20build"
 
-curl -H "Authorization: token 54a22bf35bc39262b60007e79101c978a3a2ff0c" -H 'Content-Type: application/zip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZIP_NAME'&label='$LABEL -T $ZIP_NAME # --insecure
+curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/zip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZIP_NAME'&label='$LABEL -T $ZIP_NAME # --insecure
 
 done
 

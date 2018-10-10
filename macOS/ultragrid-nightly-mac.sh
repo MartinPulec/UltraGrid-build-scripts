@@ -24,7 +24,7 @@ cd /tmp
 # checkout current build script
 atexit() {
         TMPDIR=$(mktemp -d)
-        git clone 'toor@[2001:718:801:311:5054:ff:fedc:5067]:ultragrid-build' $TMPDIR
+        git clone https://github.com/MartinPulec/UltraGrid-build-scripts.git $TMPDIR
         cp -r $TMPDIR/macOS/*sh ~/
         crontab $TMPDIR/macOS/crontab
         rm -r $TMPDIR

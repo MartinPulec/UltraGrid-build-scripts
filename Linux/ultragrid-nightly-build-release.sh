@@ -65,7 +65,6 @@ do
 done
 
 ( cd $APPDIR/lib; rm -f libasound.so.2 libdrm.so.2 libEGL.so.1 libGL.so.1 libstdc++.so.6 libX* libxcb* libxshm* )
-( cd $APPDIR/lib; rm -f libMagick* ) # crash in Ubuntu 14.04
 
 cat << 'EOF' >> $APPDIR/uv-wrapper.sh
 #!/bin/sh

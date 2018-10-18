@@ -9,9 +9,9 @@ export HOME=/home/$USERNAME
 
 # checkout current build script
 atexit() {
-        TMPDIR=$(mktemp -d)
+        TMPDIR=$(mktemp -d --suffix=-ug-build-scripts)
         git clone https://github.com/MartinPulec/UltraGrid-build-scripts.git $TMPDIR
-        cp -r ultragrid-build-tmp/Windows64/* ~/
+        cp -r $TMPDIR/Windows64/* ~/
         rm -r $TMPDIR
 }
 trap atexit EXIT

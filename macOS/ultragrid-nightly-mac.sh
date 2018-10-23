@@ -27,7 +27,7 @@ atexit() {
         git clone https://github.com/MartinPulec/UltraGrid-build-scripts.git $TMPDIR
         cp -r $TMPDIR/macOS/*sh ~/
         crontab $TMPDIR/macOS/crontab
-        rm -r $TMPDIR
+        rm -rf $TMPDIR
 }
 trap atexit EXIT
 

@@ -24,4 +24,5 @@
 10 2 * * * $HOME/ultragrid-nightly-snapshot.sh
 23 6 * * * $HOME/ultragrid-nightly-build-release.sh
 55 6 * * * $HOME/ultragrid-nightly-build.sh
+0  4 * * 6 $HOME/ultragrid-archive-builds.sh
 

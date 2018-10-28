@@ -38,8 +38,8 @@ curl -H "Authorization: token $OAUTH" -X PATCH https://api.github.com/repos/CESN
 {
   "tag_name": "nightly",
   "target_commitish": "master",
-  "name": "",
-  "body": "",
+  "name": "nightly builds",
+  "body": "[archived builds](https://147.251.54.146:8443/ug-nightly-archive/)",
   "draft": false,
   "prerelease": true
 }

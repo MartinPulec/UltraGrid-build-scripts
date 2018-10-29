@@ -1,6 +1,6 @@
 #!/bin/sh
 
-exec > ~/ultragrid-nightly.log 2>&1
+exec > ~/ultragrid-nightly.log 2>&1 </dev/null
 
 set -e
 set -x

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-exec > ~/ultragrid-nightly-build-release.log 2>&1
+exec > ~/ultragrid-nightly-build-release.log 2>&1 </dev/null
 
 set -exu
 

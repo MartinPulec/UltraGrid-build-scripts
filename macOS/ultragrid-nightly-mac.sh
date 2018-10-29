@@ -1,6 +1,6 @@
 #!/bin/sh
 
-exec > ~/ultragrid-build.log 2>&1
+exec > ~/ultragrid-build.log 2>&1 </dev/null
 
 set -e
 set -x

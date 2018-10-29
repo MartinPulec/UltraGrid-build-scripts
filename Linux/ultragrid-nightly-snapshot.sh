@@ -1,6 +1,6 @@
 #!/bin/sh
 
-exec > ~/ultragrid-nightly-snapshot.log 2>&1
+exec > ~/ultragrid-nightly-snapshot.log 2>&1 </dev/null
 
 cd ~/ultragrid
 git fetch github devel

@@ -97,5 +97,3 @@ LABEL="Windows%20build"
 
 curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/zip' -X POST "https://uploads.github.com/repos/CESNET/UltraGrid/releases/$GITHUB_RELEASE_ID/assets?name=$ZIP_NAME&label=$LABEL" -T $ZIP_NAME # --insecure
 
-done
-

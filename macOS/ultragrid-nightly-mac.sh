@@ -16,7 +16,7 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH${PKG_CONFIG_PATH:+:}/usr/local/lib/pkgco
 export PKG_CONFIG=/opt/local/bin/pkg-config
 export BUILD_DIR=ultragrid-nightly
 export BUILD_DIR_ALT=ultragrid-nightly-alternative
-export AJA_DIRECTORY=/Users/toor/ntv2sdkmac_13.0.0.79b79
+export AJA_DIRECTORY=/Users/toor/ntv2sdkmac
 export EXTRA_LIB_PATH=$DYLD_LIBRARY_PATH # needed for make, see Makefile.in
 
 cd /tmp

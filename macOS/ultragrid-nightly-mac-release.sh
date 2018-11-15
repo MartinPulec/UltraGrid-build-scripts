@@ -13,7 +13,7 @@ export DYLD_LIBRARY_PATH=/usr/local/cuda/lib
 export PATH=/opt/local/bin:$PATH:/usr/local/bin:/usr/local/cuda/bin:$QT/bin
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH${PKG_CONFIG_PATH:+:}/usr/local/lib/pkgconfig:$QT/lib/pkgconfig
 export PKG_CONFIG=/opt/local/bin/pkg-config
-export AJA_DIRECTORY=/Users/toor/ntv2sdkmac_13.0.0.79b79
+export AJA_DIRECTORY=/Users/toor/ntv2sdkmac
 export EXTRA_LIB_PATH=$DYLD_LIBRARY_PATH # needed for make, see Makefile.in
 
 BUILD_DIR=ultragrid-1.5

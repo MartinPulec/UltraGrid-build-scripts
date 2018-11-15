@@ -17,7 +17,7 @@ export PATH=/opt/local/bin:$PATH:/usr/local/bin:/usr/local/cuda/bin:$QT/bin
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH${PKG_CONFIG_PATH:+:}/usr/local/lib/pkgconfig:$QT/lib/pkgconfig
 export PKG_CONFIG=/opt/local/bin/pkg-config
 export BUILD_DIR=ultragrid-nightly-ndi
-export AJA_DIRECTORY=/Users/toor/ntv2sdkmac_13.0.0.79b79
+export AJA_DIRECTORY=/Users/toor/ntv2sdkmac
 export EXTRA_LIB_PATH=$DYLD_LIBRARY_PATH # needed for make, see Makefile.in
 
 cd /tmp

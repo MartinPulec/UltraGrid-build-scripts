@@ -6,18 +6,9 @@ set -e
 set -x
 
 OAUTH=$(cat $HOME/github-oauth-token)
-QT=/usr/local/Qt-5.10.1
 
-export CPATH=$CPATH${CPATH:+:}/opt/local/include:/usr/local/include:/usr/local/cuda/include:$QT/include
-export LIBRARY_PATH=/opt/local/lib:/usr/local/cuda/lib:$QT/lib
-export DYLD_LIBRARY_PATH=/usr/local/cuda/lib
-export PATH=/opt/local/bin:$PATH:/usr/local/bin:/usr/local/cuda/bin:$QT/bin
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH${PKG_CONFIG_PATH:+:}/usr/local/lib/pkgconfig:$QT/lib/pkgconfig
-export PKG_CONFIG=/opt/local/bin/pkg-config
-export BUILD_DIR=ultragrid-nightly
-export BUILD_DIR_ALT=ultragrid-nightly-alternative
-export AJA_DIRECTORY=/Users/toor/ntv2sdkmac
-export EXTRA_LIB_PATH=$DYLD_LIBRARY_PATH # needed for make, see Makefile.in
+. $HOME/common.sh
+. $HOME/paths.sh
 
 cd /tmp
 
@@ -39,7 +30,7 @@ cd $BUILD_DIR/
 
 export PKG_CONFIG_PATH=/usr/local/share/ffmpeg/lib/pkgconfig-static:$PKG_CONFIG_PATH
 
-./autogen.sh --enable-syphon --enable-rtsp-server --with-live555=/usr/local --enable-qt --enable-static-qt
+./autogen.sh ${COMMON_FLAGS[@]}
 make osx-gui-dmg
 
 #scp -i /Users/toor/.ssh/id_rsa 'gui/UltraGrid GUI/UltraGrid.dmg' pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid/UltraGrid-nightly-OSX.dmg
@@ -77,7 +68,7 @@ export ARCH='-msse2'
 export PKG_CONFIG_PATH=/usr/local/share/ffmpeg-notoolbox/lib/pkgconfig-static:$PKG_CONFIG_PATH
 
 #./autogen.sh --enable-quicktime --disable-jpeg --disable-deltacast --disable-rtsp  --disable-cuda --enable-syphon --disable-aja
-./autogen.sh --enable-gpl --enable-syphon --enable-rtsp-server --with-live555=/usr/local --enable-qt --enable-static-qt
+./autogen.sh ${COMMON_FLAGS[@]}
 make osx-gui-dmg
 
 #scp -i /Users/toor/.ssh/id_rsa 'gui/UltraGrid GUI/UltraGrid.dmg' pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid/UltraGrid-nightly-OSX-32bit-w-QuickTime.dmg

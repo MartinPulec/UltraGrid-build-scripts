@@ -131,7 +131,7 @@ chmod 755 $APPDIR/AppRun
 cp data/ultragrid.png $APPDIR/ultragrid.png
 cp data/uv-qt.desktop $APPDIR/ultragrid.desktop
 
-appimagetool --comp gzip $APPDIR $APPNAME
+appimagetool --sign --comp gzip $APPDIR $APPNAME
 
 curl -H "Authorization: token $OAUTH" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json
 LEN=`jq "length" assets.json`

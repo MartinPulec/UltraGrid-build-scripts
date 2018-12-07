@@ -5,6 +5,8 @@ exec > ~/ultragrid-build.log 2>&1 </dev/null
 set -e
 set -x
 
+BUILD_DIR=ultragrid-nightly
+BUILD_DIR_ALT=ultragrid-nightly-alternative
 OAUTH=$(cat $HOME/github-oauth-token)
 
 . $HOME/common.sh

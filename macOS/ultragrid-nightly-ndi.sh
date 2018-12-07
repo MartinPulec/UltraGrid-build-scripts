@@ -5,6 +5,7 @@ exec > ~/ultragrid-build-ndi.log 2>&1 </dev/null
 set -e
 set -x
 
+BUILD_DIR=ultragrid-nightly-ndi
 OAUTH=$(cat $HOME/github-oauth-token)
 NDI=/NewTek_NDI_SDK
 SECPATH=$(cat $HOME/secret-path)

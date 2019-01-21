@@ -1,0 +1,83 @@
+#!/bin/bash
+
+set -xe
+
+[ "$UID" -eq 0 ] || exec sudo "$0" "$@"
+
+PATH=$PATH:/usr/local/bin
+PKG_CONFIG_PATH=$PKG_CONFIG_PATH${PKG_CONFIG_PATH:+":"}/usr/local/lib/pkgconfig
+
+. /home/toor/nightly-paths.sh
+
+cd /tmp
+rm -rf nasm
+git clone https://github.com/sezero/nasm.git
+cd nasm
+./autogen.sh
+./configure
+make install
+cd /tmp
+rm -rf nasm
+
+cd /tmp
+rm -rf x264
+git clone http://git.videolan.org/git/x264.git
+cd x264
+./configure --disable-static --enable-shared --prefix=/usr/local/ultragrid-nightly
+make install
+cd /tmp
+rm -rf x264
+
+cd /tmp
+rm -rf x265
+hg clone https://bitbucket.org/multicoreware/x265
+cd x265/build/linux
+#./make-Makefiles.bash
+cmake -G "Unix Makefiles" ../../source && cmake ../../source -DCMAKE_INSTALL_PREFIX=/usr/local/ultragrid-nightly
+make install
+cd /tmp
+rm -rf x265
+
+cd /tmp
+rm -rf opus
+git clone https://git.xiph.org/opus.git
+cd opus
+./autogen.sh
+./configure --disable-static --enable-shared --prefix=/usr/local/ultragrid-nightly
+make install
+cd /tmp
+rm -rf opus
+
+cd /tmp
+rm -rf libvpx
+git clone https://chromium.googlesource.com/webm/libvpx
+cd libvpx
+./configure --disable-static --enable-shared --prefix=/usr/local/ultragrid-nightly
+make install
+cd /tmp
+rm -rf libvpx
+
+cd /tmp
+rm -rf nv-codec-headers
+git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
+make install
+cd /tmp
+rm -rf nv-codec-headers
+
+cd /tmp
+rm -rf ffmpeg
+git clone git://source.ffmpeg.org/ffmpeg.git
+cd ffmpeg
+./configure --enable-gpl --enable-libx264 --enable-libx265 --enable-cuda --enable-cuvid --enable-libopus --enable-libx264 --enable-libspeex --enable-libvpx --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --enable-libmp3lame --enable-vaapi --enable-vdpau --enable-nvenc --enable-shared --prefix=/usr/local/ultragrid-nightly
+make install
+cd /tmp
+rm -rf ffmpeg
+
+cd /tmp
+rm -rf GPUJPEG
+git clone https://github.com/CESNET/GPUJPEG.git
+cd GPUJPEG
+./autogen.sh
+make install
+cd /tmp
+rm -rf GPUJPEG

@@ -11,7 +11,7 @@ PKG_CONFIG_PATH=$PKG_CONFIG_PATH${PKG_CONFIG_PATH:+":"}/usr/local/lib/pkgconfig
 
 cd /tmp
 rm -rf nasm
-git clone https://github.com/sezero/nasm.git
+git clone -b nasm-2.13.xx https://github.com/sezero/nasm.git
 cd nasm
 ./autogen.sh
 ./configure

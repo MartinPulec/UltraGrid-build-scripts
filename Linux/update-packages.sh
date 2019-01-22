@@ -15,6 +15,8 @@ git clone https://github.com/sezero/nasm.git
 cd nasm
 ./autogen.sh
 ./configure
+make nasm.1
+make ndisasm.1
 make install
 cd /tmp
 rm -rf nasm

@@ -33,7 +33,7 @@ rm -rf x265
 hg clone https://bitbucket.org/multicoreware/x265
 cd x265/build/linux
 #./make-Makefiles.bash
-cmake -G "Unix Makefiles" ../../source && cmake ../../source -DCMAKE_INSTALL_PREFIX=/usr/local/ultragrid-nightly
+cmake -G "Unix Makefiles" ../../source && cmake ../../source -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/ultragrid-nightly -DHIGH_BIT_DEPTH:BOOL=ON
 make install
 cd /tmp
 rm -rf x265

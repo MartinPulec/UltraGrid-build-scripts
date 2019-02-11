@@ -32,7 +32,7 @@ git clone -b $BRANCH https://github.com/CESNET/UltraGrid.git $DIR
 
 cd $DIR/
 
-./autogen.sh --disable-video-mixer --disable-lavc-hw-accel-vdpau --disable-lavc-hw-accel-vaapi --enable-plugins --enable-qt --enable-static-qt # --with-deltacast=/root/VideoMasterHD --with-sage=/root/sage-graphics-read-only/ --with-dvs=/root/sdk4.2.1.1 --enable-gpl
+./autogen.sh --disable-video-mixer --disable-lavc-hw-accel-vdpau --disable-lavc-hw-accel-vaapi --enable-plugins --enable-qt --enable-static-qt --enable-rtsp-server --with-live555=/usr/local # --with-deltacast=/root/VideoMasterHD --with-sage=/root/sage-graphics-read-only/ --with-dvs=/root/sdk4.2.1.1 --enable-gpl
 make
 
 mkdir $APPDIR

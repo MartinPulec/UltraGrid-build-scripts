@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/sh -exu
+
+[ "$UID" -eq 0 ] || exec sudo "$0" "$@"
 
 cd /tmp
 rm -rf ffmpeg

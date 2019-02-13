@@ -30,7 +30,7 @@ git clone -b master https://github.com/CESNET/UltraGrid.git $BUILD_DIR
 
 cd $BUILD_DIR/
 
-export PKG_CONFIG_PATH=/usr/local/share/ffmpeg/lib/pkgconfig-static:$PKG_CONFIG_PATH
+#export PKG_CONFIG_PATH=/usr/local/share/ffmpeg/lib/pkgconfig-static:$PKG_CONFIG_PATH
 
 ./autogen.sh ${COMMON_FLAGS[@]}
 make osx-gui-dmg

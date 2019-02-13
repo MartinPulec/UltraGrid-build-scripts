@@ -39,8 +39,7 @@ curl -H "Authorization: token $OAUTH" -X PATCH https://api.github.com/repos/CESN
   "tag_name": "nightly",
   "target_commitish": "master",
   "name": "nightly builds",
-  "body": "Current builds from GIT master branch.
-[archived builds](https://147.251.54.146:8443/ug-nightly-archive/)",
+  "body": "Current builds from GIT master branch. Here are [archived builds](https://147.251.54.146:8443/ug-nightly-archive/).",
   "draft": false,
   "prerelease": true
 }

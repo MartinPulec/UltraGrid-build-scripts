@@ -29,9 +29,12 @@ git clone -b master https://github.com/CESNET/UltraGrid.git $BUILD_DIR
 
 cd $BUILD_DIR/
 
+git submodule init && git submodule update
+( cd cineform-sdk/ && cmake . && make CFHDCodecStatic )
+
 #export PKG_CONFIG_PATH=/usr/local/share/ffmpeg/lib/pkgconfig-static:$PKG_CONFIG_PATH
 
-./autogen.sh ${COMMON_FLAGS[@]}
+./autogen.sh ${COMMON_FLAGS[@]} --enable-cineform
 make osx-gui-dmg
 
 #scp -i /Users/toor/.ssh/id_rsa 'gui/UltraGrid GUI/UltraGrid.dmg' pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid/UltraGrid-nightly-OSX.dmg

@@ -70,6 +70,9 @@ do
         #cp -r ~/gpujpeg/Release/ gpujpeg
         #cp -r ~/SpoutSDK .
 
+        git submodule init && git submodule update
+        ( cd cineform-sdk && /c/Program\ Files/CMake/bin/cmake -DBUILD_STATIC=false -G "Visual Studio 15 2017" -A x64 . && /c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2017/Community/MSBuild/15.0/Bin/MSBuild.exe CineFormSDK.sln -property:Configuration=Release && cp Release/CFHDCodec.dll /usr/local/bin )
+
         ./autogen.sh # we need config.h for aja build script
         ./build_aja_lib_win64.sh
 
@@ -77,7 +80,7 @@ do
         ./build_spout64.sh
 
         read -a FLAGS <<< ${CONF_FLAGS[$BUILD]}
-        ./autogen.sh --enable-aja --enable-spout "${FLAGS[@]}" --with-live555=/usr/local --enable-rtsp-server
+        ./autogen.sh --enable-aja --enable-spout "${FLAGS[@]}" --with-live555=/usr/local --enable-rtsp-server --enable-cineform
         # --disable-dvs
         # --disable-jpeg --disable-cuda-dxt --disable-jpeg-to-dxt
         make -j 6

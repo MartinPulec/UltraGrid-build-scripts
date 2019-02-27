@@ -21,7 +21,10 @@ git clone -b devel https://github.com/MartinPulec/UltraGrid.git $BUILD_DIR
 
 cd $BUILD_DIR/
 
-export PKG_CONFIG_PATH=/usr/local/share/ffmpeg/lib/pkgconfig-static:$PKG_CONFIG_PATH
+git submodule init && git submodule update
+( cd cineform-sdk/ && cmake . && make CFHDCodecStatic )
+
+#export PKG_CONFIG_PATH=/usr/local/share/ffmpeg/lib/pkgconfig-static:$PKG_CONFIG_PATH
 
 ./autogen.sh ${COMMON_FLAGS[@]} --enable-ndi
 make osx-gui-dmg

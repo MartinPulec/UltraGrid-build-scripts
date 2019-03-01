@@ -41,8 +41,8 @@ BRANCHES["master"]=master
 
 # key is BUILD
 declare -A CONF_FLAGS
-CONF_FLAGS["devel"]="--enable-qt"
-CONF_FLAGS["master"]="--enable-qt"
+CONF_FLAGS["devel"]=""
+CONF_FLAGS["master"]=""
 
 # key is BRANCH
 declare -A GIT
@@ -80,7 +80,7 @@ do
         ./build_spout64.sh
 
         read -a FLAGS <<< ${CONF_FLAGS[$BUILD]}
-        ./autogen.sh --enable-aja --enable-spout "${FLAGS[@]}" --with-live555=/usr/local --enable-rtsp-server --enable-cineform
+        ./autogen.sh --enable-aja --enable-spout "${FLAGS[@]}" --with-live555=/usr/local --enable-rtsp-server --enable-cineform --enable-qt --enable-video-mixer --enable-rtsp
         # --disable-dvs
         # --disable-jpeg --disable-cuda-dxt --disable-jpeg-to-dxt
         make -j 6

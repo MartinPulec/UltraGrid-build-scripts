@@ -36,20 +36,20 @@ OAUTH=$(cat $HOME/github-oauth-token)
 
 # key is BUILD
 declare -A BRANCHES
-BRANCHES["devel"]=devel
 BRANCHES["master"]=master
+BRANCHES["ndi"]=devel
 
 # key is BUILD
 declare -A CONF_FLAGS
-CONF_FLAGS["devel"]=""
-CONF_FLAGS["master"]=""
+CONF_FLAGS["master"]="--disable-ndi"
+CONF_FLAGS["ndi"]="--enable-ndi"
 
 # key is BRANCH
 declare -A GIT
 GIT["master"]="https://github.com/CESNET/UltraGrid.git"
 GIT["devel"]="https://github.com/MartinPulec/UltraGrid.git"
 
-for BUILD in master
+for BUILD in master ndi
 do
         BRANCH=${BRANCHES[$BUILD]}
         BUILD_DIR=ultragrid-nightly-$BUILD
@@ -112,23 +112,30 @@ do
         zip -9 -r $ZIP_NAME $DIR_NAME
         #scp -i c:/mingw32/msys~/.ssh/id_rsa $ZIP_NAME pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid
 
-curl -H "Authorization: token $OAUTH" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json # --insecure
-LEN=`jq "length" assets.json`
-for n in `seq 0 $(($LEN-1))`; do
-        NAME=`jq '.['$n'].name' assets.json`
-        if [ $NAME = "\""$ZIP_NAME"\"" ]; then
-                ID=`jq '.['$n'].id' assets.json`
+        if [ $BUILD = "ndi" ]; then
+                SECPATH=$(cat $HOME/secret-path)
+                scp $ZIP_NAME toor@martin-centos.local:/tmp
+                ssh toor@martin-centos.local sudo mv /tmp/$ZIP_NAME /var/www/html/$SECPATH
+                ssh toor@martin-centos.local sudo chcon -Rv \
+                        --type=httpd_sys_content_t /var/www/html/$SECPATH/$ZIP_NAME
+        else
+                curl -H "Authorization: token $OAUTH" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json # --insecure
+                LEN=`jq "length" assets.json`
+                for n in `seq 0 $(($LEN-1))`; do
+                        NAME=`jq '.['$n'].name' assets.json`
+                        if [ $NAME = "\""$ZIP_NAME"\"" ]; then
+                                ID=`jq '.['$n'].id' assets.json`
+                        fi
+                done
+
+                if [ -n "$ID" ]; then
+                        curl -H "Authorization: token $OAUTH" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID # --insecure
+                fi
+
+                #LABEL="Windows%20build%20"$BRANCH
+                LABEL="Windows%20build"
+
+                curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/zip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZIP_NAME'&label='$LABEL -T $ZIP_NAME # --insecure
         fi
-done
-
-if [ -n "$ID" ]; then
-        curl -H "Authorization: token $OAUTH" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID # --insecure
-fi
-
-#LABEL="Windows%20build%20"$BRANCH
-LABEL="Windows%20build"
-
-curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/zip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZIP_NAME'&label='$LABEL -T $ZIP_NAME # --insecure
-
 done
 

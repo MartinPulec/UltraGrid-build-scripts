@@ -18,9 +18,10 @@ export PKG_CONFIG_PATH=$QT_PATH/lib/pkgconfig:/usr/local/lib/pkgconfig:${PKG_CON
 
 GLIBC_VERSION=`ldd --version | head -n 1 | sed 's/.*\ \([0-9][0-9]*\.[0-9][0-9]*\)$/\1/'`
 APPDIR=UltraGrid.AppDir
-APPNAME=UltraGrid-nightly.glibc${GLIBC_VERSION}-x86_64.AppImage
+ARCH=`uname -m`
+APPNAME=UltraGrid-nightly.glibc${GLIBC_VERSION}-${ARCH}.AppImage
 DIR=UltraGrid-AppImage
-LABEL="Linux%20build%20%28AppImage%2C%20glibc%20$GLIBC_VERSION%29"
+LABEL="Linux%20build%20%28AppImage%2C%20$ARCH%2C%20glibc%20$GLIBC_VERSION%29"
 OAUTH=$(cat $HOME/github-oauth-token)
 
 cd /tmp

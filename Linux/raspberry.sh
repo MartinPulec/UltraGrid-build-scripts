@@ -1,5 +1,7 @@
 #!/bin/sh
 
+exec > ~/ultragrid-raspberry-build.log 2>&1 </dev/null
+
 set -exu
 
 export CPATH=/usr/local/include${CPATH:+":$CPATH"}

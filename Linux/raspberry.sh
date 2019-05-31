@@ -11,7 +11,7 @@ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH:+":$PKG_CONFIG
 
 GLIBC_VERSION=`ldd --version | head -n 1 | sed 's/.*\ \([0-9][0-9]*\.[0-9][0-9]*\)$/\1/'`
 APPDIR=UltraGrid.AppDir
-ARCH=`uname -m`
+ARCH=`dpkg --print-architecture`
 APPNAME=UltraGrid-nightly.glibc${GLIBC_VERSION}-${ARCH}.AppImage
 DIR=UltraGrid-AppImage
 LABEL="Linux%20build%20%28AppImage%2C%20$ARCH%2C%20glibc%20$GLIBC_VERSION%29"

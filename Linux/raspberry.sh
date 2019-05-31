@@ -17,6 +17,15 @@ DIR=UltraGrid-AppImage
 LABEL="Linux%20build%20%28AppImage%2C%20$ARCH%2C%20glibc%20$GLIBC_VERSION%29"
 OAUTH=$(cat $HOME/github-oauth-token)
 
+atexit() {
+        TMPDIR=$(mktemp -d)
+        git clone https://github.com/MartinPulec/UltraGrid-build-scripts.git $TMPDIR
+        cp -r $TMPDIR/Linux/*sh $HOME
+        #crontab $TMPDIR/Linux/crontab
+        rm -r $TMPDIR
+}
+trap atexit EXIT
+
 cd /tmp
 rm -rf $DIR
 

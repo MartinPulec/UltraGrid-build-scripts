@@ -31,7 +31,7 @@ trap atexit EXIT
 cd /tmp
 rm -rf $DIR
 
-git clone -b devel https://github.com/MartinPulec/UltraGrid.git $DIR
+git clone -b master https://github.com/CESNET/UltraGrid.git $DIR
 
 cd $DIR/
 

@@ -89,9 +89,6 @@ export QT_QPA_FONTDIR=$DIR/lib/fonts
 
 usage() {
 	printf "usage:\n"
-	printf "\tUltraGrid [--gui [args]]\n"
-	printf "\t\tinvokes GUI\n"
-	printf "\n"
 	printf "\tUltraGrid --help\n"
 	printf "\t\tprints this help\n"
 	printf "\n"

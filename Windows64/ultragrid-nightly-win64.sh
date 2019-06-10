@@ -76,7 +76,11 @@ do
         ./autogen.sh # we need config.h for aja build script
         ./build_aja_lib_win64.sh
 
-        cp -r ~/SpoutSDK src/
+        if grep -q VS2012 build_spout64.sh; then
+                cp -r ~/SpoutSDK src/
+        else
+                cp -r ~/Spout2/SPOUTSDK/SpoutSDK src/
+        fi
         ./build_spout64.sh
 
         read -a FLAGS <<< ${CONF_FLAGS[$BUILD]}

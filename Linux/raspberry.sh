@@ -50,7 +50,7 @@ done
 # glibc libraries should not be bundled
 # Taken from https://gitlab.com/probono/platformissues
 # libnsl.so.1 is not removed - is not in Fedora 28 by default
-for n in ld-linux.so.2 ld-linux-armhf.so.3 libanl.so.1 libBrokenLocale.so.1 libcidn.so.1 libcrypt.so.1 libc.so.6 libdl.so.2 libm.so.6 libmvec.so.1 libnss_compat.so.2 libnss_db.so.2 libnss_dns.so.2 libnss_files.so.2 libnss_hesiod.so.2 libnss_nisplus.so.2 libnss_nis.so.2 libpthread.so.0 libresolv.so.2 librt.so.1 libthread_db.so.1 libutil.so.1
+for n in ld-linux.so.2 ld-linux-aarch64.so.1 ld-linux-armhf.so.3 libanl.so.1 libBrokenLocale.so.1 libcidn.so.1 libcrypt.so.1 libc.so.6 libdl.so.2 libm.so.6 libmvec.so.1 libnss_compat.so.2 libnss_db.so.2 libnss_dns.so.2 libnss_files.so.2 libnss_hesiod.so.2 libnss_nisplus.so.2 libnss_nis.so.2 libpthread.so.0 libresolv.so.2 librt.so.1 libthread_db.so.1 libutil.so.1
 do
         if [ -f $APPDIR/lib/$n ]; then
                 rm $APPDIR/lib/$n

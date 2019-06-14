@@ -7,6 +7,10 @@ set -x
 
 BUILD_DIR=ultragrid-nightly
 OAUTH=$(cat $HOME/github-oauth-token)
+DATE=`date +%Y%m%d`
+APPNAME=UltraGrid-${DATE}-macos.dmg
+APPNAME_PATTERN="UltraGrid-.*-macos.dmg"
+
 
 . $HOME/common.sh
 . $HOME/paths.sh
@@ -42,7 +46,7 @@ curl -H "Authorization: token $OAUTH" -X GET https://api.github.com/repos/CESNET
 LEN=`jq "length" assets.json`
 for n in `seq 0 $(($LEN-1))`; do
 	NAME=`jq '.['$n'].name' assets.json`
-	if [ $NAME = "\"UltraGrid-nightly-macos.dmg\"" ]; then
+        if expr "$NAME" : "^\"$APPNAME_PATTERN\"$"; then
 		ID=`jq '.['$n'].id' assets.json`
 	fi
 done
@@ -51,7 +55,7 @@ if [ -n "$ID" ]; then
 	curl -H "Authorization: token $OAUTH" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID
 fi
 
-curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=UltraGrid-nightly-macos.dmg&label=macOS%20build' -T 'Ultragrid.dmg'
+curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST "https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=${APPNAME}&label=macOS%20build" -T 'Ultragrid.dmg'
 
 
 cd ..

@@ -14,7 +14,9 @@ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH:+":$PKG_CONFIG
 GLIBC_VERSION=`ldd --version | head -n 1 | sed 's/.*\ \([0-9][0-9]*\.[0-9][0-9]*\)$/\1/'`
 APPDIR=UltraGrid.AppDir
 ARCH=`dpkg --print-architecture`
-APPNAME=UltraGrid-nightly.glibc${GLIBC_VERSION}-${ARCH}.AppImage
+DATE=`date +%Y%m%d`
+APPNAME=UltraGrid-${DATE}.glibc${GLIBC_VERSION}-${ARCH}.AppImage
+APPNAME_PATTERN="UltraGrid-.*-${ARCH}.AppImage"
 DIR=UltraGrid-AppImage
 LABEL="Linux%20build%20%28AppImage%2C%20$ARCH%2C%20glibc%20$GLIBC_VERSION%29"
 OAUTH=$(cat $HOME/github-oauth-token)
@@ -137,7 +139,7 @@ LEN=`jq "length" assets.json`
 ID=
 for n in `seq 0 $(($LEN-1))`; do
         NAME=`jq '.['$n'].name' assets.json`
-        if [ $NAME = \"$APPNAME\" ]; then
+        if expr match "$NAME" "^\"$APPNAME_PATTERN\"$"; then
                 ID=`jq '.['$n'].id' assets.json`
         fi
 done

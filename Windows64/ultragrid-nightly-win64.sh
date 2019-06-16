@@ -62,7 +62,7 @@ do
         DIR_NAME=UltraGrid-${DATE}${SUFF}
         ZIP_NAME=UltraGrid-${DATE}${SUFF}-win64.zip
         ZIP_NAME_GLOB="UltraGrid-*${SUFF}-win64.zip"
-        ZIP_NAME_PATTERN="UltraGrid-.*${SUFF}-win64.zip"
+        ZIP_NAME_PATTERN="UltraGrid-[[:digit:]]\{8\}${SUFF}-win64.zip"
 
         echo Building $BUILD...
 
@@ -122,7 +122,7 @@ do
         if [ $BUILD = "ndi" ]; then
                 SECPATH=$(cat $HOME/secret-path)
                 scp $ZIP_NAME toor@martin-centos.local:/tmp
-                ssh toor@martin-centos.local sudo rm "/var/www/html/$SECPATH/$ZIP_NAME_GLOB"
+                ssh toor@martin-centos.local sudo rm "/var/www/html/$SECPATH/$ZIP_NAME_GLOB" || true
                 ssh toor@martin-centos.local sudo mv /tmp/$ZIP_NAME /var/www/html/$SECPATH
                 ssh toor@martin-centos.local sudo chcon -Rv \
                         --type=httpd_sys_content_t /var/www/html/$SECPATH/$ZIP_NAME
@@ -131,7 +131,7 @@ do
                 LEN=`jq "length" assets.json`
                 for n in `seq 0 $(($LEN-1))`; do
                         NAME=`jq '.['$n'].name' assets.json`
-                        if expr match "$NAME" "^\"$ZIP_NAME_PATTERN\"$"; then
+                        if expr "$NAME" : "\"$ZIP_NAME_PATTERN\"$"; then
                                 ID=`jq '.['$n'].id' assets.json`
                         fi
                 done

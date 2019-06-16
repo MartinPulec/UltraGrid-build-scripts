@@ -139,7 +139,7 @@ LEN=`jq "length" assets.json`
 ID=
 for n in `seq 0 $(($LEN-1))`; do
         NAME=`jq '.['$n'].name' assets.json`
-        if expr match "$NAME" "^\"$APPNAME_PATTERN\"$"; then
+        if expr "$NAME" : "\"$APPNAME_PATTERN\"$"; then
                 ID=`jq '.['$n'].id' assets.json`
         fi
 done

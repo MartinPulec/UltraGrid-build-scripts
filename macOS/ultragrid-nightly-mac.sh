@@ -9,8 +9,7 @@ BUILD_DIR=ultragrid-nightly
 OAUTH=$(cat $HOME/github-oauth-token)
 DATE=`date +%Y%m%d`
 APPNAME=UltraGrid-${DATE}-macos.dmg
-APPNAME_PATTERN="UltraGrid-.*-macos.dmg"
-
+APPNAME_PATTERN="UltraGrid-[[:digit:]]\{8\}-macos.dmg"
 
 . $HOME/common.sh
 . $HOME/paths.sh
@@ -56,7 +55,6 @@ if [ -n "$ID" ]; then
 fi
 
 curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST "https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=${APPNAME}&label=macOS%20build" -T 'Ultragrid.dmg'
-
 
 cd ..
 

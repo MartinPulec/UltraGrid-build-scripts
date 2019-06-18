@@ -8,6 +8,10 @@ set -x
 BUILD_DIR=ultragrid-nightly-ndi
 OAUTH=$(cat $HOME/github-oauth-token)
 SECPATH=$(cat $HOME/secret-path)
+DATE=`date +%Y%m%d`
+APPNAME=UltraGrid-${DATE}-ndi-macos.dmg
+APPNAME_GLOB="UltraGrid-*-ndi-macos.dmg"
+
 
 . $HOME/common.sh
 . $HOME/paths.sh
@@ -28,9 +32,10 @@ git submodule init && git submodule update
 ./autogen.sh ${COMMON_FLAGS[@]} --enable-ndi
 make osx-gui-dmg
 
-scp UltraGrid.dmg toor@martin-centos.local:/tmp/UltraGrid-ndi.dmg
-ssh toor@martin-centos.local sudo mv /tmp/UltraGrid-ndi.dmg /var/www/html/$SECPATH
-ssh toor@martin-centos.local sudo chcon -Rv --type=httpd_sys_content_t /var/www/html/$SECPATH/UltraGrid-ndi.dmg
+ssh toor@martin-centos.local sudo rm "/var/www/html/$SECPATH/$APPNAME_GLOB" || true
+scp UltraGrid.dmg toor@martin-centos.local:/tmp/$APPNAME
+ssh toor@martin-centos.local sudo mv /tmp/$APPNAME /var/www/html/$SECPATH
+ssh toor@martin-centos.local sudo chcon -Rv --type=httpd_sys_content_t /var/www/html/$SECPATH/$APPNAME
 
 rm -rf $BUILD_DIR
 

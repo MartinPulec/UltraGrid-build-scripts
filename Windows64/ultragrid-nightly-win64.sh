@@ -37,11 +37,13 @@ OAUTH=$(cat $HOME/github-oauth-token)
 # key is BUILD
 declare -A BRANCHES
 BRANCHES["master"]=master
+BRANCHES["devel"]=devel
 BRANCHES["ndi"]=devel
 
 # key is BUILD
 declare -A CONF_FLAGS
 CONF_FLAGS["master"]="--disable-ndi"
+CONF_FLAGS["devel"]="--disable-ndi"
 CONF_FLAGS["ndi"]="--enable-ndi"
 
 # key is BRANCH
@@ -140,8 +142,11 @@ do
                         curl -H "Authorization: token $OAUTH" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID # --insecure
                 fi
 
-                #LABEL="Windows%20build%20"$BRANCH
-                LABEL="Windows%20build"
+                if [ $BUILD = "master" ]; then
+                        LABEL="Windows%20build"
+                else
+                        LABEL="Windows%20build%20%28$BUILD%29"
+                fi
 
                 curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/zip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZIP_NAME'&label='$LABEL -T $ZIP_NAME # --insecure
         fi

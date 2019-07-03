@@ -39,21 +39,21 @@ declare -A BRANCHES
 BRANCHES["master"]=master
 BRANCHES["devel"]=devel
 BRANCHES["ndi"]=devel
+# if unset, default is to use the build name as a branch
 
 # key is BUILD
 declare -A CONF_FLAGS
-CONF_FLAGS["master"]="--disable-ndi"
-CONF_FLAGS["devel"]="--disable-ndi"
+CONF_FLAGS["default"]="--disable-ndi"
 CONF_FLAGS["ndi"]="--enable-ndi"
 
 # key is BRANCH
 declare -A GIT
 GIT["master"]="https://github.com/CESNET/UltraGrid.git"
-GIT["devel"]="https://github.com/MartinPulec/UltraGrid.git"
+GIT["default"]="https://github.com/MartinPulec/UltraGrid.git"
 
 for BUILD in master ndi
 do
-        BRANCH=${BRANCHES[$BUILD]}
+        BRANCH=${BRANCHES[$BUILD]-$BUILD}
         BUILD_DIR=ultragrid-nightly-$BUILD
         DATE=`date +%Y%m%d`
         if [ $BUILD = master ]; then
@@ -70,7 +70,7 @@ do
 
         cd ~
         rm -rf $BUILD_DIR
-        git clone --config http.postBuffer=1048576000 -b $BRANCH ${GIT[$BRANCH]} $BUILD_DIR
+        git clone --config http.postBuffer=1048576000 -b $BRANCH ${GIT[$BRANCH]-${GIT["default"]}} $BUILD_DIR
         cd $BUILD_DIR
         #cp -r ~/gpujpeg/Release/ gpujpeg
         #cp -r ~/SpoutSDK .
@@ -88,7 +88,7 @@ do
         fi
         ./build_spout64.sh
 
-        read -a FLAGS <<< ${CONF_FLAGS[$BUILD]}
+        read -a FLAGS <<< ${CONF_FLAGS[$BUILD]-${CONF_FLAGS["default"]}}
         ./autogen.sh --enable-aja --enable-spout "${FLAGS[@]}" --with-live555=/usr/local --enable-rtsp-server --enable-cineform --enable-qt --enable-video-mixer --enable-rtsp
         # --disable-dvs
         # --disable-jpeg --disable-cuda-dxt --disable-jpeg-to-dxt

@@ -57,8 +57,10 @@ do
         BUILD_DIR=ultragrid-nightly-$BUILD
         DATE=`date +%Y%m%d`
         if [ $BUILD = master ]; then
+                LABEL="Windows%20build"
                 SUFF=
         else
+                LABEL="Windows%20build%20%28$BUILD%29"
                 SUFF=-${BUILD}
         fi
         DIR_NAME=UltraGrid-${DATE}${SUFF}
@@ -140,12 +142,6 @@ do
 
                 if [ -n "$ID" ]; then
                         curl -H "Authorization: token $OAUTH" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID # --insecure
-                fi
-
-                if [ $BUILD = "master" ]; then
-                        LABEL="Windows%20build"
-                else
-                        LABEL="Windows%20build%20%28$BUILD%29"
                 fi
 
                 curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/zip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZIP_NAME'&label='$LABEL -T $ZIP_NAME # --insecure

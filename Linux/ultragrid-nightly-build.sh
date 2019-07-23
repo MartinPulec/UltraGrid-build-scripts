@@ -20,16 +20,41 @@ GLIBC_VERSION=`ldd --version | head -n 1 | sed 's/.*\ \([0-9][0-9]*\.[0-9][0-9]*
 APPDIR=UltraGrid.AppDir
 ARCH=`uname -m`
 DATE=`date +%Y%m%d`
-APPNAME=UltraGrid-${DATE}.glibc${GLIBC_VERSION}-${ARCH}.AppImage
-APPNAME_PATTERN="UltraGrid-.*-${ARCH}.AppImage"
 DIR=UltraGrid-AppImage
-LABEL="Linux%20build%20%28AppImage%2C%20$ARCH%2C%20glibc%20$GLIBC_VERSION%29"
 OAUTH=$(cat $HOME/github-oauth-token)
+
+# key is BUILD
+declare -A BRANCHES
+BRANCHES["master"]=master
+# if unset, default is to use the build name as a branch
+
+# key is BUILD
+declare -A CONF_FLAGS
+CONF_FLAGS["default"]="--disable-ndi"
+CONF_FLAGS["ndi"]="--enable-ndi"
+
+# key is BRANCH
+declare -A GIT
+GIT["master"]="https://github.com/CESNET/UltraGrid.git"
+GIT["default"]="https://github.com/MartinPulec/UltraGrid.git"
+
+if [ "$BUILD" = master ]; then
+        SUFF=""
+        LABEL_SUFF=""
+else
+        SUFF="-$BUILD"
+        LABEL_SUFF="%2C%20$BUILD"
+fi
+
+APPNAME=UltraGrid-${SUFF}${DATE}.glibc${GLIBC_VERSION}-${ARCH}.AppImage
+APPNAME_PATTERN="UltraGrid-${SUFF}.*-${ARCH}.AppImage"
+LABEL="Linux%20build%20%28AppImage%2C%20$ARCH%2C%20glibc%20$GLIBC_VERSION$LABEL_SUFF%29"
+BRANCH=${BRANCHES[$BUILD]-$BUILD}
 
 cd /tmp
 rm -rf $DIR
 
-git clone -b master https://github.com/CESNET/UltraGrid.git $DIR
+git clone -b $BRANCH ${GIT[$BRANCH]-${GIT["default"]}} $DIR
 #git clone -b devel https://github.com/MartinPulec/UltraGrid.git $DIR
 
 cd $DIR/
@@ -37,7 +62,7 @@ cd $DIR/
 git submodule init && git submodule update
 ( cd cineform-sdk/ && cmake3 . && make CFHDCodecStatic )
 
-./autogen.sh --disable-video-mixer --enable-plugins --enable-qt --enable-static-qt --enable-cineform # --disable-lavc-hw-accel-vdpau --disable-lavc-hw-accel-vaapi --with-deltacast=/root/VideoMasterHD --with-sage=/root/sage-graphics-read-only/ --with-dvs=/root/sdk4.2.1.1 --enable-gpl
+./autogen.sh --disable-video-mixer --enable-plugins --enable-qt --enable-static-qt --enable-cineform ${CONF_FLAGS[$BUILD]-${CONF_FLAGS["default"]}} # --disable-lavc-hw-accel-vdpau --disable-lavc-hw-accel-vaapi --with-deltacast=/root/VideoMasterHD --with-sage=/root/sage-graphics-read-only/ --with-dvs=/root/sdk4.2.1.1 --enable-gpl
 make
 
 mkdir $APPDIR

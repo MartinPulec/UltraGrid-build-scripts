@@ -49,7 +49,7 @@ do
 	fi
 
 	APPNAME=UltraGrid${SUFF}-${DATE}.glibc${GLIBC_VERSION}-${ARCH}.AppImage
-	APPNAME_PATTERN="UltraGrid${SUFF}-.*-${ARCH}.AppImage"
+	APPNAME_PATTERN="UltraGrid${SUFF}-[[:digit:]]\{8\}\.glibc$(echo $GLIBC_VERSION | sed 's/\./\\\\./g')-${ARCH}\.AppImage"
 	LABEL="Linux%20build%20%28AppImage%2C%20$ARCH%2C%20glibc%20$GLIBC_VERSION$LABEL_SUFF%29"
 	BRANCH=${BRANCHES[$BUILD]-$BUILD}
 

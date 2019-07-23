@@ -48,6 +48,7 @@ do
         if [ "$BUILD" = master ]; then
                 APPNAME=UltraGrid-${DATE}-macos.dmg
                 APPNAME_PATTERN="UltraGrid-[[:digit:]]\{8\}-macos.dmg"
+                LABEL="macOS%20build"
         else
                 APPNAME=UltraGrid-${DATE}-$BUILD-macos.dmg
                 APPNAME_GLOB="UltraGrid-*-$BUILD-macos.dmg"

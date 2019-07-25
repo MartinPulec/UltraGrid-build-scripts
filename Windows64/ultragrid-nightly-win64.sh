@@ -13,7 +13,7 @@ atexit() {
         git clone https://github.com/MartinPulec/UltraGrid-build-scripts.git $TMPDIR
         cp $TMPDIR/common.sh $HOME
         cp -r $TMPDIR/Windows64/* ~/
-        rm -r $TMPDIR
+        rm -rf $TMPDIR
 }
 trap atexit EXIT
 

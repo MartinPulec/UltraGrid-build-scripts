@@ -18,7 +18,7 @@ atexit() {
         cp -r $TMPDIR/Linux/*sh $HOME
         cp $TMPDIR/ultragrid_nightly_common.sh $HOME
         crontab $TMPDIR/Linux/crontab
-        rm -r $TMPDIR
+        rm -rf $TMPDIR
 }
 trap atexit EXIT
 

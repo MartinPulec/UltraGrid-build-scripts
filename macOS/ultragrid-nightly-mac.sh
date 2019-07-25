@@ -12,11 +12,13 @@ SECPATH=$(cat $HOME/secret-path)
 
 . $HOME/common.sh
 . $HOME/paths.sh
+. ~/ultragrid_nightly_common.sh
 
 # checkout current build script
 atexit() {
         TMPDIR=$(mktemp -d)
         git clone https://github.com/MartinPulec/UltraGrid-build-scripts.git $TMPDIR
+        cp $TMPDIR/ultragrid_nightly_common.sh $HOME
         cp -r $TMPDIR/macOS/*sh ~/
         crontab $TMPDIR/macOS/crontab
         rm -rf $TMPDIR
@@ -71,18 +73,7 @@ do
 
         #scp -i /Users/toor/.ssh/id_rsa 'gui/UltraGrid GUI/UltraGrid.dmg' pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid/UltraGrid-nightly-OSX.dmg
         if [ "$BUILD" != ndi ]; then
-                curl -H "Authorization: token $OAUTH" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json
-                LEN=`jq "length" assets.json`
-                for n in `seq 0 $(($LEN-1))`; do
-                        NAME=`jq '.['$n'].name' assets.json`
-                        if expr "$NAME" : "^\"$APPNAME_PATTERN\"$"; then
-                                ID=`jq '.['$n'].id' assets.json`
-                        fi
-                done
-
-                if [ -n "$ID" ]; then
-                        curl -H "Authorization: token $OAUTH" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID
-                fi
+                delete_asset 4347706 $APPNAME_PATTERN $OAUTH
 
                 curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST "https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=${APPNAME}&label=$LABEL" -T 'Ultragrid.dmg'
         else

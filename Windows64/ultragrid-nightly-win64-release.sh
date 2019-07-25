@@ -9,6 +9,7 @@ export USERNAME=toor
 export HOME=/home/$USERNAME
 
 . ~/paths.sh
+. ~/ultragrid_nightly_common.sh
 
 #export PATH=/usr/local/bin`[ -n "$PATH" ] && echo :$PATH`
 #export CPATH=/usr/local/include`[ -n "$CPATH" ] && echo :$CPATH`
@@ -79,18 +80,7 @@ mv bin $DIR_NAME
 
 zip -9 -r $ZIP_NAME $DIR_NAME
 
-curl -H "Authorization: token $OAUTH" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/$GITHUB_RELEASE_ID/assets > assets.json # --insecure
-LEN=`jq "length" assets.json`
-for n in `seq 0 $(($LEN-1))`; do
-        NAME=`jq '.['$n'].name' assets.json`
-        if [ $NAME = "\""$ZIP_NAME"\"" ]; then
-                ID=`jq '.['$n'].id' assets.json`
-        fi
-done
-
-if [ -n "$ID" ]; then
-        curl -H "Authorization: token $OAUTH" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID # --insecure
-fi
+delete_asset $GITHUB_RELEASE_ID $ZIP_NAME $OAUTH
 
 #LABEL="Windows%20build%20"$BRANCH
 LABEL="Windows%20build"

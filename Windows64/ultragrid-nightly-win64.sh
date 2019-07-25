@@ -11,12 +11,14 @@ export HOME=/home/$USERNAME
 atexit() {
         TMPDIR=$(mktemp -d --suffix=-ug-build-scripts)
         git clone https://github.com/MartinPulec/UltraGrid-build-scripts.git $TMPDIR
+        cp $TMPDIR/common.sh $HOME
         cp -r $TMPDIR/Windows64/* ~/
         rm -r $TMPDIR
 }
 trap atexit EXIT
 
 . ~/paths.sh
+. ~/ultragrid_nightly_common.sh
 
 #export PATH=/usr/local/bin`[ -n "$PATH" ] && echo :$PATH`
 #export CPATH=/usr/local/include`[ -n "$CPATH" ] && echo :$CPATH`
@@ -131,18 +133,7 @@ do
                 ssh toor@martin-centos.local sudo chcon -Rv \
                         --type=httpd_sys_content_t /var/www/html/$SECPATH/$ZIP_NAME
         else
-                curl -H "Authorization: token $OAUTH" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json # --insecure
-                LEN=`jq "length" assets.json`
-                for n in `seq 0 $(($LEN-1))`; do
-                        NAME=`jq '.['$n'].name' assets.json`
-                        if expr "$NAME" : "\"$ZIP_NAME_PATTERN\"$"; then
-                                ID=`jq '.['$n'].id' assets.json`
-                        fi
-                done
-
-                if [ -n "$ID" ]; then
-                        curl -H "Authorization: token $OAUTH" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID # --insecure
-                fi
+                delete_asset 4347706 $ZIP_NAME_PATTERN $OAUTH
 
                 curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/zip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZIP_NAME'&label='$LABEL -T $ZIP_NAME # --insecure
         fi

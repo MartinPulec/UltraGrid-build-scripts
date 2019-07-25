@@ -24,6 +24,8 @@ APPNAME=UltraGrid-$RELEASE.glibc${GLIBC_VERSION}-x86_64.AppImage
 LABEL="Linux%20build%20%28AppImage%2C%20glibc%20$GLIBC_VERSION%29"
 OAUTH=$(cat $HOME/github-oauth-token)
 
+. ~/ultragrid_nightly_common.sh
+
 cd /tmp
 rm -rf $DIR
 
@@ -134,19 +136,7 @@ cp data/uv-qt.desktop $APPDIR/ultragrid.desktop
 
 appimagetool --sign --comp gzip $APPDIR $APPNAME
 
-curl -H "Authorization: token $OAUTH" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/$GITHUB_RELEASE_ID/assets > assets.json
-LEN=`jq "length" assets.json`
-ID=
-for n in `seq 0 $(($LEN-1))`; do
-	NAME=`jq '.['$n'].name' assets.json`
-	if [ $NAME = \"$APPNAME\" ]; then
-		ID=`jq '.['$n'].id' assets.json`
-	fi
-done
-
-if [ -n "$ID" ]; then
-	curl -H "Authorization: token $OAUTH" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID
-fi
+delete_asset $GITHUB_RELEASE_ID $APPNAME $OAUTH
 
 curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST "https://uploads.github.com/repos/CESNET/UltraGrid/releases/$GITHUB_RELEASE_ID/assets?name=$APPNAME&label=$LABEL" -T $APPNAME
 

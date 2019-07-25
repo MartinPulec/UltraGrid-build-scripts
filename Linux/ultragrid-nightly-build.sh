@@ -23,6 +23,8 @@ DATE=`date +%Y%m%d`
 DIR=UltraGrid-AppImage
 OAUTH=$(cat $HOME/github-oauth-token)
 
+. ~/ultragrid_nightly_common.sh
+
 # key is BUILD
 declare -A BRANCHES
 BRANCHES["master"]=master
@@ -174,19 +176,7 @@ do
 
 	appimagetool --sign --comp gzip $APPDIR $APPNAME
 
-	curl -H "Authorization: token $OAUTH" -X GET https://api.github.com/repos/CESNET/UltraGrid/releases/4347706/assets > assets.json
-	LEN=`jq "length" assets.json`
-	ID=
-	for n in `seq 0 $(($LEN-1))`; do
-		NAME=`jq '.['$n'].name' assets.json`
-		if expr "$NAME" : "\"$APPNAME_PATTERN\"$"; then
-			ID=`jq '.['$n'].id' assets.json`
-		fi
-	done
-
-	if [ -n "$ID" ]; then
-		curl -H "Authorization: token $OAUTH" -X DELETE 'https://api.github.com/repos/CESNET/UltraGrid/releases/assets/'$ID
-	fi
+        delete_asset 4347706 $APPNAME_PATTERN $OAUTH
 
 	curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$APPNAME'&label='$LABEL -T $APPNAME
 

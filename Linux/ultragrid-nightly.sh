@@ -7,6 +7,8 @@ set -x
 
 OAUTH=$(cat $HOME/github-oauth-token)
 
+. ~/ultragrid_nightly_common.sh
+
 cd /tmp
 
 # checkout current build script
@@ -14,6 +16,7 @@ atexit() {
         TMPDIR=$(mktemp -d)
         git clone https://github.com/MartinPulec/UltraGrid-build-scripts.git $TMPDIR
         cp -r $TMPDIR/Linux/*sh $HOME
+        cp $TMPDIR/ultragrid_nightly_common.sh $HOME
         crontab $TMPDIR/Linux/crontab
         rm -r $TMPDIR
 }

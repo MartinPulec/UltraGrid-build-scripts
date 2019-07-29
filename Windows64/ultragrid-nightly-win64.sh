@@ -40,7 +40,7 @@ OAUTH=$(cat $HOME/github-oauth-token)
 declare -A BRANCHES
 BRANCHES["master"]=master
 BRANCHES["devel"]=devel
-BRANCHES["ndi"]=devel
+BRANCHES["ndi"]=master
 # if unset, default is to use the build name as a branch
 
 # key is BUILD

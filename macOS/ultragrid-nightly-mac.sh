@@ -28,7 +28,7 @@ trap atexit EXIT
 # key is BUILD
 typeset -A BRANCHES
 BRANCHES["master"]=master
-BRANCHES["ndi"]=devel
+BRANCHES["ndi"]=master
 # if unset, default is to use the build name as a branch
 
 # key is BUILD

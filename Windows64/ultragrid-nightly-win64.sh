@@ -11,7 +11,7 @@ export HOME=/home/$USERNAME
 atexit() {
         TMPDIR=$(mktemp -d --suffix=-ug-build-scripts)
         git clone https://github.com/MartinPulec/UltraGrid-build-scripts.git $TMPDIR
-        cp $TMPDIR/common.sh $HOME
+        cp $TMPDIR/ultragrid_nightly_common.sh $HOME
         cp -r $TMPDIR/Windows64/* ~/
         rm -rf $TMPDIR
 }

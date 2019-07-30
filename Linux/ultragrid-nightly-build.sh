@@ -99,16 +99,47 @@ do
 
 	( cd $APPDIR/lib; rm -f libasound.so.2 libdrm.so.2 libEGL.so.1 libGL.so.1 libGLdispatch.so.0 libstdc++.so.6 libX* libxcb* libxshm* )
 
+	# indention inside heredoc should be leading tab and then spaces
 	cat <<-'EOF' >> $APPDIR/uv-wrapper.sh
 	#!/bin/sh
 
 	set -u
+
+	get_loader() {
+	        LOADERS='/lib64/ld-linux-*so* /lib/ld-linux-*so* /lib*/ld-linux-*so*'
+	        for n in $LOADERS; do
+	                for m in `ls $n`; do
+	                        if [ -x $m ]; then
+	                                echo $m
+	                                return
+	                        fi
+	                done
+	        done
+	}
+
+	set_ld_preload() {
+	        if [ ! -f $DIR/lib/ultragrid/ultragrid_aplay_jack.so ]; then
+	                return
+	        fi
+	        local LOADER=$(get_loader)
+	        if [ ! -x "$LOADER" ]; then
+	                return
+	        fi
+	        S_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+	        LD_LIBRARY_PATH=
+	        JACK_LIB=$(LD_TRACE_LOADED_OBJECTS=1 $LOADER $DIR/lib/ultragrid/ultragrid_aplay_jack.so | grep libjack | grep -v 'not found' | awk '{print $3}')
+	        LD_LIBRARY_PATH=$S_LD_LIBRARY_PATH
+	        if [ -n "$JACK_LIB" ]; then
+	                export LD_PRELOAD=$JACK_LIB${LD_PRELOAD:+" $LD_PRELOAD"}
+	        fi
+	}
 
 	DIR=`dirname $0`
 	export LD_LIBRARY_PATH=$DIR/lib${LD_LIBRARY_PATH:+":$LD_LIBRARY_PATH"}
 	# there is an issue with running_from_path() which evaluates this executable
 	# as being system-installed
 	#export PATH=$DIR/bin:$PATH
+	set_ld_preload
 
 	exec $DIR/bin/uv "$@"
 	EOF
@@ -128,43 +159,43 @@ do
 	export QT_QPA_FONTDIR=$DIR/lib/fonts
 
 	usage() {
-		printf "usage:\n"
-		printf "\tUltraGrid [--gui [args]]\n"
-		printf "\t\tinvokes GUI\n"
-		printf "\n"
-		printf "\tUltraGrid --help\n"
-		printf "\t\tprints this help\n"
-		printf "\n"
-		printf "\tUltraGrid --appimage-help\n"
-		printf "\t\tprints AppImage related options\n"
-		printf "\n"
-		printf "\tUltraGrid --tool uv --help\n"
-		printf "\t\tprints command-line UltraGrid help\n"
-		printf "\n"
-		printf "\tUltraGrid --tool <t> [args]\n"
-		printf "\t\tinvokes specified tool\n"
-		printf "\t\ttool may be: $(ls $DIR/bin | tr '\n' ' ')\n"
-		printf "\n"
-		printf "\tUltraGrid args\n"
-		printf "\t\tinvokes command-line UltraGrid\n"
-		printf "\n"
+	        printf "usage:\n"
+	        printf "\tUltraGrid [--gui [args]]\n"
+	        printf "\t\tinvokes GUI\n"
+	        printf "\n"
+	        printf "\tUltraGrid --help\n"
+	        printf "\t\tprints this help\n"
+	        printf "\n"
+	        printf "\tUltraGrid --appimage-help\n"
+	        printf "\t\tprints AppImage related options\n"
+	        printf "\n"
+	        printf "\tUltraGrid --tool uv --help\n"
+	        printf "\t\tprints command-line UltraGrid help\n"
+	        printf "\n"
+	        printf "\tUltraGrid --tool <t> [args]\n"
+	        printf "\t\tinvokes specified tool\n"
+	        printf "\t\ttool may be: $(ls $DIR/bin | tr '\n' ' ')\n"
+	        printf "\n"
+	        printf "\tUltraGrid args\n"
+	        printf "\t\tinvokes command-line UltraGrid\n"
+	        printf "\n"
 	}
 
 	if [ $# -eq 0 ]; then
-		usage
-		$DIR/bin/uv-qt --with-uv $DIR/uv-wrapper.sh
+	        usage
+	        $DIR/bin/uv-qt --with-uv $DIR/uv-wrapper.sh
 	elif [ x"$1" = x"--tool" ]; then
-		TOOL=$2
-		shift 2
-		$DIR/bin/$TOOL "$@"
+	        TOOL=$2
+	        shift 2
+	        $DIR/bin/$TOOL "$@"
 	elif [ x"$1" = x"--gui" ]; then
-		shift
-		$DIR/bin/uv-qt --with-uv $DIR/uv-wrapper.sh "$@"
+	        shift
+	        $DIR/bin/uv-qt --with-uv $DIR/uv-wrapper.sh "$@"
 	elif [ x"$1" = x"-h" -o x"$1" = x"--help" ]; then
-		usage
-		exit 0
+	        usage
+	        exit 0
 	else
-		$DIR/bin/uv "$@"
+	        $DIR/uv-wrapper.sh "$@"
 	fi
 
 	exit $?
@@ -184,3 +215,5 @@ do
 	rm -rf $DIR
 
 done
+
+# vim: set noexpandtab tw=0:

@@ -93,7 +93,7 @@ do
         ./build_spout64.sh
 
         read -a FLAGS <<< ${CONF_FLAGS[$BUILD]-${CONF_FLAGS["default"]}}
-        ./autogen.sh --enable-aja --enable-spout "${FLAGS[@]}" --with-live555=/usr/local --enable-rtsp-server --enable-cineform --enable-qt --enable-video-mixer --enable-rtsp
+        ./autogen.sh --enable-aja --enable-jack --enable-spout "${FLAGS[@]}" --with-live555=/usr/local --enable-rtsp-server --enable-cineform --enable-qt --enable-video-mixer --enable-rtsp
         # --disable-dvs
         # --disable-jpeg --disable-cuda-dxt --disable-jpeg-to-dxt
         make -j 6

@@ -8,7 +8,7 @@ PATH=$PATH:/usr/local/bin
 PKG_CONFIG_PATH=$PKG_CONFIG_PATH${PKG_CONFIG_PATH:+":"}/usr/local/lib/pkgconfig
 
 . /home/toor/nightly-paths.sh
-. ~/ultragrid_nightly_common.sh
+. /home/toor/ultragrid_nightly_common.sh
 
 cd /tmp
 rm -rf nasm

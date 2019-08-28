@@ -81,7 +81,7 @@ do
 
 	for n in $APPDIR/bin/* $APPDIR/lib/ultragrid/*
 	do
-		for lib in `ldd $n | awk '{ print $3 }'`; do [ ! -f $lib ] || cp $lib $APPDIR/lib; done
+		for lib in `~/get_ldd_depends.sh $n`; do [ ! -f $lib ] || cp $lib $APPDIR/lib; done
 	done
 
 	mkdir $APPDIR/lib/fonts

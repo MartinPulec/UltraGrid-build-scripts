@@ -1,4 +1,5 @@
 export PATH=/mingw64/bin:/usr/local/bin:/usr/bin`[ -n "$PATH" ] && echo :$PATH`
+export CUDA_PATH='C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1'
 CUDA_PATH_C=`cygpath "$CUDA_PATH"`
 export PATH=$PATH:$CUDA_PATH_C/bin
 export CPATH=/usr/local/include`[ -n "$CPATH" ] && echo :$CPATH`

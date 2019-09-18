@@ -13,3 +13,5 @@ delete_asset() {
 	done
 }
 
+COMMON_ENABLE_ALL_FLAGS="--enable-all --disable-alsa --disable-bluefish444 --disable-cmpto-j2k --disable-coreaudio --disable-deltacast --disable-dshow --disable-dvs --disable-lavc-hw-accel-vaapi --disable-lavc-hw-accel-vdpau --disable-ndi --disable-sage --disable-sdl1 --disable-syphon --disable-spout --disable-text --disable-v4l2 --disable-wasapi"
+# todo - remove ndi, cmpto-j2k (?), text, deltacast

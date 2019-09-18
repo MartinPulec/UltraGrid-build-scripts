@@ -38,14 +38,15 @@ OAUTH=$(cat $HOME/github-oauth-token)
 
 # key is BUILD
 declare -A BRANCHES
-BRANCHES["master"]=master
 BRANCHES["devel"]=devel
+BRANCHES["master"]=master
 BRANCHES["ndi"]=master
 # if unset, default is to use the build name as a branch
 
 # key is BUILD
 declare -A CONF_FLAGS
 CONF_FLAGS["default"]="--disable-ndi"
+CONF_FLAGS["devel"]="$COMMON_ENABLE_ALL_FLAGS --enable-dshow --enable-spout --enable-wasapi"
 CONF_FLAGS["ndi"]="--enable-ndi"
 
 # key is BRANCH
@@ -53,7 +54,7 @@ declare -A GIT
 GIT["master"]="https://github.com/CESNET/UltraGrid.git"
 GIT["default"]="https://github.com/MartinPulec/UltraGrid.git"
 
-for BUILD in master ndi
+for BUILD in master ndi devel
 do
         BRANCH=${BRANCHES[$BUILD]-$BUILD}
         BUILD_DIR=ultragrid-nightly-$BUILD
@@ -133,6 +134,9 @@ do
                 ssh toor@martin-centos.local sudo mv /tmp/$ZIP_NAME /var/www/html/$SECPATH
                 ssh toor@martin-centos.local sudo chcon -Rv \
                         --type=httpd_sys_content_t /var/www/html/$SECPATH/$ZIP_NAME
+        elif [ $BUILD = "devel" ]; then
+                ssh toor@martin-centos.local 'rm ~/public_html/ug-devel/$ZIP_NAME_GLOB' || true
+                scp $ZIP_NAME toor@martin-centos.local:public_html/ug-devel
         else
                 delete_asset 4347706 $ZIP_NAME_PATTERN $OAUTH
 

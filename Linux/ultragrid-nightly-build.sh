@@ -33,6 +33,7 @@ BRANCHES["master"]=master
 # key is BUILD
 declare -A CONF_FLAGS
 CONF_FLAGS["default"]="--disable-ndi"
+CONF_FLAGS["devel"]="$COMMON_ENABLE_ALL_FLAGS --enable-alsa --enable-v4l2 --disable-lavc-hw-accel-vaapi --disable-lavc-hw-accel-vdpau"
 CONF_FLAGS["ndi"]="--enable-ndi"
 
 # key is BRANCH
@@ -40,7 +41,7 @@ declare -A GIT
 GIT["master"]="https://github.com/CESNET/UltraGrid.git"
 GIT["default"]="https://github.com/MartinPulec/UltraGrid.git"
 
-for BUILD in master
+for BUILD in master devel
 do
 	if [ "$BUILD" = master ]; then
 		SUFF=""
@@ -51,6 +52,7 @@ do
 	fi
 
 	APPNAME=UltraGrid${SUFF}-${DATE}.glibc${GLIBC_VERSION}-${ARCH}.AppImage
+	APPNAME_GLOB="UltraGrid${SUFF}-*-${ARCH}.AppImage"
 	APPNAME_PATTERN="UltraGrid${SUFF}-[[:digit:]]\{8\}\.glibc$(echo $GLIBC_VERSION | sed 's/\./\\./g')-${ARCH}\.AppImage"
 	LABEL="Linux%20build%20%28AppImage%2C%20$ARCH%2C%20glibc%20$GLIBC_VERSION$LABEL_SUFF%29"
 	BRANCH=${BRANCHES[$BUILD]-$BUILD}
@@ -207,9 +209,14 @@ do
 
 	appimagetool --sign --comp gzip $APPDIR $APPNAME
 
-        delete_asset 4347706 $APPNAME_PATTERN $OAUTH
+	if [ "$BUILD" = "devel" ]; then
+                 rm "~/public_html/ug-devel/$APPNAME_GLOB" || true
+                 cp $APPNAME ~/public_html/ug-devel
+	else
+		delete_asset 4347706 $APPNAME_PATTERN $OAUTH
 
-	curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$APPNAME'&label='$LABEL -T $APPNAME
+		curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$APPNAME'&label='$LABEL -T $APPNAME
+	fi
 
 	cd ..
 	rm -rf $DIR

@@ -17,6 +17,9 @@ install_cineform() {
         git clone https://github.com/gopro/cineform-sdk.git
         cd cineform-sdk
         cmake3 . && make CFHDCodecStatic
+        sudo cp libCFHDCodec.a /usr/local/lib
+        sudo cp Common/* /usr/local/include
+        sudo cp libcineformsdk.pc /usr/local/lib/pkgconfig/
 )
 }
 

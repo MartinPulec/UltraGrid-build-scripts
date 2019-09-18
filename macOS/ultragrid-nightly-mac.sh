@@ -27,6 +27,7 @@ trap atexit EXIT
 
 # key is BUILD
 typeset -A BRANCHES
+BRANCHES["devel"]=devel
 BRANCHES["master"]=master
 BRANCHES["ndi"]=master
 # if unset, default is to use the build name as a branch
@@ -34,6 +35,7 @@ BRANCHES["ndi"]=master
 # key is BUILD
 typeset -A CONF_FLAGS
 CONF_FLAGS["default"]="--disable-ndi"
+CONF_FLAGS["devel"]="$COMMON_ENABLE_ALL_FLAGS --enable-coreaudio --enable-syphon"
 CONF_FLAGS["ndi"]="--enable-ndi"
 
 # key is BRANCH
@@ -41,7 +43,7 @@ typeset -A GIT
 GIT["master"]="https://github.com/CESNET/UltraGrid.git"
 GIT["default"]="https://github.com/MartinPulec/UltraGrid.git"
 
-for BUILD in master ndi
+for BUILD in master ndi devel
 do
         cd /tmp
         BRANCH=${BRANCHES[$BUILD]-$BUILD}
@@ -72,15 +74,18 @@ do
         make osx-gui-dmg
 
         #scp -i /Users/toor/.ssh/id_rsa 'gui/UltraGrid GUI/UltraGrid.dmg' pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid/UltraGrid-nightly-OSX.dmg
-        if [ "$BUILD" != ndi ]; then
-                delete_asset 4347706 $APPNAME_PATTERN $OAUTH
-
-                curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST "https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=${APPNAME}&label=$LABEL" -T 'Ultragrid.dmg'
-        else
+        if [ "$BUILD" = ndi ]; then
                 ssh toor@martin-centos.local sudo rm "/var/www/html/$SECPATH/$APPNAME_GLOB" || true
                 scp UltraGrid.dmg toor@martin-centos.local:/tmp/$APPNAME
                 ssh toor@martin-centos.local sudo mv /tmp/$APPNAME /var/www/html/$SECPATH
                 ssh toor@martin-centos.local sudo chcon -Rv --type=httpd_sys_content_t /var/www/html/$SECPATH/$APPNAME
+        elif [ "$BUILD" = devel ]; then
+                 ssh toor@martin-centos.local "rm ~/public_html/ug-devel/$APPNAME_GLOB" || true
+                 scp $APPNAME toor@martin-centos.local:public_html/ug-devel
+        else
+                delete_asset 4347706 $APPNAME_PATTERN $OAUTH
+
+                curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST "https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=${APPNAME}&label=$LABEL" -T 'Ultragrid.dmg'
         fi
 
         cd ..

@@ -10,6 +10,18 @@ PKG_CONFIG_PATH=$PKG_CONFIG_PATH${PKG_CONFIG_PATH:+":"}/usr/local/lib/pkgconfig
 . /home/toor/nightly-paths.sh
 . /home/toor/ultragrid_nightly_common.sh
 
+install_cineform() {
+(
+        cd /tmp
+        rm -rf cineform-sdk
+        git clone https://github.com/gopro/cineform-sdk.git
+        cd cineform-sdk
+        cmake3 . && make CFHDCodecStatic
+)
+}
+
+install_cineform
+
 cd /tmp
 rm -rf nasm
 git clone -b nasm-2.13.xx https://github.com/sezero/nasm.git

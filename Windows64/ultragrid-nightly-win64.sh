@@ -82,8 +82,6 @@ do
 
         git submodule init && git submodule update
 
-	( cd cineform-sdk && /c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe -DBUILD_STATIC=false -G "Visual Studio 16 2019" -A x64 . && /c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe CineFormSDK.sln -property:Configuration=Release && cp Release/CFHDCodec.dll /usr/local/bin )
-
         ./autogen.sh # we need config.h for aja build script
         ./build_aja_lib_win64.sh
 

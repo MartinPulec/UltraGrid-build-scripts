@@ -65,9 +65,6 @@ do
 
 	cd $DIR/
 
-	git submodule init && git submodule update
-	( cd cineform-sdk/ && cmake3 . && make CFHDCodecStatic )
-
 	./autogen.sh --disable-video-mixer --enable-plugins --enable-qt --enable-static-qt --enable-cineform ${CONF_FLAGS[$BUILD]-${CONF_FLAGS["default"]}} # --disable-lavc-hw-accel-vdpau --disable-lavc-hw-accel-vaapi --with-deltacast=/root/VideoMasterHD --with-sage=/root/sage-graphics-read-only/ --with-dvs=/root/sdk4.2.1.1 --enable-gpl
 	make
 

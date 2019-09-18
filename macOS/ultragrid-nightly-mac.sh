@@ -65,9 +65,6 @@ do
 
         cd $BUILD_DIR/
 
-        git submodule init && git submodule update
-        ( cd cineform-sdk/ && cmake . && make CFHDCodecStatic )
-
 #export PKG_CONFIG_PATH=/usr/local/share/ffmpeg/lib/pkgconfig-static:$PKG_CONFIG_PATH
 
         ./autogen.sh ${COMMON_FLAGS[@]} ${CONF_FLAGS[$BUILD]-${CONF_FLAGS["default"]}}

@@ -32,9 +32,10 @@ BRANCHES["master"]=master
 
 # key is BUILD
 declare -A CONF_FLAGS
-CONF_FLAGS["default"]="--disable-ndi"
-CONF_FLAGS["devel"]="$COMMON_ENABLE_ALL_FLAGS --enable-alsa --enable-v4l2 --disable-lavc-hw-accel-vaapi --disable-lavc-hw-accel-vdpau"
-CONF_FLAGS["ndi"]="--enable-ndi"
+# text needs to be disabled because it caused crashes of AppImage
+CONF_FLAGS["default"]="--disable-cmpto-j2k --disable-text --disable-ndi"
+CONF_FLAGS["devel"]="$COMMON_ENABLE_ALL_FLAGS --enable-alsa --enable-cmpto-j2k --enable-v4l2 --disable-lavc-hw-accel-vaapi --disable-lavc-hw-accel-vdpau"
+CONF_FLAGS["ndi"]="--disable-cmpto-j2k --disable text --enable-ndi"
 
 # key is BRANCH
 declare -A GIT
@@ -98,6 +99,7 @@ do
 
 	( cd $APPDIR/lib; rm -f libasound.so.2 libdrm.so.2 libEGL.so.1 libGL.so.1 libGLdispatch.so.0 libstdc++.so.6  libX11-xcb.so.1 libX11.so.6 libXau.so.6 libXcursor.so.1 libXdmcp.so.6 libXext.so.6 libXfixes.so.3 libXi.so.6 libXinerama.so.1 libXrandr.so.2 libXrender.so.1 libXtst.so.6 libXxf86vm.so.1 libxcb* libxshm* )
 
+	( cd $APPDIR/lib; rm -f libcmpto* ) # remove non-free components
 	# indention inside heredoc should be leading tab and then spaces
 	cat <<-'EOF' >> $APPDIR/uv-wrapper.sh
 	#!/bin/sh

@@ -78,7 +78,7 @@ do
                 ssh toor@martin-centos.local sudo chcon -Rv --type=httpd_sys_content_t /var/www/html/$SECPATH/$APPNAME
         elif [ "$BUILD" = devel ]; then
                  ssh toor@martin-centos.local "rm ~/public_html/ug-devel/$APPNAME_GLOB" || true
-                 scp $APPNAME toor@martin-centos.local:public_html/ug-devel
+                 scp UltraGrid.dmg toor@martin-centos.local:public_html/ug-devel/$APPNAME
         else
                 delete_asset 4347706 $APPNAME_PATTERN $OAUTH
 

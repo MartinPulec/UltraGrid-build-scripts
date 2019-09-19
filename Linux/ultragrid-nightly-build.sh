@@ -209,8 +209,8 @@ do
 	appimagetool --sign --comp gzip $APPDIR $APPNAME
 
 	if [ "$BUILD" = "devel" ]; then
-                 rm "~/public_html/ug-devel/$APPNAME_GLOB" || true
-                 cp $APPNAME ~/public_html/ug-devel
+                 rm $HOME/public_html/ug-devel/$APPNAME_GLOB || true
+                 cp $APPNAME $HOME/public_html/ug-devel
 	else
 		delete_asset 4347706 $APPNAME_PATTERN $OAUTH
 

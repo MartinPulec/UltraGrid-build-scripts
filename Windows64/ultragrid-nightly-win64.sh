@@ -133,7 +133,7 @@ do
                 ssh toor@martin-centos.local sudo chcon -Rv \
                         --type=httpd_sys_content_t /var/www/html/$SECPATH/$ZIP_NAME
         elif [ $BUILD = "devel" ]; then
-                ssh toor@martin-centos.local 'rm ~/public_html/ug-devel/$ZIP_NAME_GLOB' || true
+                ssh toor@martin-centos.local "rm ~/public_html/ug-devel/$ZIP_NAME_GLOB" || true
                 scp $ZIP_NAME toor@martin-centos.local:public_html/ug-devel
         else
                 delete_asset 4347706 $ZIP_NAME_PATTERN $OAUTH

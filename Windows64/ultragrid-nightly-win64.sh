@@ -46,7 +46,7 @@ BRANCHES["ndi"]=master
 # key is BUILD
 declare -A CONF_FLAGS
 CONF_FLAGS["default"]="--disable-ndi"
-CONF_FLAGS["devel"]="$COMMON_ENABLE_ALL_FLAGS --enable-dshow --enable-spout --enable-wasapi"
+CONF_FLAGS["devel"]="$COMMON_ENABLE_ALL_FLAGS --enable-dshow --disable-screen --enable-spout --enable-wasapi"
 CONF_FLAGS["ndi"]="--enable-ndi"
 
 # key is BRANCH

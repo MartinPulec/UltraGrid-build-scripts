@@ -15,5 +15,20 @@ install_cineform() {
 )
 }
 
+install_gpujpeg() {
+(
+        cd /tmp
+        rm -rf gpujpeg
+        git clone https://github.com/CESNET/GPUJPEG.git gpujpeg
+        cd gpujpeg
+        ./autogeh.sh
+        make
+        sudo make install
+        cd ../..
+        rm -rf gpujpeg
+)
+}
+
 install_cineform
+install_gpujpeg
 

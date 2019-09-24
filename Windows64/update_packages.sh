@@ -32,6 +32,29 @@ install_ffmpeg() {
 )
 }
 
+install_gpujpeg() {
+(
+        cd /tmp
+        rm -rf gpujpeg
+        git clone https://github.com/CESNET/GPUJPEG.git gpujpeg
+        cd gpujpeg
+
+        #export MSVC_PATH=/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ 12.0/
+        #export PATH=$PATH:$MSVC_PATH/Common7/IDE/:$MSVC_PATH/VC/bin/
+        #export PATH=$PATH:$CUDA_PATH\\bin
+        #export INCLUDE=.
+
+        nvcc -DGPUJPEG_EXPORTS -o gpujpeg.dll --shared src/gpujpeg_*c src/gpujpeg*cu
+
+        cp gpujpeg.lib /usr/local/lib
+        cp gpujpeg.dll /usr/local/bin
+        cp -r libgpujpeg /usr/local/include
+
+        cd ..
+        rm -rf gpujpeg
+)
+}
 install_cineform
 install_ffmpeg
+install_gpujpeg
 

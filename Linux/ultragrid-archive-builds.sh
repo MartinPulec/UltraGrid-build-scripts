@@ -4,7 +4,7 @@ exec >~/ultragrid-archive.log 2>&1 </dev/null
 set -exu
 
 REMOTE=xpulec@frakira
-RDIR='$HOME/public_html/'$(date +%Y%m%d)
+RDIR='$HOME/public_html/ug-nightly-archive/'$(date +%Y%m%d)
 TMPDIR=$(mktemp -d)
 
 . ~/ultragrid_nightly_common.sh

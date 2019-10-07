@@ -54,7 +54,9 @@ declare -A GIT
 GIT["master"]="https://github.com/CESNET/UltraGrid.git"
 GIT["default"]="https://github.com/MartinPulec/UltraGrid.git"
 
-for BUILD in master ndi devel
+DEFAULT_BUILD_LIST="master ndi devel"
+
+for BUILD in ${@:-$DEFAULT_BUILD_LIST}
 do
         BRANCH=${BRANCHES[$BUILD]-$BUILD}
         BUILD_DIR=ultragrid-nightly-$BUILD

@@ -21,7 +21,7 @@ install_gpujpeg() {
         rm -rf gpujpeg
         git clone https://github.com/CESNET/GPUJPEG.git gpujpeg
         cd gpujpeg
-        ./autogeh.sh
+        ./autogen.sh
         make
         sudo make install
         cd ../..

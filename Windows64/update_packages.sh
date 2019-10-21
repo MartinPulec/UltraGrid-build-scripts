@@ -44,7 +44,7 @@ install_gpujpeg() {
         #export PATH=$PATH:$CUDA_PATH\\bin
         #export INCLUDE=.
 
-        nvcc -DGPUJPEG_EXPORTS -o gpujpeg.dll --shared src/gpujpeg_*c src/gpujpeg*cu
+        nvcc -I. -DGPUJPEG_EXPORTS -o gpujpeg.dll --shared src/gpujpeg_*c src/gpujpeg*cu
 
         cp gpujpeg.lib /usr/local/lib
         cp gpujpeg.dll /usr/local/bin

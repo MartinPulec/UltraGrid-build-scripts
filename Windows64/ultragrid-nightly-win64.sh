@@ -82,8 +82,6 @@ do
         #cp -r ~/gpujpeg/Release/ gpujpeg
         #cp -r ~/SpoutSDK .
 
-        git submodule init && git submodule update
-
         ./autogen.sh # we need config.h for aja build script
         ./build_aja_lib_win64.sh
 

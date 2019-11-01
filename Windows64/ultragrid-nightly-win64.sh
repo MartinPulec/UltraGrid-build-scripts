@@ -2,7 +2,9 @@
 set -e
 set -x
 
-exec > ultragrid-build64.log 2>&1 </dev/null
+if ! test -t 1; then
+        exec > ultragrid-build64.log 2>&1 </dev/null
+fi
 
 export USERNAME=toor
 export HOME=/home/$USERNAME

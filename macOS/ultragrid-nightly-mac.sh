@@ -1,7 +1,9 @@
 #!/bin/ksh
 # OS X 10.11 has too old bash (3.x) that doesn't know associative arrays
 
-exec > ~/ultragrid-build.log 2>&1 </dev/null
+if ! test -t 1; then
+        exec > ~/ultragrid-build.log 2>&1 </dev/null
+fi
 
 set -e
 set -x

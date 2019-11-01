@@ -1,6 +1,8 @@
 #!/bin/bash
 
-exec > ~/ultragrid-nightly-build.log 2>&1 </dev/null
+if ! test -t 1; then
+	exec > ~/ultragrid-nightly-build.log 2>&1 </dev/null
+fi
 
 set -exu
 

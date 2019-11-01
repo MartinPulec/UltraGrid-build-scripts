@@ -34,7 +34,7 @@ BRANCHES["master"]=master
 declare -A CONF_FLAGS
 # text needs to be disabled because it caused crashes of AppImage
 CONF_FLAGS["default"]="--disable-cmpto-j2k --disable-text --disable-ndi"
-CONF_FLAGS["devel"]="$COMMON_ENABLE_ALL_FLAGS --enable-alsa --enable-cmpto-j2k --enable-v4l2 --disable-lavc-hw-accel-vaapi --disable-lavc-hw-accel-vdpau"
+CONF_FLAGS["devel"]="$COMMON_ENABLE_ALL_FLAGS --disable-jack-transport --enable-alsa --enable-cmpto-j2k --enable-v4l2"
 CONF_FLAGS["ndi"]="--disable-cmpto-j2k --disable text --enable-ndi"
 
 # key is BRANCH

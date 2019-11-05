@@ -9,6 +9,17 @@ OAUTH=$(cat $HOME/github-oauth-token)
 
 . ~/ultragrid_nightly_common.sh
 
+## Make and upload doxygen documentation to frakira.
+## Must be called inside UltraGrid source directory.
+mk_upload_doxy() {
+         doxygen Doxyfile
+         scp -r documentation xpulec@frakira:public_html/ultragrid-doxygen-new
+         ssh rm -r xpulec@frakira public_html/ultragrid-doxygen
+         ssh xpulec@frakira rm -rf public_html/ultragrid-doxygen
+         ssh xpulec@frakira mv public_html/ultragrid-doxygen-new public_html/ultragrid-doxygen
+}
+
+
 cd /tmp
 
 # checkout current build script
@@ -32,9 +43,7 @@ git tag -d nightly
 git tag nightly
 git push -f git@github.com:CESNET/UltraGrid.git refs/tags/nightly:refs/tags/nightly
 
-cd ..
-
-rm -r ultragrid-nightly
+mk_upload_doxy
 
 # when overriding a tag, GITHUB makes from pre-relase a draft again - we need to release it again
 curl -H "Authorization: token $OAUTH" -X PATCH https://api.github.com/repos/CESNET/UltraGrid/releases/4347706 -T - <<'EOF'
@@ -47,4 +56,7 @@ curl -H "Authorization: token $OAUTH" -X PATCH https://api.github.com/repos/CESN
   "prerelease": true
 }
 EOF
+
+cd ..
+rm -r ultragrid-nightly
 

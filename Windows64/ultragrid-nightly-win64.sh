@@ -117,7 +117,7 @@ do
 
         # TODO: check if cuda is really not needed
         #cp "$CUDA_PATH/bin/cudart64_92.dll" bin
-        for n in COPYRIGHT NEWS README REPORTING-BUGS; do
+        for n in COPYRIGHT NEWS README.md REPORTING-BUGS.md; do
                 cp $n bin
         done
         cp speex-1.2rc1/COPYING bin/COPYING.speex

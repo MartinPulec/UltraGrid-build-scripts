@@ -1,8 +1,13 @@
-#!/bin/bash
-set -e
-set -x
+#!/bin/bash -ex
 
-if ! test -t 1; then
+# Usage:
+# ultragrid-nightly-win64.sh [-i] [branches]
+#      -i    - interactive mode - print output to console
+#   branches - list of branches to build
+
+if test "${1:-}" = "-i"; then
+        shift
+else
         exec > ultragrid-build64.log 2>&1 </dev/null
 fi
 

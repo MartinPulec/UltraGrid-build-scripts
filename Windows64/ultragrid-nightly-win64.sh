@@ -89,15 +89,21 @@ do
         #cp -r ~/gpujpeg/Release/ gpujpeg
         #cp -r ~/SpoutSDK .
 
+        if [ -d data/scripts ]; then
+                SCRIPT_DIR=data/scripts
+        else
+                SCRIPT_DIR=.
+        fi
+
         ./autogen.sh # we need config.h for aja build script
-        ./build_aja_lib_win64.sh
+        $SCRIPT_DIR/build_aja_lib_win64.sh
 
         if grep -q VS2012 build_spout64.sh; then
                 cp -r ~/SpoutSDK src/
         else
                 cp -r ~/Spout2/SPOUTSDK/SpoutSDK src/
         fi
-        ./build_spout64.sh
+        $SCRIPT_DIR/build_spout64.sh
 
         read -a FLAGS <<< ${CONF_FLAGS[$BUILD]-${CONF_FLAGS["default"]}}
         ./autogen.sh --enable-aja --enable-jack --enable-spout "${FLAGS[@]}" --with-live555=/usr/local --enable-rtsp-server --enable-cineform --enable-qt --enable-video-mixer --enable-rtsp
@@ -111,7 +117,7 @@ do
 
         # Add dependencies
         for exe in bin/*exe; do
-                for n in `./get_dll_depends.sh "$exe"`; do
+                for n in `$SCRIPT_DIR/get_dll_depends.sh "$exe"`; do
                         cp "$n" bin
                 done
         done

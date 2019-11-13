@@ -14,11 +14,9 @@ OAUTH=$(cat $HOME/github-oauth-token)
 mk_upload_doxy() {
          doxygen Doxyfile
          scp -r documentation xpulec@frakira:public_html/ultragrid-doxygen-new
-         ssh rm -r xpulec@frakira public_html/ultragrid-doxygen
          ssh xpulec@frakira rm -rf public_html/ultragrid-doxygen
          ssh xpulec@frakira mv public_html/ultragrid-doxygen-new public_html/ultragrid-doxygen
 }
-
 
 cd /tmp
 

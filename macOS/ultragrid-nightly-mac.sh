@@ -87,6 +87,14 @@ do
                 delete_asset 4347706 $APPNAME_PATTERN $OAUTH
 
                 curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST "https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=${APPNAME}&label=$LABEL" -T 'Ultragrid.dmg'
+                if [ "$BUILD" = "master" ]; then
+                        mv Ultragrid.dmg $APPNAME
+                        zsyncmake -C $APPNAME
+                        ZSYNC=UltraGrid-latest-macos.dmg.zsync
+                        mv $APPNAME.zsync $ZSYNC
+                        delete_asset 4347706 $ZSYNC $OAUTH
+                        curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/x-zsync' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZSYNC -T $ZSYNC
+                fi
         fi
 
         cd ..

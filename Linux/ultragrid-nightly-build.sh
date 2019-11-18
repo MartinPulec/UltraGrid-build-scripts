@@ -1,10 +1,17 @@
-#!/bin/bash
+#!/bin/bash -eu
 
-if ! test -t 1; then
+# Usage:
+# ultragrid-nightly-win64.sh [-i] [branches]
+#      -i    - interactive mode - print output to console
+#   branches - list of branches to build
+
+if test "${1:-}" = "-i"; then
+        shift
+elif ! test -t 1; then
 	exec > ~/ultragrid-nightly-build.log 2>&1 </dev/null
 fi
 
-set -exu
+set -x
 
 export AJA_DIRECTORY=$HOME/ntv2sdk
 export QT_SELECT=5
@@ -235,8 +242,8 @@ do
 		delete_asset 4347706 $APPNAME_PATTERN $OAUTH
 		curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$APPNAME'&label='$LABEL -T $APPNAME
 		if [ "$BUILD" = "master" ]; then
-			zsyncmake -C -u $APPNAME
-			ZSYNC=UltraGrid-latest-x86_64.AppImage.zsync
+			zsyncmake -C $APPNAME
+			ZSYNC=UltraGrid-latest-Linux-x86_64.AppImage.zsync
 			mv $APPNAME.zsync $ZSYNC
 			delete_asset 4347706 $ZSYNC $OAUTH
 			curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/x-zsync' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZSYNC -T $ZSYNC

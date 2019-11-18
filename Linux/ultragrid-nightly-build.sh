@@ -233,8 +233,14 @@ do
 		cp $APPNAME $HOME/public_html/ug-devel
 	else
 		delete_asset 4347706 $APPNAME_PATTERN $OAUTH
-
 		curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$APPNAME'&label='$LABEL -T $APPNAME
+		if [ "$BUILD" = "master" ]; then
+			zsyncmake -C -u $APPNAME
+			ZSYNC=UltraGrid-latest-x86_64.AppImage.zsync
+			mv $APPNAME.zsync $ZSYNC
+			delete_asset 4347706 $ZSYNC $OAUTH
+			curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/x-zsync' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZSYNC -T $ZSYNC
+		fi
 	fi
 
 	cd ..

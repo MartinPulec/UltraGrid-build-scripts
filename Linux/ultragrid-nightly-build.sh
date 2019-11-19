@@ -233,7 +233,7 @@ do
 	cp data/ultragrid.png $APPDIR/ultragrid.png
 	cp data/uv-qt.desktop $APPDIR/ultragrid.desktop
 
-	appimagetool --sign --comp gzip $APPDIR $APPNAME
+	appimagetool --sign --comp gzip -u "zsync|https://github.com/CESNET/UltraGrid/releases/download/nightly/UltraGrid-latest-Linux-x86_64.AppImage.zsync" $APPDIR $APPNAME
 
 	if [ "$BUILD" = "devel" ]; then
 		rm $HOME/public_html/ug-devel/$APPNAME_GLOB || true

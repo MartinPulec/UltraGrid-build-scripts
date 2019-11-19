@@ -197,6 +197,9 @@ do
 	        printf "\tUltraGrid --appimage-help\n"
 	        printf "\t\tprints AppImage related options\n"
 	        printf "\n"
+	        printf "\tUltraGrid --update\n"
+	        printf "\t\tupdates AppImage\n"
+	        printf "\n"
 	        printf "\tUltraGrid --tool uv --help\n"
 	        printf "\t\tprints command-line UltraGrid help\n"
 	        printf "\n"
@@ -222,6 +225,9 @@ do
 	elif [ x"$1" = x"-h" -o x"$1" = x"--help" ]; then
 	        usage
 	        exit 0
+	elif [ x"$1" = x"-u" -o x"$1" = x"--update" ]; then
+	        $DIR/appimageupdatetool $APPIMAGE
+	        exit 0
 	else
 	        $DIR/uv-wrapper.sh "$@"
 	fi
@@ -231,7 +237,10 @@ do
 	chmod 755 $APPDIR/AppRun
 
 	cp data/ultragrid.png $APPDIR/ultragrid.png
+	ln -s ultragrid.png $APPDIR/.DirIcon
 	cp data/uv-qt.desktop $APPDIR/ultragrid.desktop
+	wget https://github.com/AppImage/AppImageUpdate/releases/download/continuous/appimageupdatetool-x86_64.AppImage -O $APPDIR/appimageupdatetool
+	chmod ugo+x $APPDIR/appimageupdatetool
 
 	appimagetool --sign --comp gzip -u "zsync|https://github.com/CESNET/UltraGrid/releases/download/nightly/UltraGrid-latest-Linux-x86_64.AppImage.zsync" $APPDIR $APPNAME
 

@@ -135,6 +135,36 @@ do
 
         mv bin $DIR_NAME
 
+        wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0-win-64bit-build1.zip
+        unzip aria*zip
+        cp aria*/aria2c.exe $DIR_NAME
+        cat <<EOF >$DIR_NAME/update.ps1
+\$ErrorActionPreference = "Stop"
+$scriptPath = $MyInvocation.MyCommand.Path
+$scriptDir = Split-Path $scriptPath
+cd $scriptDir
+rm UltraGrid-nightly*
+.\aria2c.exe https://github.com/CESNET/UltraGrid/releases/download/nightly/UltraGrid-nightly-latest-win64.metalink
+if (\$LastExitCode -ne 0) {
+        throw "Download failed"
+}
+\$downloadExtractDir = "UltraGrid-nightly-latest-win64"
+Expand-Archive -LiteralPath UltraGrid-nightly-latest-win64.zip -DestinationPath \$downloadExtractDir
+\$currentName = Split-Path -Leaf Get-Location).Path
+\$downloadedName = (Get-ChildItem \$downloadExtractDir).Name
+if (\$currentName -ne \$downloadedName) {
+        Move-Item \$downloadExtractDir/* ..
+        Write-Host "Downloaded ,\$downloadedName removing \$currentName."
+        Set-Location ../\$downloadedName
+        Remove-Item -Recurse ../\$currentName
+} else {
+        Remove-Item -Recurse \$downloadExtractDir
+        Remove-Item UltraGrid-nightly-latest-win64.zip
+        Remove-Item UltraGrid-nightly-latest-win64.zip.metalink
+}
+EOF
+
+
         zip -9 -r $ZIP_NAME $DIR_NAME
         #scp -i c:/mingw32/msys~/.ssh/id_rsa $ZIP_NAME pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid
 
@@ -158,16 +188,16 @@ do
 <?xml version="1.0" encoding="utf-8"?>
 <metalink version="3.0" xmlns="http://www.metalinker.org/">
   <files>
-    <file name="UltraGrid-nigtly-win64.zip">
+    <file name="UltraGrid-nightly-latest-win64.zip">
       <resources maxconnections="1">
-    <url type="https">https://github.com/CESNET/UltraGrid/releases/download/nightly/$ZIPNAME</url>
+        <url type="https">https://github.com/CESNET/UltraGrid/releases/download/nightly/$ZIP_NAME</url>
       </resources>
     </file>
   </files>
 </metalink>
 EOF
                         delete_asset 4347706 $METALINK $OAUTH
-                        curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/zip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$METALINK -T $METALINK # --insecure
+                        curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/metalink+xml' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$METALINK -T $METALINK # --insecure
                 fi
         fi
 done

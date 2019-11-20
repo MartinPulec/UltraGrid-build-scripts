@@ -152,6 +152,23 @@ do
                 delete_asset 4347706 $ZIP_NAME_PATTERN $OAUTH
 
                 curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/zip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZIP_NAME'&label='$LABEL -T $ZIP_NAME # --insecure
+                if [ $BUILD = "master" ]; then
+                        METALINK=UltraGrid-nightly-latest-win64.metalink
+                        cat <<EOF >$METALINK
+<?xml version="1.0" encoding="utf-8"?>
+<metalink version="3.0" xmlns="http://www.metalinker.org/">
+  <files>
+    <file name="UltraGrid-nigtly-win64.zip">
+      <resources maxconnections="1">
+    <url type="https">https://github.com/CESNET/UltraGrid/releases/download/nightly/$ZIPNAME</url>
+      </resources>
+    </file>
+  </files>
+</metalink>
+EOF
+                        delete_asset 4347706 $METALINK $OAUTH
+                        curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/zip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$METALINK -T $METALINK # --insecure
+                fi
         fi
 done
 

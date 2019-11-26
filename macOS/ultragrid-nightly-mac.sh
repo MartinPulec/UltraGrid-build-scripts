@@ -90,7 +90,7 @@ do
                 if [ "$BUILD" = "master" ]; then
                         mv Ultragrid.dmg $APPNAME
                         zsyncmake -C $APPNAME
-                        ZSYNC=UltraGrid-latest-macos.dmg.zsync
+                        ZSYNC=UltraGrid-nightly-latest-macos.dmg.zsync
                         mv $APPNAME.zsync $ZSYNC
                         delete_asset 4347706 $ZSYNC $OAUTH
                         curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/x-zsync' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZSYNC -T $ZSYNC

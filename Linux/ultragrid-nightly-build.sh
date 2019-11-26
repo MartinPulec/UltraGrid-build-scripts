@@ -242,7 +242,8 @@ do
 	wget https://github.com/AppImage/AppImageUpdate/releases/download/continuous/appimageupdatetool-x86_64.AppImage -O $APPDIR/appimageupdatetool
 	chmod ugo+x $APPDIR/appimageupdatetool
 
-	appimagetool --sign --comp gzip -u "zsync|https://github.com/CESNET/UltraGrid/releases/download/nightly/UltraGrid-latest-Linux-x86_64.AppImage.zsync" $APPDIR $APPNAME
+	ZSYNC=UltraGrid-nightly-latest-Linux-x86_64.AppImage.zsync
+	appimagetool --sign --comp gzip -u "zsync|https://github.com/CESNET/UltraGrid/releases/download/nightly/$ZSYNC" $APPDIR $APPNAME
 
 	if [ "$BUILD" = "devel" ]; then
 		rm $HOME/public_html/ug-devel/$APPNAME_GLOB || true
@@ -252,7 +253,6 @@ do
 		curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$APPNAME'&label='$LABEL -T $APPNAME
 		if [ "$BUILD" = "master" ]; then
 			zsyncmake -C $APPNAME
-			ZSYNC=UltraGrid-latest-Linux-x86_64.AppImage.zsync
 			mv $APPNAME.zsync $ZSYNC
 			delete_asset 4347706 $ZSYNC $OAUTH
 			curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/x-zsync' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZSYNC -T $ZSYNC

@@ -38,7 +38,6 @@ OAUTH=$(cat $HOME/github-oauth-token)
 # key is BUILD
 declare -A BRANCHES
 BRANCHES["master"]=master
-BRANCHES["coverity"]=master
 # if unset, default is to use the build name as a branch
 
 # key is BUILD
@@ -46,7 +45,6 @@ declare -A CONF_FLAGS
 # text needs to be disabled because it caused crashes of AppImage
 CONF_FLAGS["default"]="--disable-cmpto-j2k --disable-text --disable-ndi"
 CONF_FLAGS["devel"]="$COMMON_ENABLE_ALL_FLAGS --disable-jack-transport --enable-alsa --enable-cmpto-j2k --enable-v4l2"
-CONF_FLAGS["coverity"]=${CONF_FLAGS["devel"]}
 CONF_FLAGS["ndi"]="--disable-cmpto-j2k --disable text --enable-ndi"
 
 # key is BRANCH
@@ -54,7 +52,7 @@ declare -A GIT
 GIT["master"]="https://github.com/CESNET/UltraGrid.git"
 GIT["default"]="https://github.com/MartinPulec/UltraGrid.git"
 
-DEFAULT_BUILD_LIST="master coverity devel"
+DEFAULT_BUILD_LIST="master devel"
 
 for BUILD in ${@:-$DEFAULT_BUILD_LIST}
 do
@@ -81,18 +79,6 @@ do
 	cd $DIR/
 
 	./autogen.sh --disable-video-mixer --enable-plugins --enable-qt --enable-static-qt --enable-cineform ${CONF_FLAGS[$BUILD]-${CONF_FLAGS["default"]}} # --disable-lavc-hw-accel-vdpau --disable-lavc-hw-accel-vaapi --with-deltacast=/root/VideoMasterHD --with-sage=/root/sage-graphics-read-only/ --with-dvs=/root/sdk4.2.1.1 --enable-gpl
-
-	if [ "$BUILD" = "coverity" ]; then
-		cov-build --dir cov-int make -j 2
-		tar caf ultragrid.tar.xz cov-int
-		curl --form token=$(cat $HOME/coverity-token) \
-			--form email=pulec@cesnet.cz \
-			--form file=@ultragrid.tar.xz \
-			--form version=$(date +%F) \
-			--form description="master build" \
-			'https://scan.coverity.com/builds?project=UltraGrid'
-		continue
-	fi
 
 	make
 

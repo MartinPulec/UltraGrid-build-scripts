@@ -54,11 +54,12 @@ do
         BUILD_DIR=ultragrid-nightly-$BUILD
 
         if [ "$BUILD" = master ]; then
-                APPNAME=UltraGrid-${DATE}-macos.dmg
-                APPNAME_PATTERN="UltraGrid-[[:digit:]]\{8\}-macos.dmg"
+                APPNAME=UltraGrid-nightly-macos.dmg
+                #APPNAME_PATTERN="UltraGrid-[[:digit:]]\{8\}-macos.dmg"
+                APPNAME_PATTERN="UltraGrid-nightly-macos.dmg"
                 LABEL="macOS%20build"
         else
-                APPNAME=UltraGrid-${DATE}-$BUILD-macos.dmg
+                APPNAME=UltraGrid-nightly-$BUILD-macos.dmg
                 APPNAME_GLOB="UltraGrid-*-$BUILD-macos.dmg"
                 LABEL="macOS%20build%20%28$BUILD%29"
         fi
@@ -87,14 +88,14 @@ do
                 delete_asset 4347706 $APPNAME_PATTERN $OAUTH
 
                 curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST "https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name=${APPNAME}&label=$LABEL" -T 'Ultragrid.dmg'
-                if [ "$BUILD" = "master" ]; then
-                        mv Ultragrid.dmg $APPNAME
-                        zsyncmake -C $APPNAME
-                        ZSYNC=UltraGrid-nightly-latest-macos.dmg.zsync
-                        mv $APPNAME.zsync $ZSYNC
-                        delete_asset 4347706 $ZSYNC $OAUTH
-                        curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/x-zsync' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZSYNC -T $ZSYNC
-                fi
+                #if [ "$BUILD" = "master" ]; then
+                #        mv Ultragrid.dmg $APPNAME
+                #        zsyncmake -C $APPNAME
+                #        ZSYNC=UltraGrid-nightly-latest-macos.dmg.zsync
+                #        mv $APPNAME.zsync $ZSYNC
+                #        delete_asset 4347706 $ZSYNC $OAUTH
+                #        curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/x-zsync' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZSYNC -T $ZSYNC
+                #fi
         fi
 
         cd ..

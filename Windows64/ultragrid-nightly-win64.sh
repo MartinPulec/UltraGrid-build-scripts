@@ -75,10 +75,10 @@ do
                 LABEL="Windows%20build%20%28$BUILD%29"
                 SUFF=-${BUILD}
         fi
-        DIR_NAME=UltraGrid-${DATE}${SUFF}
-        ZIP_NAME=UltraGrid-${DATE}${SUFF}-win64.zip
+        DIR_NAME=UltraGrid-nighlty${SUFF}
+        ZIP_NAME=UltraGrid-nighlty${SUFF}-win64.zip
         ZIP_NAME_GLOB="UltraGrid-*${SUFF}-win64.zip"
-        ZIP_NAME_PATTERN="UltraGrid-[[:digit:]]\{8\}${SUFF}-win64.zip"
+        ZIP_NAME_PATTERN="UltraGrid-nightly${SUFF}-win64.zip"
 
         echo Building $BUILD...
 
@@ -196,8 +196,8 @@ EOF
   </files>
 </metalink>
 EOF
-                        delete_asset 4347706 $METALINK $OAUTH
-                        curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/metalink+xml' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$METALINK -T $METALINK # --insecure
+                        #delete_asset 4347706 $METALINK $OAUTH
+                        #curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/metalink+xml' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$METALINK -T $METALINK # --insecure
                 fi
         fi
 done

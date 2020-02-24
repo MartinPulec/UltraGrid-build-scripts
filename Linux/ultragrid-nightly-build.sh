@@ -64,9 +64,9 @@ do
 		LABEL_SUFF="%2C%20$BUILD"
 	fi
 
-	APPNAME=UltraGrid${SUFF}-${DATE}.glibc${GLIBC_VERSION}-${ARCH}.AppImage
+	APPNAME=UltraGrid${SUFF}-nightly-${ARCH}.AppImage
 	APPNAME_GLOB="UltraGrid${SUFF}-*-${ARCH}.AppImage"
-	APPNAME_PATTERN="UltraGrid${SUFF}-[[:digit:]]\{8\}\.glibc$(echo $GLIBC_VERSION | sed 's/\./\\./g')-${ARCH}\.AppImage"
+	APPNAME_PATTERN="UltraGrid${SUFF}-nightly-${ARCH}\.AppImage"
 	LABEL="Linux%20build%20%28AppImage%2C%20$ARCH%2C%20glibc%20$GLIBC_VERSION$LABEL_SUFF%29"
 	BRANCH=${BRANCHES[$BUILD]-$BUILD}
 
@@ -225,10 +225,10 @@ do
 	cp data/ultragrid.png $APPDIR/ultragrid.png
 	ln -s ultragrid.png $APPDIR/.DirIcon
 	cp data/uv-qt.desktop $APPDIR/ultragrid.desktop
+
 	wget https://github.com/AppImage/AppImageUpdate/releases/download/continuous/appimageupdatetool-x86_64.AppImage -O $APPDIR/appimageupdatetool
 	chmod ugo+x $APPDIR/appimageupdatetool
-
-	ZSYNC=UltraGrid-nightly-latest-Linux-x86_64.AppImage.zsync
+	ZSYNC=$APPNAME.zsync
 	appimagetool --sign --comp gzip -u "zsync|https://github.com/CESNET/UltraGrid/releases/download/nightly/$ZSYNC" $APPDIR $APPNAME
 
 	if [ "$BUILD" = "devel" ]; then
@@ -239,7 +239,7 @@ do
 		curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$APPNAME'&label='$LABEL -T $APPNAME
 		if [ "$BUILD" = "master" ]; then
 			zsyncmake -C $APPNAME
-			mv $APPNAME.zsync $ZSYNC
+			#mv $APPNAME.zsync $ZSYNC
 			delete_asset 4347706 $ZSYNC $OAUTH
 			curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/x-zsync' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$ZSYNC -T $ZSYNC
 		fi

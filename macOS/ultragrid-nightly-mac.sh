@@ -54,13 +54,13 @@ do
         BUILD_DIR=ultragrid-nightly-$BUILD
 
         if [ "$BUILD" = master ]; then
-                APPNAME=UltraGrid-nightly-macos.dmg
+                APPNAME=UltraGrid-nightly.dmg
                 #APPNAME_PATTERN="UltraGrid-[[:digit:]]\{8\}-macos.dmg"
-                APPNAME_PATTERN="UltraGrid-nightly-macos.dmg"
+                APPNAME_PATTERN="UltraGrid-nightly.dmg"
                 LABEL="macOS%20build"
         else
-                APPNAME=UltraGrid-nightly-$BUILD-macos.dmg
-                APPNAME_GLOB="UltraGrid-*-$BUILD-macos.dmg"
+                APPNAME=UltraGrid-nightly-$BUILD.dmg
+                APPNAME_GLOB="UltraGrid-*-$BUILD.dmg"
                 LABEL="macOS%20build%20%28$BUILD%29"
         fi
 

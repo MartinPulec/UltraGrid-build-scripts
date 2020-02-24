@@ -135,21 +135,18 @@ do
 
         mv bin $DIR_NAME
 
-        wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0-win-64bit-build1.zip
-        unzip aria*zip
-        cp aria*/aria2c.exe $DIR_NAME
         cat <<EOF >$DIR_NAME/update.ps1
 \$ErrorActionPreference = "Stop"
 $scriptPath = $MyInvocation.MyCommand.Path
 $scriptDir = Split-Path $scriptPath
 cd $scriptDir
 rm UltraGrid-nightly*
-.\aria2c.exe https://github.com/CESNET/UltraGrid/releases/download/nightly/UltraGrid-nightly-latest-win64.metalink
+Invoke-WebRequest https://github.com/CESNET/UltraGrid/releases/download/nightly/UltraGrid-nighlty-win64.zip
 if (\$LastExitCode -ne 0) {
         throw "Download failed"
 }
 \$downloadExtractDir = "UltraGrid-nightly-latest-win64"
-Expand-Archive -LiteralPath UltraGrid-nightly-latest-win64.zip -DestinationPath \$downloadExtractDir
+Expand-Archive -LiteralPath UltraGrid-nightly-win64.zip -DestinationPath \$downloadExtractDir
 \$currentName = Split-Path -Leaf Get-Location).Path
 \$downloadedName = (Get-ChildItem \$downloadExtractDir).Name
 if (\$currentName -ne \$downloadedName) {
@@ -159,8 +156,7 @@ if (\$currentName -ne \$downloadedName) {
         Remove-Item -Recurse ../\$currentName
 } else {
         Remove-Item -Recurse \$downloadExtractDir
-        Remove-Item UltraGrid-nightly-latest-win64.zip
-        Remove-Item UltraGrid-nightly-latest-win64.zip.metalink
+        Remove-Item UltraGrid-nightly-win64.zip
 }
 EOF
 

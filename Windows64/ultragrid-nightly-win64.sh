@@ -75,8 +75,8 @@ do
                 LABEL="Windows%20build%20%28$BUILD%29"
                 SUFF=-${BUILD}
         fi
-        DIR_NAME=UltraGrid-nighlty${SUFF}
-        ZIP_NAME=UltraGrid-nighlty${SUFF}-win64.zip
+        DIR_NAME=UltraGrid-nightly${SUFF}
+        ZIP_NAME=UltraGrid-nightly${SUFF}-win64.zip
         ZIP_NAME_GLOB="UltraGrid-*${SUFF}-win64.zip"
         ZIP_NAME_PATTERN="UltraGrid-nightly${SUFF}-win64.zip"
 
@@ -141,13 +141,13 @@ $scriptPath = $MyInvocation.MyCommand.Path
 $scriptDir = Split-Path $scriptPath
 cd $scriptDir
 rm UltraGrid-nightly*
-Invoke-WebRequest https://github.com/CESNET/UltraGrid/releases/download/nightly/UltraGrid-nighlty-win64.zip
+Invoke-WebRequest https://github.com/CESNET/UltraGrid/releases/download/nightly/UltraGrid-nightly-win64.zip -OutFile UltraGrid-nightly-win64.zip
 if (\$LastExitCode -ne 0) {
         throw "Download failed"
 }
 \$downloadExtractDir = "UltraGrid-nightly-latest-win64"
 Expand-Archive -LiteralPath UltraGrid-nightly-win64.zip -DestinationPath \$downloadExtractDir
-\$currentName = Split-Path -Leaf Get-Location).Path
+\$currentName = (Split-Path -Leaf Get-Location).Path
 \$downloadedName = (Get-ChildItem \$downloadExtractDir).Name
 if (\$currentName -ne \$downloadedName) {
         Move-Item \$downloadExtractDir/* ..

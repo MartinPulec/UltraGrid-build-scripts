@@ -27,6 +27,8 @@ atexit() {
 }
 trap atexit EXIT
 
+exit
+
 # key is BUILD
 typeset -A BRANCHES
 BRANCHES["devel"]=devel

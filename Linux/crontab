@@ -23,6 +23,6 @@
 0 2 * * * $HOME/ultragrid-nightly.sh
 10 2 * * * $HOME/ultragrid-nightly-snapshot.sh
 23 6 * * * $HOME/ultragrid-nightly-build-release.sh
-55 6 * * * $HOME/ultragrid-nightly-build.sh
-0 16 * * * $HOME/ultragrid-nightly-build.sh devel
+#55 6 * * * $HOME/ultragrid-nightly-build.sh
+#0 16 * * * $HOME/ultragrid-nightly-build.sh devel
 

@@ -23,6 +23,7 @@ cd $BUILD_DIR/
 
 #export PKG_CONFIG_PATH=/usr/local/share/ffmpeg/lib/pkgconfig-static:$PKG_CONFIG_PATH
 ./autogen.sh ${COMMON_FLAGS[@]}
+make gui-bundle
 make osx-gui-dmg
 
 #scp -i /Users/toor/.ssh/id_rsa 'gui/UltraGrid GUI/UltraGrid.dmg' pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid/UltraGrid-nightly-OSX.dmg

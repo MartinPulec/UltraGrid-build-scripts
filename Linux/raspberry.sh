@@ -139,7 +139,8 @@ appimagetool --sign --comp gzip $APPDIR $APPNAME
 
 delete_asset 4347706 $APPNAME_PATTERN $OAUTH
 
-curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST 'https://uploads.github.com/repos/CESNET/UltraGrid/releases/4347706/assets?name='$APPNAME'&label='$LABEL -T $APPNAME
+UPLOAD_URL=$(curl -s https://api.github.com/repos/CESNET/UltraGrid/releases/tags/continuous | jq -r .upload_url | sed "s/{.*}//")
+curl -H "Authorization: token $OAUTH" -H 'Content-Type: application/gzip' -X POST '$UPLOAD_URL?name='$APPNAME'&label='$LABEL -T $APPNAME
 
 cd ..
 rm -rf $DIR

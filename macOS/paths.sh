@@ -1,5 +1,5 @@
 QT=/usr/local/Qt-5.10.1
-NDI=/NewTek_NDI_SDK
+NDI=/Library/NDI
 
 export CPATH=$CPATH${CPATH:+:}/opt/local/include:/usr/local/include:/usr/local/cuda/include:$QT/include:$NDI/include
 export LIBRARY_PATH=/opt/local/lib:/usr/local/cuda/lib:$QT/lib:$NDI/lib/x64

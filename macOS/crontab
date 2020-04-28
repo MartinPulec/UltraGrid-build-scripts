@@ -1,3 +1,4 @@
-00 6 * * * /Users/toor/ultragrid-nightly-mac.sh
+#00 6 * * * /Users/toor/ultragrid-nightly-mac.sh
+15 6 * * * /Users/toor/ultragrid-nightly-mac-continuous.sh
 30 6 * * * /Users/toor/ultragrid-nightly-mac-release.sh
 #0 16 * * * /Users/toor/ultragrid-nightly-mac.sh devel

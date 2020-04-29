@@ -18,7 +18,7 @@ DATE=`date +%Y%m%d`
 APPNAME=UltraGrid-${DATE}.glibc${GLIBC_VERSION}-${ARCH}.AppImage
 APPNAME_PATTERN="UltraGrid-.*-${ARCH}.AppImage"
 DIR=UltraGrid-AppImage
-LABEL="Linux%20build%20%28AppImage%2C%20$ARCH%2C%20glibc%20$GLIBC_VERSION%29"
+LABEL="Linux%20$ARCH%20build"
 OAUTH=$(cat $HOME/github-oauth-token)
 
 . ~/ultragrid_nightly_common.sh

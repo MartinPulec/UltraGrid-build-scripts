@@ -20,10 +20,11 @@ install_gpujpeg() {
         cd /tmp
         rm -rf gpujpeg
         git clone https://github.com/CESNET/GPUJPEG.git gpujpeg
-        cd gpujpeg
-        ./autogen.sh
-        make
-        sudo make install
+        mkdir gpujpeg/build
+        cd gpujpeg/build
+        cmake -DCMAKE_CXX_STANDARD=11 -DCMAKE_CXX_STANDARD_REQUIRED=YES ..
+        cmake --build .
+        sudo cmake --install .
         cd ../..
         rm -rf gpujpeg
 )

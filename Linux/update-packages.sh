@@ -95,8 +95,10 @@ rm -rf ffmpeg
 cd /tmp
 rm -rf GPUJPEG
 git clone https://github.com/CESNET/GPUJPEG.git
-cd GPUJPEG
-./autogen.sh
-make install
+mkdir GPUJPEG/build
+cd GPUJPEG/build
+cmake -DCMAKE_CXX_STANDARD=11 -DCMAKE_CXX_STANDARD_REQUIRED=YES ..
+cmake --build .
+sudo cmake --install .
 cd /tmp
 rm -rf GPUJPEG

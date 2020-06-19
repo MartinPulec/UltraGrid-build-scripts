@@ -67,10 +67,10 @@ cd /tmp
 rm -rf opus
 
 cd /tmp
-rm -rf libvpx
+rm -rf libpx
 git clone https://chromium.googlesource.com/webm/libvpx
 cd libvpx
-./configure --disable-static --enable-shared --prefix=/usr/local/ultragrid-nightly
+./configure --disable-static --enable-shared --prefix=/usr/local/ultragrid-nightly --disable-unit-tests
 make install
 cd /tmp
 rm -rf libvpx

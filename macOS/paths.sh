@@ -9,5 +9,5 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH${PKG_CONFIG_PATH:+:}/usr/local/lib/pkgco
 export AJA_DIRECTORY=/Users/toor/ntv2sdkmac
 export DYLD_LIBRARY_PATH=/usr/local/cuda/lib:$NDI/lib/x64
 export EXTRA_LIB_PATH=$DYLD_LIBRARY_PATH # needed for make, see Makefile.in, old UltraGrid, TOREMOVE
-export DYLIBBUNDLER_FLAGS="-s /usr/local/cuda/lib -s $NDI/lib/x64" # new UG
+export DYLIBBUNDLER_FLAGS="-s /usr/local/cuda/lib -s $NDI/lib/x64 -s /usr/local/lib" # new UG
 

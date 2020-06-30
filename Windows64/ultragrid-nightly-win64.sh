@@ -27,8 +27,6 @@ trap atexit EXIT
 . ~/paths.sh
 . ~/ultragrid_nightly_common.sh
 
-exit
-
 #export PATH=/usr/local/bin`[ -n "$PATH" ] && echo :$PATH`
 #export CPATH=/usr/local/include`[ -n "$CPATH" ] && echo :$CPATH`
 #export LIBRARY_PATH=/usr/local/lib`[ -n "$LIBRARY_PATH" ] && echo :$LIBRARY_PATH`

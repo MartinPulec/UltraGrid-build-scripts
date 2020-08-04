@@ -8,6 +8,9 @@ fi
 set -e
 set -x
 
+export CC=clang-mp-9.0
+export CXX=clang++-mp-9.0
+
 OAUTH=$(cat $HOME/github-oauth-token)
 DATE=`date +%Y%m%d`
 SECPATH=$(cat $HOME/secret-path)

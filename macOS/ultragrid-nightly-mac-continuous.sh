@@ -2,7 +2,9 @@
 # OS X 10.11 has too old bash (3.x) that doesn't know associative arrays
 
 if ! test -t 1; then
-        exec > ~/ultragrid-build-continuous.log 2>&1 </dev/null
+        LOGFILE=~/ultragrid-build-continuous.log
+        mv $LOGFILE $LOGFILE.old
+        exec > $LOGFILE 2>&1 </dev/null
 fi
 
 set -e

@@ -39,7 +39,7 @@ BRANCHES["ndi"]=master
 
 # key is BUILD
 typeset -A CONF_FLAGS
-CONF_FLAGS["default"]="--disable-ndi"
+CONF_FLAGS["default"]=""
 CONF_FLAGS["devel"]="$COMMON_ENABLE_ALL_FLAGS --enable-coreaudio --enable-syphon"
 CONF_FLAGS["ndi"]="--enable-ndi"
 

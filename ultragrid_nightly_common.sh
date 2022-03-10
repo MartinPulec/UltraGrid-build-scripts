@@ -1,3 +1,7 @@
+##
+## @todo remove and use delete_asset from GitHub CI
+##
+
 delete_asset() {
         RELEASE_ID=${1?}
         PATTERN=${2?}

@@ -62,7 +62,7 @@ do
                 APPNAME=UltraGrid-nightly-alt.dmg
                 #APPNAME_PATTERN="UltraGrid-[[:digit:]]\{8\}-macos.dmg"
                 APPNAME_PATTERN="$APPNAME"
-                LABEL="alternative%20macOS%20build%20%28macOS%2010%2E11%2B%2C%20with%20CUDA%29"
+                LABEL="alternative%20macOS%20build%20%28macOS%2010%2E12%2B%2C%20with%20CUDA%29"
         else
                 APPNAME=UltraGrid-nightly-$BUILD.dmg
                 APPNAME_GLOB="UltraGrid-*-$BUILD.dmg"

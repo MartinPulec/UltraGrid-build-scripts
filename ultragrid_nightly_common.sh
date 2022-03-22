@@ -17,5 +17,5 @@ delete_asset() {
 	done
 }
 
-COMMON_ENABLE_ALL_FLAGS="--enable-all --disable-alsa --disable-bluefish444 --disable-cmpto-j2k --disable-coreaudio --disable-deltacast --disable-dshow --disable-dvs --disable-lavc-hw-accel-vaapi --disable-lavc-hw-accel-vdpau --disable-sage --disable-sdl1 --disable-syphon --disable-spout --disable-v4l2 --disable-wasapi"
+COMMON_ENABLE_ALL_FLAGS="--enable-all --disable-alsa --disable-bluefish444 --disable-cmpto-j2k --disable-coreaudio --disable-deltacast --disable-dshow --disable-dvs --disable-lavc-hw-accel-vaapi --disable-lavc-hw-accel-vdpau --disable-sage --disable-sdl1 --disable-syphon --disable-spout --disable-v4l2 --disable-wasapi --disable-panogl_disp --disable-xrgl_disp --disable-lavc-hw-accel-vdpau --disable-lavc-hw-accel-vaapi --disable-lavc-hw-accel-rpi4 --disable-natpmp"
 # todo - remove deltacast

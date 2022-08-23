@@ -10,8 +10,8 @@ fi
 set -e
 set -x
 
-export CC=clang-mp-13
-export CXX=clang++-mp-13
+export CC=clang-mp-14
+export CXX=clang++-mp-14
 
 OAUTH=$(cat $HOME/github-oauth-token)
 DATE=`date +%Y%m%d`
@@ -78,7 +78,7 @@ do
 #export PKG_CONFIG_PATH=/usr/local/share/ffmpeg/lib/pkgconfig-static:$PKG_CONFIG_PATH
 
         ./autogen.sh ${COMMON_FLAGS[@]} ${CONF_FLAGS[$BUILD]-${CONF_FLAGS["default"]}}
-        make gui-bundle
+        make -j $(nproc) "QMAKE_FLAGS=QMAKE_CC=$CC QMAKE_CXX=$CXX" gui-bundle
         make osx-gui-dmg
 
         #scp -i /Users/toor/.ssh/id_rsa 'gui/UltraGrid GUI/UltraGrid.dmg' pulec,ultragrid@frs.sourceforge.net:/home/frs/project/ultragrid/UltraGrid-nightly-OSX.dmg

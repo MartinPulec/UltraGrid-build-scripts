@@ -17,7 +17,6 @@ OAUTH=$(cat $HOME/github-oauth-token)
 DATE=`date +%Y%m%d`
 SECPATH=$(cat $HOME/secret-path)
 
-. $HOME/common.sh
 . $HOME/paths.sh
 . ~/ultragrid_nightly_common.sh
 
@@ -38,12 +37,6 @@ BRANCHES["devel"]=devel
 BRANCHES["master"]=master
 BRANCHES["ndi"]=master
 # if unset, default is to use the build name as a branch
-
-# key is BUILD
-typeset -A CONF_FLAGS
-CONF_FLAGS["default"]=""
-CONF_FLAGS["devel"]="$COMMON_ENABLE_ALL_FLAGS --enable-coreaudio --enable-syphon"
-CONF_FLAGS["ndi"]="--enable-ndi"
 
 # key is BRANCH
 typeset -A GIT
@@ -77,7 +70,11 @@ do
 
 #export PKG_CONFIG_PATH=/usr/local/share/ffmpeg/lib/pkgconfig-static:$PKG_CONFIG_PATH
 
-        ./autogen.sh ${COMMON_FLAGS[@]} ${CONF_FLAGS[$BUILD]-${CONF_FLAGS["default"]}}
+        RUNNER_OS=macOS
+        GITHUB_ENV=/dev/null
+        . .github/scripts/environment.sh
+
+        ./autogen.sh $FEATURES --disable-vulkan
         make -j $(nproc) "QMAKE_FLAGS=QMAKE_CC=$CC QMAKE_CXX=$CXX" gui-bundle
         make osx-gui-dmg
 

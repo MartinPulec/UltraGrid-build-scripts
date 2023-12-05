@@ -12,3 +12,5 @@ export DYLD_LIBRARY_PATH=/usr/local/cuda/lib:$NDI_LIB
 export EXTRA_LIB_PATH=$DYLD_LIBRARY_PATH # needed for make, see Makefile.in, old UltraGrid, TOREMOVE
 export DYLIBBUNDLER_FLAGS="-s /usr/local/cuda/lib -s $NDI_LIB -s /usr/local/lib -s /opt/local/lib" # new UG
 
+export SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk
+export COMMON_OSX_FLAGS="-iframework $(xcrun --show-sdk-path)/System/Library/Frameworks"

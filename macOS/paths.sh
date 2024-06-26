@@ -7,7 +7,6 @@ export LIBRARY_PATH=/opt/local/lib:/usr/local/lib:/usr/local/cuda/lib:$QT/lib:$N
 export PATH=/opt/local/bin:$PATH:/usr/local/bin:/usr/local/cuda/bin:$QT/bin
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH${PKG_CONFIG_PATH:+:}/usr/local/lib/pkgconfig:$QT/lib/pkgconfig
 #export PKG_CONFIG=/opt/local/bin/pkg-config
-export AJA_DIRECTORY=/Users/toor/ntv2sdkmac
 export DYLD_LIBRARY_PATH=/usr/local/cuda/lib:/usr/local/lib:$NDI_LIB
 export EXTRA_LIB_PATH=$DYLD_LIBRARY_PATH # needed for make, see Makefile.in, old UltraGrid, TOREMOVE
 export DYLIBBUNDLER_FLAGS="-s /usr/local/cuda/lib -s $NDI_LIB -s /usr/local/lib -s /opt/local/lib" # new UG

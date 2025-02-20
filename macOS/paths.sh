@@ -6,6 +6,7 @@ export CPATH=$CPATH${CPATH:+:}/opt/local/include:/usr/local/include:/usr/local/c
 export LIBRARY_PATH=/opt/local/lib:/usr/local/lib:/usr/local/cuda/lib:$QT/lib:$NDI_LIB
 export PATH=/opt/local/bin:$PATH:/usr/local/bin:/usr/local/cuda/bin:$QT/bin
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH${PKG_CONFIG_PATH:+:}/usr/local/lib/pkgconfig:$QT/lib/pkgconfig
+PKG_CONFIG_PATH=/opt/local/libexec/ffmpeg7/lib/pkgconfig:$PKG_CONFIG_PATH
 #export PKG_CONFIG=/opt/local/bin/pkg-config
 export DYLD_LIBRARY_PATH=/usr/local/cuda/lib:/usr/local/lib:$NDI_LIB
 export EXTRA_LIB_PATH=$DYLD_LIBRARY_PATH # needed for make, see Makefile.in, old UltraGrid, TOREMOVE

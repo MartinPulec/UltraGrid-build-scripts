@@ -4,6 +4,8 @@ source scl_source enable devtoolset-11
 
 set -e
 
+export LD_LIBRARY_PATH=/usr/local/lib
+
 cd /root/ultragrid
 git fetch
 git reset --hard origin/master

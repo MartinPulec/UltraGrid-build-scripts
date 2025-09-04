@@ -73,6 +73,7 @@ do
 
         RUNNER_OS=macOS
         GITHUB_ENV=/dev/null
+        GITHUB_REF=
         . .github/scripts/environment.sh
 
         ./autogen.sh $FEATURES --disable-vulkan --disable-lavc-cuda-conv

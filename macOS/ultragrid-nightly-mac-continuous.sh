@@ -76,7 +76,7 @@ do
         GITHUB_REF=
         . .github/scripts/environment.sh
 
-        ./autogen.sh $FEATURES --disable-vulkan --disable-lavc-cuda-conv --enable-sdl=2
+        ./autogen.sh $FEATURES --disable-vulkan --disable-lavc-cuda-conv --enable-sdl=2 --enable-ndi=5
         make -j $(nproc) "QMAKE_FLAGS=QMAKE_CC=$CC QMAKE_CXX=$CXX" gui-bundle
         make osx-gui-dmg
 

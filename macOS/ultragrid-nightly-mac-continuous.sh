@@ -12,6 +12,7 @@ set -x
 
 export CC=clang-mp-14
 export CXX=clang++-mp-14
+export CFLAGS=-std=gnu2x   # for [[attributes]]
 
 OAUTH=$(cat $HOME/github-oauth-token)
 DATE=`date +%Y%m%d`

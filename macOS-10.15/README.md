@@ -52,7 +52,7 @@ macport balíčky:
 - wolfssl
 
 volitelně:
-- clang-17
+- clang-18
 
 dálě:
 - Syphon (kompiluj s `xcodebuild .. MACOSX_DEPLOYMENT_TARGET=10.15`)

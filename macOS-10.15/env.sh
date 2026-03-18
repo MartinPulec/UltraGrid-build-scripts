@@ -4,8 +4,9 @@ fi
 
 env_included=1
 
-export CC=clang-mp-17
-export CXX=clang++-mp-17
+export MACOSX_DEPLOYMENT_TARGET=10.15
+export CC=clang-mp-18
+export CXX=clang++-mp-18
 
 PATH=/opt/local/bin:/usr/local/bin:$PATH
 

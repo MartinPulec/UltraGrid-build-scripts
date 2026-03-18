@@ -55,6 +55,7 @@ volitelně:
 - clang-18
 
 dálě:
+- cineform
 - Syphon (kompiluj s `xcodebuild .. MACOSX_DEPLOYMENT_TARGET=10.15`)
 - NDI
 - deltacast
@@ -62,14 +63,18 @@ dálě:
 - libbacktrace
 - libjuice
 - libajantv2
-- live555
-- macdylibbundler
+- live555 (+-DNO_STD_LIB)
+- macdylibbundler v2
+- EmbeddableWebServer
+- zfec
 
 nefunguje (ale mohlo by jit zprovoznit?):
-- cineform
 - JPEG XS
 - vulkan
 
-
 Qt 6.1.3 (build fix https://trac.macports.org/ticket/68713), configure:
 `../configure -release -nomake examples -opensource -confirm-license -prefix /usr/local/Qt-6.1.3`
+
+Notes:
+- /opt/local/lib **nesmi** byt v DYLD_LIBRARY_PATH, protoze koliduje
+/opt/local/lib/libiconv.2.dylib a systemova.

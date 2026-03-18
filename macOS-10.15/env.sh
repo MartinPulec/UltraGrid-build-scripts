@@ -4,8 +4,13 @@ fi
 
 env_included=1
 
+export CC=clang-mp-17
+export CXX=clang++-mp-17
+
 PATH=/opt/local/bin:/usr/local/bin:$PATH
-PATH=$PATH:/opt/local/libexec/qt5/bin
+
+QT_PATH=/usr/local/Qt-6.1.3
+PATH=$PATH:$QT_PATH/bin
 
 export PKG_CONFIG_PATH=/opt/local/include/pkgconf/libpkgconf
 PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig"

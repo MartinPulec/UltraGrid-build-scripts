@@ -5,8 +5,9 @@ fi
 env_included=1
 
 export MACOSX_DEPLOYMENT_TARGET=10.15
-export CC=clang-mp-18
-export CXX=clang++-mp-18
+# libc++ from  m10.15 is no llonger supported by clang 22
+export CC=clang-mp-21
+export CXX=clang++-mp-21
 
 PATH=/opt/local/bin:/usr/local/bin:$PATH
 

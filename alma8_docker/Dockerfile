@@ -17,6 +17,7 @@ RUN dnf -y install ffmpeg
 RUN dnf -y install glew-devel glfw-devel
 RUN dnf -y install qt5-devel
 RUN dnf -y install ffmpeg-devel
+RUN dnf -y install fluidsynth-devel jack-audio-connection-kit-devel portaudio-devel
 RUN dnf -y install soxr-devel speexdsp-devel
 #RUN ./autogen.sh --enable-qt --enable-gl-display --enable-libavcodec --enable-gpujpeg
 RUN dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-rhel8.repo
@@ -38,7 +39,7 @@ RUN dnf -y install alsa-lib-devel meson dbus-devel systemd-devel
 # last one configuring with meson 0.58.2 in alma8
 RUN git clone https://github.com/PipeWire/pipewire && cd pipewire &&\
  git checkout 1bced6b2ef300acce23c0daaeb8f4fc14095f330^ &&\
- ./autogen.sh -Dtests=disabled && make -j "$(nproc)"
+ ./autogen.sh -Dtests=disabled && make -j "$(nproc)" install
 RUN git clone https://github.com/CESNET/UltraGrid.git ultragrid
 WORKDIR /build/ultragrid
 RUN .github/scripts/install-common-deps.sh

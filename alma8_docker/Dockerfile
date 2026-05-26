@@ -27,9 +27,11 @@ RUN git clone https://github.com/CESNET/GPUJPEG.git gpujpeg && mkdir gpujpeg/bui
 RUN dnf -y install cuda-cudart-devel-11-8
 RUN cd gpujpeg/build && cmake -DCMAKE_CUDA_ARCHITECTURES=35 .. && make -j $(nproc) install
 RUN dnf -y install which # qmake needs this
+RUN dnf -y install rubygem-asciidoctor
 RUN dnf -y install openssl-devel
 RUN dnf -y install libcurl-devel opencv-devel SDL2-devel SDL2_ttf-devel
 RUN dnf -y install ImageMagick-devel
+RUN dnf -y install libcaca-devel
 RUN dnf -y install libtool # pcp
 RUN dnf -y install libnatpmp-devel
 ENV PKG_CONFIG_PATH /usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig

@@ -3,10 +3,10 @@ FROM almalinux:8
 WORKDIR /build
 
 RUN dnf -y install clang
+ENV CC clang
+ENV CXX clang++
 RUN dnf -y install git
 RUN dnf -y install autoconf automake pkgconf
-ENV CC clang-20
-ENV CXX clang++-20
 RUN dnf install -y make
 RUN dnf -y install 'dnf-command(config-manager)'
 RUN dnf config-manager --set-enabled powertools

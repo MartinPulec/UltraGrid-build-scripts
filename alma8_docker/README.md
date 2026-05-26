@@ -1,1 +1,9 @@
-run docker_build.sh on rabbit (or where is the image prepared)
+## Prepare build environment
+
+```
+docker build -f Dockerfile -t ultragrid-alma8 .
+```
+
+##  Run (actual build)
+
+run `docker_build.sh` where the above image is prepared

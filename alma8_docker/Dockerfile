@@ -25,7 +25,8 @@ RUN dnf -y install cmake cuda-compiler-11-8 cuda-cudart-11-8
 ENV CUDACXX /usr/local/cuda-11.8/bin/nvcc
 RUN git clone https://github.com/CESNET/GPUJPEG.git gpujpeg && mkdir gpujpeg/build
 RUN dnf -y install cuda-cudart-devel-11-8
-RUN cd gpujpeg/build && cmake -DCMAKE_CUDA_ARCHITECTURES=35 .. && make -j $(nproc) install
+RUN cd gpujpeg/build && cmake -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_CUDA_ARCHITECTURES=35 .. && make -j $(nproc) install
 RUN dnf -y install which # qmake needs this
 RUN dnf -y install rubygem-asciidoctor
 RUN dnf -y install openssl-devel
@@ -34,7 +35,7 @@ RUN dnf -y install ImageMagick-devel
 RUN dnf -y install libcaca-devel
 RUN dnf -y install libtool # pcp
 RUN dnf -y install libnatpmp-devel
-ENV PKG_CONFIG_PATH /usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig
+ENV PKG_CONFIG_PATH /usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig
 RUN dnf -y install nasm # svt jpeg xs
 RUN dnf -y install mesa-vulkan-devel vulkan-headers vulkan-loader
 RUN dnf -y install alsa-lib-devel meson dbus-devel systemd-devel

@@ -1,6 +1,7 @@
 FROM almalinux:8
 
 WORKDIR /build
+ENV CI true
 
 RUN dnf -y install clang
 ENV CC clang

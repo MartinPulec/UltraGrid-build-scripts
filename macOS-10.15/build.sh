@@ -9,7 +9,7 @@ rm -rf ultragrid
 git clone --depth 1 https://github.com/CESNET/UltraGrid.git ultragrid
 #git clone http://frakira.fi.muni.cz/~xpulec/ultragrid.git ultragrid
 cd ultragrid
-./autogen.sh --enable-qt --with-object-remove=src/audio/playback/aes67.o \
+./autogen.sh --enable-qt \
 	--disable-vulkan # --disable-cineform
 make -j "$(getconf NPROCESSORS_ONLN)" gui-bundle
 

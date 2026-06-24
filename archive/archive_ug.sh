@@ -3,7 +3,9 @@
 GITHUB_TOKEN=$(cat ~/gh_token.txt)
 OC_TOKEN=$(cat ~/owncloud_token.txt)
 GITHUB_REPOSITORY=CESNET/UltraGrid
-today=$(date +%Y-%m-%d)
+oc_root=https://owncloud.cesnet.cz/remote.php/webdav/ug-nightly-archive
+today=$(date -u +%Y-%m-%d)
+year=$(date -u +%Y)
 DIR=$HOME/public_html/ug-nightly-archive/$today
 TAG=continuous
 
@@ -20,9 +22,8 @@ cd $tmpdir
 # JSON=$(mktemp)
 JSON=continuous.json
 
-curl -Ss -X MKCOL\
- "https://owncloud.cesnet.cz/remote.php/webdav/ug-nightly-archive/$today"\
- --user "pulec@cesnet.cz:$OC_TOKEN"
+curl -Ss -X MKCOL "$oc_root/$year" --user "pulec@cesnet.cz:$OC_TOKEN" >/dev/null 2>&1
+curl -Ss -X MKCOL "$oc_root/$year/$today" --user "pulec@cesnet.cz:$OC_TOKEN"
 
 curl -s -S -X GET https://api.github.com/repos/$GITHUB_REPOSITORY/releases/tags/continuous -o $JSON
 RELEASE_ID=$(jq -r '.id' $JSON) # -H "Authorization: token $GITHUB_TOKEN"
@@ -30,7 +31,6 @@ for n in `curl -s -X GET https://api.github.com/repos/$GITHUB_REPOSITORY/release
 	# wget -q -P $DIR $n
 	wget -q "$n"
 	name=$(basename "$n")
-	curl -Ss -T "$name" "https://owncloud.cesnet.cz/remote.php/webdav/\
-ug-nightly-archive/$today/" --user "pulec@cesnet.cz:$OC_TOKEN"
+	curl -Ss -T "$name" "$oc_root/$year/$today/" --user "pulec@cesnet.cz:$OC_TOKEN"
 done
 

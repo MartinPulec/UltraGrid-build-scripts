@@ -1,0 +1,2 @@
+0 4 * * 6 /home/xpulec/bin/archive_ug.sh # Every Sunday at 4:00 UTC
+

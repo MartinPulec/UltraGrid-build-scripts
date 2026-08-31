@@ -9,9 +9,15 @@ rm -rf ultragrid
 git clone --depth 1 https://github.com/CESNET/UltraGrid.git ultragrid
 #git clone http://frakira.fi.muni.cz/~xpulec/ultragrid.git ultragrid
 cd ultragrid
-./autogen.sh --enable-qt \
-	--disable-vulkan # --disable-cineform
-make -j "$(getconf NPROCESSORS_ONLN)" gui-bundle
+./autogen.sh \
+  --disable-vulkan \
+# --disable-cineform
+# --enable-qt
+
+# make -j "$(getconf NPROCESSORS_ONLN)" gui-bundle
+make -j "$(getconf NPROCESSORS_ONLN)" bundle
+# pretend we are gui bundle
+mv uv.app uv-qt.app
 
 #security default-keychain -s build.keychain
 #security unlock-keychain -p dummy build.keychain

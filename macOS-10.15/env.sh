@@ -6,8 +6,10 @@ env_included=1
 
 export MACOSX_DEPLOYMENT_TARGET=10.15
 # libc++ from  m10.15 is no llonger supported by clang 22
-export CC=clang-mp-21
-export CXX=clang++-mp-21
+# moreover the code doesn't compile even with clang 21 after
+# some its (did with some previous version before Oct 23 '26)
+export CC=clang-mp-20
+export CXX=clang++-mp-20
 
 PATH=/opt/local/bin:/usr/local/bin:$PATH
 

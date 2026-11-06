@@ -39,7 +39,18 @@ RUN dnf -y install libtool # pcp
 RUN dnf -y install libnatpmp-devel
 ENV PKG_CONFIG_PATH /usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig
 RUN dnf -y install nasm # svt jpeg xs
-RUN dnf -y install mesa-vulkan-devel vulkan-headers vulkan-loader
+RUN dnf -y builddep vulkan-headers vulkan-loader
+RUN git clone --depth 1 https://github.com/KhronosGroup/Vulkan-Headers  && \
+    mkdir Vulkan-Headers/build && \
+    cd Vulkan-Headers/build && \
+    cmake .. && \
+    make install
+RUN git clone --depth 1 https://github.com/KhronosGroup/Vulkan-Loader && \
+    mkdir Vulkan-Loader/build && \
+    cd Vulkan-Loader/build && \
+    cmake .. && \
+    cmake --build . --parallel "$(nproc)" && \
+    make install
 RUN dnf -y install alsa-lib-devel meson dbus-devel systemd-devel
 # last one configuring with meson 0.58.2 in alma8
 RUN git clone https://github.com/PipeWire/pipewire && cd pipewire &&\

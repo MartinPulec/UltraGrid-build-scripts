@@ -4,8 +4,9 @@ WORKDIR /build
 ENV CI true
 
 RUN dnf -y install clang
-ENV CC clang
-ENV CXX clang++
+# ENV CC clang
+# ENV CXX clang++
+RUN dnf -y install gcc gcc-c++
 RUN dnf -y install git
 RUN dnf -y install autoconf automake pkgconf
 RUN dnf install -y make
@@ -15,12 +16,12 @@ RUN dnf -y install epel-release
 RUN dnf -y install https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm
 RUN dnf -y install https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-8.noarch.rpm
 RUN dnf -y install ffmpeg
+RUN dnf -y install gcc-toolset-15
 RUN dnf -y install glew-devel glfw-devel
 RUN dnf -y install qt5-devel
 RUN dnf -y install ffmpeg-devel
 RUN dnf -y install fluidsynth-devel jack-audio-connection-kit-devel portaudio-devel
 RUN dnf -y install soxr-devel speexdsp-devel
-#RUN ./autogen.sh --enable-qt --enable-gl-display --enable-libavcodec --enable-gpujpeg
 RUN dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-rhel8.repo
 RUN dnf -y install cmake cuda-compiler-11-8 cuda-cudart-11-8
 ENV CUDACXX /usr/local/cuda-11.8/bin/nvcc
@@ -47,14 +48,14 @@ RUN git clone https://github.com/PipeWire/pipewire && cd pipewire &&\
 RUN git clone https://github.com/CESNET/UltraGrid.git ultragrid
 WORKDIR /build/ultragrid
 RUN .github/scripts/install-common-deps.sh
-RUN .github/scripts/Linux/install_others.sh ndi svt_jpegxs 
+RUN sed -i 's/-fopenmp=libomp//' /usr/local/lib/pkgconfig/libcineformsdk.pc
+RUN CC=clang CXX=clang++ .github/scripts/Linux/install_others.sh ndi svt_jpegxs
 
 RUN dnf -y install sudo # ximea installer
 RUN XIMEA_DOWNLOAD_URL=https://www.ximea.com\
 $(curl -f https://www.ximea.com/software-downloads | \
-                grep -v 35adfeed-8e15-4b4d-8364-bd5a65cba5c4 | \
-                sed -n "/Linux_SP.tgz/"\
-' { s-^.*\(/getattachment[^"]*\).*$-\1-; p; }' | head -n 1) \
+                sed -n "/Linux-SP-Stable.tgz/"\
+' { s-^.*\(/attachment[^"]*\).*$-\1-; p; }' | head -n 1) \
 .github/scripts/Linux/install_others.sh ximea
 
 RUN dnf -y install file # mkappimage

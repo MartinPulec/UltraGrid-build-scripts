@@ -9,6 +9,9 @@ else
   git clone --depth 1 http://github.com/CESNET/UltraGrid.git ultragrid
   cd ultragrid
 fi
+git fetch --shallow-since=2026-10-31
+git fetch --shallow-since=2026-10-31 https://github.com/MartinPulec/UltraGrid.git compat
+git merge FETCH_HEAD
 git config safe.directory '*'
 ./autogen.sh # generate configure + al.
 make distclean # remove dist files

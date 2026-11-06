@@ -2,6 +2,9 @@
 
 set -e
 
+. scl_source enable gcc-toolset-15
+export CUDA_FLAGS='-ccbin /usr/bin/gcc' # gcc 8 - 15 is unsupported by that CUDA
+
 export LD_LIBRARY_PATH=/usr/local/lib
 
 cd "$(mktemp -d)"
